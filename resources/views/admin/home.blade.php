@@ -1,8 +1,10 @@
 @extends('admin.template')
 
 @php
-    $title = "Home"
+    $title = "Home";
+    $breadcrumbs = ['Inicio'=> false ];
 @endphp
+
 
 @section('content')
 

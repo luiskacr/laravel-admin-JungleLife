@@ -40,6 +40,7 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href=" {{ asset('vendor/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href=" {{ asset('vendor/dataTables/datatables.min.css') }}" />
 
     <!-- Page CSS -->
 
@@ -58,6 +59,7 @@
         @include('admin.partials.navbar')
         <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
+                @include('admin.partials.breadcrumbs')
                 @yield('content')
             </div>
         </div>
@@ -71,16 +73,19 @@
 <script src="{{ asset('vendor/popper/popper.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 <script src="{{ asset('vendor/perfect-scrollbar/perfect-scrollbar.js' ) }}"></script>
+<script src="{{ asset('vendor/sweetAlert2/dist/sweetalert2.all.min.js' ) }}"></script>
 <script src="{{ asset('js/menu.js') }}"></script>
 <!-- endbuild -->
 
 <!-- Vendors JS -->
+<script src="{{ asset('vendor/dataTables/datatables.min.js') }}"></script>
+<script src="{{ asset('vendor/dataTables/custom.js') }}"></script>
 
 <!-- Main JS -->
 <script src="{{ asset('js/main.js') }}"></script>
 
 <!-- Page JS -->
-
+@stack('page-scripts')
 
 </body>
 </html>

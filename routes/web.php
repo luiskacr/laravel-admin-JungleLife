@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\GuidesController;
+use App\Http\Controllers\Admin\TypesGuidesController;
+use App\Http\Controllers\Admin\ClienteTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +37,12 @@ Route::group([
     function(){
         Route::get('/',[\App\Http\Controllers\Home\HomeController::class,'show'])->name('admin.home');
         Route::post('/logout',[\App\Http\Controllers\Auth\LoginController::class,'logout'])->name('logout');
+
+        //Cruds
+        Route::resource('type-client',ClienteTypeController::class);
+        Route::resource('type-guides',TypesGuidesController::class);
+        Route::resource('guides',GuidesController::class);
+
     }
 );
 
