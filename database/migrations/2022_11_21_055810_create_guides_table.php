@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('guides', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('lastName')->nullable();
+            $table->string('name',75);
+            $table->string('lastName',75)->nullable();
             $table->foreignId('type')->references('id')->on('guides_types');
             $table->timestamps();
         });

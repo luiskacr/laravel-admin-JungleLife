@@ -17,7 +17,7 @@ class ClienteTypeController extends Controller
      */
     public function index()
     {
-        $clientTypes = ClientType::all();
+        $clientTypes = ClientType::with('type')->all();
 
         return view('admin.clientType.index')->with('clientTypes',$clientTypes);
     }

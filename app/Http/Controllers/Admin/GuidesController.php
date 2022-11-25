@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GuideRequest;
 use App\Models\Guides;
 use App\Models\GuidesType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Builder;
 
 class GuidesController extends Controller
 {
@@ -39,9 +42,24 @@ class GuidesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GuideRequest $request)
     {
-        dd($request->request);
+        DB::beginTransaction();
+        try{
+            Guides::create([
+                'name' => $request->request->get('name') ,
+                'lastName' => $request->request->get('lastName'),
+                'type' => $request->request->getInt('type'),
+            ]);
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollback();
+
+            return redirect()->route('guides.create')->with('message',$e->getMessage());
+        }
+
+        return redirect()->route('guides.index')->with('success','Se ha creado el tipo');
     }
 
     /**
@@ -52,7 +70,9 @@ class GuidesController extends Controller
      */
     public function show($id)
     {
-        //
+        $guide = Guides::findOrFail($id);
+
+        return view('admin.guide.show')->with('guide',$guide);
     }
 
     /**
@@ -63,7 +83,11 @@ class GuidesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $guide = Guides::findOrFail($id);
+
+        $typeGuides = GuidesType::all();
+
+        return view('admin.guide.edit')->with('guide',$guide)->with('typeGuides',$typeGuides);
     }
 
     /**
@@ -73,9 +97,23 @@ class GuidesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(GuideRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try{
+            Guides::whereId($id)->update([
+                'name' => $request->request->get('name') ,
+                'lastName' => $request->request->get('lastName'),
+                'type' => $request->request->getInt('type'),
+            ]);
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+
+            return redirect()->route('guides.edit')->with('message',$e->getMessage());
+        }
+        return redirect()->route('guides.index')->with('success','Se ha creado el tipo');
     }
 
     /**
@@ -86,6 +124,17 @@ class GuidesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+        try{
+            $guide = Guides::findOrFail($id);
+            $guide->delete();
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+
+            return response($e->getMessage(),500);
+        }
+        return response('Exitoso',200);
     }
 }

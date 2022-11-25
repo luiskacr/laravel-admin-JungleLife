@@ -28,4 +28,9 @@ class Guides extends Model
     protected $casts = [
         'type' => 'integer',
     ];
+
+    public function guidesType()
+    {
+        return $this->belongsTo(GuidesType::class,'type','id');
+    }
 }

@@ -39,7 +39,7 @@
                         <th>{{ $guide->id }}</th>
                         <th>{{ $guide->name }}</th>
                         <th>{{ $guide->lastName }}</th>
-                        <th>{{ $guide->type }}</th>
+                        <th>{{ $guide->guidesType->name }}</th>
                         <th>
                             <div class="justify-content-between">
                                 <a class="m-2" href="{{ route('guides.show',$guide->id) }}"><i class="bx bxs-show me-1"></i> Ver</a>

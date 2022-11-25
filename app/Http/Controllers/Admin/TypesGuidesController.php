@@ -92,7 +92,7 @@ class TypesGuidesController extends Controller
     {
         DB::beginTransaction();
         try{
-            TourType::whereId($id)->update([
+            GuidesType::whereId($id)->update([
                 'name'=>$request->request->get('name'),
             ]);
 

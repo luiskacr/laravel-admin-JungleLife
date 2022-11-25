@@ -17,4 +17,9 @@ class GuidesType extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function guide()
+    {
+        return $this->hasMany(Guides::class,'type','id');
+    }
 }
