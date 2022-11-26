@@ -37,10 +37,15 @@
     <link rel="stylesheet" href="{{ asset('css/core.css' )}}" />
     <link rel="stylesheet" href="{{ asset('css/theme-default.css') }}" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('css/demo.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href=" {{ asset('vendor/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <link rel="stylesheet" href=" {{ asset('vendor/dataTables/datatables.min.css') }}" />
+
+    <!-- Toast  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <!-- Page CSS -->
 
@@ -65,6 +70,7 @@
         </div>
     </div>
 </div>
+@include('admin.partials.toast')
 </body>
 
 <!-- Core JS -->
@@ -79,12 +85,12 @@
 
 <!-- Vendors JS -->
 <script src="{{ asset('vendor/dataTables/datatables.min.js') }}"></script>
-<script src="{{ asset('vendor/dataTables/custom.js') }}"></script>
 
 <!-- Main JS -->
 <script src="{{ asset('js/main.js') }}"></script>
 
 <!-- Page JS -->
+<script src="{{ asset('js/custom.js') }}"></script>
 @stack('page-scripts')
 
 </body>

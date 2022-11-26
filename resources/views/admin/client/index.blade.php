@@ -1,8 +1,8 @@
 @extends('admin.template')
 
 @php
-    $title = "Guia";
-    $breadcrumbs = ['Inicio'=> route('admin.home'),'Guias'=>false];
+    $title = "Clientes";
+    $breadcrumbs = ['Inicio'=> route('admin.home'),'Clientes'=>false];
 @endphp
 
 @section('content')
@@ -11,10 +11,10 @@
         <div class="card-header">
             <div class="container-fluid">
                 <div class="float-start">
-                    <h4>Guias</h4>
+                    <h4>Clientes</h4>
                 </div>
                 <div class="float-end">
-                    <a class="text-white" href="{{ route('guides.create') }}">
+                    <a class="text-white" href="{{ route('clients.create') }}">
                         <button class="btn btn-primary" type="button">
                             Crear
                         </button>
@@ -28,24 +28,26 @@
                 <tr>
                     <th>id</th>
                     <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Tipo</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                    <th>Tipo de Cliente</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($guides as $guide)
+                @foreach($clients as $client)
                     <tr>
-                        <th>{{ $guide->id }}</th>
-                        <th>{{ $guide->name }}</th>
-                        <th>{{ $guide->lastName }}</th>
-                        <th>{{ $guide->guidesType->name }}</th>
+                        <th>{{ $client->id }}</th>
+                        <th>{{ $client->name }}</th>
+                        <th>{{ $client->email }}</th>
+                        <th>{{ $client->telephone }}</th>
+                        <th>{{ $client->clientTypes->name }}</th>
                         <th>
                             <div class="justify-content-between">
-                                <a class="m-2" href="{{ route('guides.show',$guide->id) }}"><i class="bx bxs-show me-1"></i> Ver</a>
-                                <a class="m-2" href="{{ route('guides.edit',$guide->id) }}"><i class="bx bx-edit-alt me-1"></i> Editar</a>
-                                <a class="m-2" href="#" onclick="deleteItem({{ $guide->id}},
-                                {{ json_encode($guide->name) }})">
+                                <a class="m-2" href="{{ route('clients.show',$client->id) }}"><i class="bx bxs-show me-1"></i> Ver</a>
+                                <a class="m-2" href="{{ route('clients.edit',$client->id) }}"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                                <a class="m-2" href="#" onclick="deleteItem({{ $client->id}},
+                                {{ json_encode($client->name) }})">
                                     <i class="bx bx-trash me-1"></i> Eliminar</a>
                             </div>
                         </th>
@@ -64,12 +66,12 @@
 
         function deleteItem(id, name){
             let token = '{{ csrf_token()  }}';
-            let route = '{{ route('guides.destroy',0) }}';
+            let route = '{{ route('clients.destroy',0) }}';
             const f_route = route.slice(0,-1);
 
             Swal.fire({
                 title: 'Esta seguro?',
-                text: "Que desea eliminar el Guia " + name ,
+                text: "Que desea eliminar el Cliente " + name ,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#696cff',
@@ -90,7 +92,7 @@
                         success: function (){
                             Swal.fire({
                                 title: 'Eliminado !',
-                                text: 'El Guia ' + name + ' fue eliminado',
+                                text: 'El Cliente ' + name + ' fue eliminado',
                                 icon: 'success',
                             }).then((result) => {
                                 location.reload();
@@ -99,7 +101,7 @@
                         error: function (xhr){
                             Swal.fire(
                                 'Eliminado !',
-                                'Hubo un error al eliminar el item' + name ,
+                                'Hubo un error al eliminar el Cliente' + name ,
                                 'error'
                             )
                             console.log(xhr.responseText)

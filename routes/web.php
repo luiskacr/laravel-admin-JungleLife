@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\GuidesController;
 use App\Http\Controllers\Admin\TypesGuidesController;
 use App\Http\Controllers\Admin\ClienteTypeController;
@@ -42,6 +43,7 @@ Route::group([
         Route::resource('type-client',ClienteTypeController::class);
         Route::resource('type-guides',TypesGuidesController::class);
         Route::resource('guides',GuidesController::class);
+        Route::resource('clients',ClientController::class);
 
     }
 );

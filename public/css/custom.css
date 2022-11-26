@@ -1,0 +1,12 @@
+/** @Luiska change's **/
+
+
+#table_wrapper {
+    padding: 22px;
+}
+
+.table th {
+    text-transform: none;
+    font-size: 0.90rem;
+    letter-spacing: 1px;
+}

@@ -30,5 +30,10 @@ class Customer extends Model
         'clientType' => 'integer',
     ];
 
+    public function clientTypes()
+    {
+        return $this->belongsTo(ClientType::class,'clientType','id');
+    }
+
 
 }
