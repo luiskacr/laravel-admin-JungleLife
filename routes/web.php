@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\GuidesController;
+use App\Http\Controllers\Admin\TourController;
 use App\Http\Controllers\Admin\TypesGuidesController;
 use App\Http\Controllers\Admin\ClienteTypeController;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,7 @@ Route::group([
         Route::resource('type-guides',TypesGuidesController::class);
         Route::resource('guides',GuidesController::class);
         Route::resource('clients',ClientController::class);
+        Route::resource('tours',TourController::class);
 
     }
 );
