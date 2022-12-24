@@ -1,17 +1,16 @@
 @extends('admin.template')
 
 @php
-    $title = "Tipo de Cliente";
-    $breadcrumbs = ['Inicio'=> route('admin.home'),'Guias'=> route('guides.index'), 'Crear' => false];
+    $title = __('app.guide');
+    $breadcrumbs = [__('app.home')=> route('admin.home'),__('app.guide') => route('guides.index'), __('app.create') => false];
 @endphp
 
 @section('content')
-
     <div class="card">
         <div class="card-header">
             <div class="container-fluid">
                 <div class="float-start">
-                    <h4>Crear un Guia</h4>
+                    <h4>{{ __('app.create_tittle',['object' =>  __('app.guide_singular')]) }}</h4>
                 </div>
             </div>
         </div>
@@ -20,7 +19,7 @@
                 @csrf
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="name">Nombre</label>
+                        <label class="form-label" for="name">{{ __('app.name') }}</label>
                         <input type="text" id="name" value="{{ old('name') }}" class="form-control "  name="name">
                         @error('name')
                         <div class="text-danger">
@@ -31,7 +30,7 @@
                 </div>
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="lastName">Apellido</label>
+                        <label class="form-label" for="lastName">{{ __('app.lastname') }}</label>
                         <input type="text" id="lastName" value="{{ old('lastName') }}" class="form-control "  name="lastName">
                         @error('lastName')
                         <div class="text-danger">
@@ -42,9 +41,9 @@
                 </div>
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="type">Tipo de Guia</label>
+                        <label class="form-label" for="type">{{ __('app.type_guides_singular') }}</label>
                         <select id="type"  class="form-select" name="type" >
-                            <option value="0">Seleccione un tipo Guia</option>
+                            <option value="0">{{ __('app.select_type_guide') }}</option>
                             @foreach($typeGuides as $typeGuide)
                                 <option value="{{ $typeGuide->id }}">{{$typeGuide->name}}</option>
                             @endforeach
@@ -56,22 +55,16 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="col-12">
                     <div data-field="rate">{{ session('message') }}</div>
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary" >
-                        Crear
-                    </button>
+                    <button type="submit" class="btn btn-primary" >{{ __('app.create') }}</button>
                 </div>
                 <div class="col-12">
-                    <a href="{{ route('guides.index') }}"> Volver a la Lista</a>
+                    <a href="{{ route('guides.index') }}">{{ __('app.go_index')}}</a>
                 </div>
-
             </form>
         </div>
     </div>
-
-
 @endsection

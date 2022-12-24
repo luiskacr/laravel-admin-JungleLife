@@ -16,7 +16,7 @@
                 <div class="float-end">
                     <a class="text-white" href="{{ route('tours.create') }}">
                         <button class="btn btn-primary" type="button">
-                            Crear
+                            {{ __('app.create') }}
                         </button>
                     </a>
                 </div>

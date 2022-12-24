@@ -19,7 +19,6 @@ class ClientController extends Controller
      */
     public function index()
     {
-
         $clients = Customer::all();
 
         return view('admin.client.index')->with('clients',$clients);
@@ -58,16 +57,18 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            return redirect()->route('clients.create')->with('message',$e->getMessage());
+            app()->hasDebugModeEnabled() ? $message = __('app.error_create', ['object' => __('app.type_client_singular')]) : $message =$e->getMessage();
+
+            return redirect()->route('clients.create')->with('message',$message);
         }
-        return redirect()->route('clients.index')->with('success',__('validation.url'));
+        return redirect()->route('clients.index')->with('success',__('app.success_create ',['object' => __('app.type_client_singular') ] ));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
@@ -79,8 +80,8 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -113,11 +114,11 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = 'Hubo un error al crear' : $message =$e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.type_client_singular')]) : $message =$e->getMessage();
 
             return redirect()->route('clients.edit')->with('message',$message);
         }
-        return redirect()->route('clients.index')->with('success','Se ha creado el tipo' );
+        return redirect()->route('clients.index')->with('success',__('app.success_update ',['object' => __('app.type_client_singular') ]) );
     }
 
     /**
@@ -136,8 +137,11 @@ class ClientController extends Controller
             DB::commit();
         }catch (\Exception $e){
             DB::rollBack();
-            return response($e->getMessage(),500);
+
+            app()->hasDebugModeEnabled() ? $message = __('app.error_delete') : $message = $e->getMessage();
+
+            return response($message,500);
         }
-        return response('Exitoso',200);
+        return response(__('app.success'),200);
     }
 }

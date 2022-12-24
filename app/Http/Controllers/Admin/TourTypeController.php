@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TypeGuideRequest;
-use App\Models\GuidesType;
+use App\Http\Requests\TourTypeRequest;
+use App\Models\TourType;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TypesGuidesController extends Controller
+class TourTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,9 @@ class TypesGuidesController extends Controller
      */
     public function index()
     {
-        $typesGuides = GuidesType::all();
+        $tourTypes = TourType::all();
 
-        return view('admin.typeGuides.index')->with('typesGuides',$typesGuides);
+        return view('admin.tourTypes.index')->with('tourTypes',$tourTypes);
     }
 
     /**
@@ -28,32 +29,34 @@ class TypesGuidesController extends Controller
      */
     public function create()
     {
-        return view('admin.typeGuides.create');
+        return view('admin.tourTypes.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param TypeGuideRequest $request
+     * @param TourTypeRequest $request
      * @param $atributeEs
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(TypeGuideRequest $request)
+    public function store(TourTypeRequest $request)
     {
         DB::beginTransaction();
         try{
-            GuidesType::create([
+            TourType::create([
                 'name'=>$request->request->get('name'),
             ]);
+
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.type_guides_singular')]) : $message =$e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.tour_type_singular')]) : $message = $e->getMessage();
 
-            return redirect()->route('type-guides.create')->with('message',$message);
+            return redirect()->route('tour-type.create')->with('message',$message);
         }
-        return redirect()->route('type-guides.index')->with('success', __('app.success_create ',['object' => __('app.type_guides_singular') ] ));
+
+        return redirect()->route('tour-type.index')->with('success', __('app.success_create ',['object' => __('app.tour_type_singular') ] ));
     }
 
     /**
@@ -64,9 +67,9 @@ class TypesGuidesController extends Controller
      */
     public function show($id)
     {
-        $typesGuide = GuidesType::findOrFail($id);
+        $tourType = TourType::findOrFail($id);
 
-        return view('admin.typeGuides.show')->with('typesGuide',$typesGuide);
+        return view('admin.tourTypes.show')->with('tourType',$tourType);
     }
 
     /**
@@ -77,49 +80,49 @@ class TypesGuidesController extends Controller
      */
     public function edit($id)
     {
-        $typesGuide = GuidesType::findOrFail($id);
+        $tourType = TourType::findOrFail($id);
 
-        return view('admin.typeGuides.edit')->with('typesGuide',$typesGuide);
+        return view('admin.tourTypes.edit')->with('tourType',$tourType);
     }
 
     /**
      *  Update the specified resource in storage.
      *
-     * @param TypeGuideRequest $request
+     * @param TourTypeRequest $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(TypeGuideRequest $request, $id)
+    public function update(TourTypeRequest $request, $id)
     {
         DB::beginTransaction();
         try{
-            GuidesType::whereId($id)->update([
+            TourType::whereId($id)->update([
                 'name'=>$request->request->get('name'),
             ]);
 
             DB::commit();
         }catch (\Exception $e){
-            DB:DB::rollback();
+            DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.type_guides_singular') ]) : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.tour_type_singular') ]) : $message = $e->getMessage();
 
-            return redirect()->route('type-guides.edit')->with('message',$message);
+            return redirect()->route('tour-type.edit')->with('message',$message);
         }
-        return redirect()->route('type-guides.index')->with('success' ,__('app.success_update ',['object' => __('app.type_guides_singular') ]));
+        return redirect()->route('tour-type.index')->with('success' ,__('app.success_update ',['object' => __('app.tour_type_singular') ]));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy($id)
     {
         DB::beginTransaction();
         try{
-            $clientType = GuidesType::findOrFail($id);
-            $clientType->delete();
+            $tourType = TourType::findOrFail($id);
+            $tourType->delete();
 
             DB::commit();
         }catch (\Exception $e){

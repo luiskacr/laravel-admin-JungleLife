@@ -20,7 +20,7 @@ class LoginController extends Controller
     /**
      * Display the login view.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Routing\Redirector
      */
     public function show(){
         if(Auth::check()){
@@ -28,7 +28,6 @@ class LoginController extends Controller
         }
         return view('auth.login');
     }
-
 
     /**
      * Validates and authenticates login credentials
@@ -48,14 +47,14 @@ class LoginController extends Controller
 
         if( $user == null or !$user->active)
         {
-            return redirect()->to('/')->with('error', 'Usuario no se encuentra Activo');
+            return redirect()->to('/')->with('error', __('app.not_active'));
         }
 
         if($this->validateRateLimit($request))
         {
             $block_time = RateLimiter::availableIn($this->throttleKey( $request->get('email'), $request->ip() ));
 
-            return redirect()->to('/')->with('error', 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo en ' .$block_time. ' segundos');
+            return redirect()->to('/')->with('error', __('app.throttled',['time' => $block_time ]));
         }
 
         $rememberToken = ($request->request->getBoolean('remember')) ? true : false ;
@@ -71,7 +70,7 @@ class LoginController extends Controller
 
         RateLimiter::hit($this->throttleKey( $request->get('email'), $request->ip() ));
 
-        return redirect()->to('/')->with('error', 'Nombre de usuario o contraseña incorrectos.');
+        return redirect()->to('/')->with('error', __('app.user'));
 
     }
 

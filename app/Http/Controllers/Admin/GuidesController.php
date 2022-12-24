@@ -15,7 +15,7 @@ class GuidesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -27,7 +27,7 @@ class GuidesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -39,8 +39,8 @@ class GuidesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param GuideRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(GuideRequest $request)
     {
@@ -56,17 +56,19 @@ class GuidesController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            return redirect()->route('guides.create')->with('message',$e->getMessage());
+            app()->hasDebugModeEnabled() ? $message = __('app.error_create', ['object' =>  __('app.guide_singular')]) : $message = $e->getMessage();
+
+            return redirect()->route('guides.create')->with('message',$message);
         }
 
-        return redirect()->route('guides.index')->with('success','Se ha creado el tipo');
+        return redirect()->route('guides.index')->with('success',__('app.success_create ',['object' => __('app.guide_singular')] ));
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function show($id)
     {
@@ -79,7 +81,7 @@ class GuidesController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -93,9 +95,9 @@ class GuidesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param GuideRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(GuideRequest $request, $id)
     {
@@ -111,9 +113,11 @@ class GuidesController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            return redirect()->route('guides.edit')->with('message',$e->getMessage());
+            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' =>  __('app.guide_singular')]) : $message = $e->getMessage();
+
+            return redirect()->route('guides.edit')->with('message',$message);
         }
-        return redirect()->route('guides.index')->with('success','Se ha creado el tipo');
+        return redirect()->route('guides.index')->with('success',__('app.success_update ', ['object' => __('app.guide_singular') ]));
     }
 
     /**
@@ -133,8 +137,10 @@ class GuidesController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            return response($e->getMessage(),500);
+            app()->hasDebugModeEnabled() ? $message = __('app.error_delete') : $message = $e->getMessage();
+
+            return response($message,500);
         }
-        return response('Exitoso',200);
+        return response(__('app.success'),200);
     }
 }

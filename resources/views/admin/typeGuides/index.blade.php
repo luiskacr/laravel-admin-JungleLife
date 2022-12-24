@@ -1,8 +1,8 @@
 @extends('admin.template')
 
 @php
-    $title = "Tipos de Guias";
-    $breadcrumbs = ['Inicio'=> route('admin.home'),'Tipo de Guias'=>false];
+    $title = __('app.type_guides');
+    $breadcrumbs = [__('app.home') => route('admin.home'),__('app.type_guides') =>false];
 @endphp
 
 @section('content')
@@ -11,12 +11,12 @@
         <div class="card-header">
             <div class="container-fluid">
                 <div class="float-start">
-                    <h4>Tipos de Guias</h4>
+                    <h4>{{__('app.type_guides')}}</h4>
                 </div>
                 <div class="float-end">
                     <a class="text-white" href="{{ route('type-guides.create') }}">
                         <button class="btn btn-primary" type="button">
-                            Crear
+                            {{ __('app.create') }}
                         </button>
                     </a>
                 </div>
@@ -26,9 +26,9 @@
             <table id="table" class="datatables-basic table border-top dataTable no-footer dtr-column">
                 <thead>
                 <tr>
-                    <th>id</th>
-                    <th>Nombre</th>
-                    <th>Acciones</th>
+                    <th>{{__('app.id')}}</th>
+                    <th>{{__('app.name')}}</th>
+                    <th>{{__('app.crud_action')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,11 +38,10 @@
                         <th>{{ $typesGuide->name }}</th>
                         <th>
                             <div class="justify-content-between">
-                                <a class="m-2" href="{{ route('type-guides.show',$typesGuide->id) }}"><i class="bx bxs-show me-1"></i> Ver</a>
-                                <a class="m-2" href="{{ route('type-guides.edit',$typesGuide->id) }}"><i class="bx bx-edit-alt me-1"></i> Editar</a>
-                                <a class="m-2" href="#" onclick="deleteItem({{ $typesGuide->id}},
-                                {{ json_encode($typesGuide->name) }})">
-                                    <i class="bx bx-trash me-1"></i> Eliminar</a>
+                                <a class="m-2" href="{{ route('type-guides.show',$typesGuide->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show')}}</a>
+                                <a class="m-2" href="{{ route('type-guides.edit',$typesGuide->id) }}"><i class="bx bx-edit-alt me-1"></i> {{ __('app.crud_edit')}}</a>
+                                <a class="m-2" href="#" onclick="deleteItem({{ $typesGuide->id}},{{ json_encode($typesGuide->name) }})">
+                                    <i class="bx bx-trash me-1"></i>{{ __('app.crud_delete')}}</a>
                             </div>
                         </th>
                     </tr>
@@ -57,20 +56,20 @@
 
 @push('page-scripts')
     <script>
-
         function deleteItem(id, name){
             let token = '{{ csrf_token()  }}';
             let route = '{{ route('type-guides.destroy',0) }}';
             const f_route = route.slice(0,-1);
 
             Swal.fire({
-                title: 'Esta seguro?',
-                text: "Que desea eliminar el Tipo de Guia " + name ,
+                title: '{{ __('app.delete_title') }}',
+                text: '{{ __('app.delete_text' ,['object'=> __('app.type_guides_singular')]) }}  ' + name ,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#696cff',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Confirmar!'
+                cancelButtonText: '{{ __('app.delete_cancelButtonText') }}',
+                confirmButtonText: '{{ __('app.delete_confirmButtonText') }}'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -85,8 +84,8 @@
                         },
                         success: function (){
                             Swal.fire({
-                                title: 'Eliminado !',
-                                text: 'El Item ' + name + ' fue eliminado',
+                                title: '{{ __('app.delete_success_tittle') }}',
+                                text: '{{ __('app.delete_success') }}',
                                 icon: 'success',
                             }).then((result) => {
                                 location.reload();
@@ -94,11 +93,13 @@
                         },
                         error: function (xhr){
                             Swal.fire(
-                                'Eliminado !',
-                                'Hubo un error al eliminar el item' + name ,
+                                '{{ __('app.delete_error') }}',
+                                '{{ __('app.delete_error_text') }}',
                                 'error'
                             )
-                            console.log(xhr.responseText)
+                            @if(app()->hasDebugModeEnabled())
+                                console.log(xhr.responseText)
+                            @endif
                         },
                     });
                 }

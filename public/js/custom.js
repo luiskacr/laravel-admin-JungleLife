@@ -59,7 +59,6 @@ function dangerToast( messaje ){
         },
         onClick: function(){} // Callback after click
     }).showToast();
-
 }
 
 function infoToast( messaje ){

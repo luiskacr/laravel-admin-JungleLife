@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GuideRequest extends FormRequest
+class TourStateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class GuideRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => 'required|min:2|max:75',
-            "lastName" => 'nullable|min:2|max:75',
-            "type" => "required|not_in:0",
+            'name'=> 'required|min:2|max:75',
         ];
     }
 
@@ -39,8 +37,6 @@ class GuideRequest extends FormRequest
     {
         return [
             'name' =>  __('app.name'),
-            'lastName' =>  __('app.lastname'),
-            'type' =>  __('app.type_guides_singular'),
         ];
     }
 }

@@ -29,16 +29,14 @@ class TypeGuideRequest extends FormRequest
     }
 
     /**
-     * Get the validation messages that apply to the request.
+     * Set Values Display Name
      *
      * @return array
      */
-    public function messages()
+    public function attributes()
     {
         return [
-            'name.required'=> 'El Nombre es obligatorio',
-            'name.max'=> 'El tamano maximo es de 75 caracteres',
-            'name.min'=> 'El tamano minimo es de 2 caracteres',
+            'name' =>  __('app.name'),
         ];
     }
 }

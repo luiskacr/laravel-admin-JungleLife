@@ -14,13 +14,11 @@
 
         </div>
         <!-- /Search -->
-
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             <!-- Place this tag where you want the button to render. -->
             <li class="nav-item lh-1 me-3">
 
             </li>
-
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -58,13 +56,13 @@
                     <li>
                         <a class="dropdown-item" href="#">
                             <i class="bx bx-user me-2"></i>
-                            <span class="align-middle">Mi Perfi</span>
+                            <span class="align-middle">{{ __('app.profile') }}</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" href="#">
                             <i class="bx bx-cog me-2"></i>
-                            <span class="align-middle">Settings</span>
+                            <span class="align-middle">{{ __('app.settings') }}</span>
                         </a>
                     </li>
                     <li>
@@ -75,7 +73,7 @@
                             @csrf
                             <a class="dropdown-item" href="#" onclick="this.closest('form').submit()" >
                                 <i class="bx bx-power-off me-2"></i>
-                                <span class="align-middle">Salir</span>
+                                <span class="align-middle">{{ __('app.logout') }}</span>
                             </a>
                         </form>
                     </li>

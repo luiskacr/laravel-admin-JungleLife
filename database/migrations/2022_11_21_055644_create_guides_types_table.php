@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('guides_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name',75);
             $table->timestamps();
         });
     }

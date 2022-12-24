@@ -28,16 +28,17 @@ class LoginRequest extends FormRequest
             'password' => 'required',
         ];
     }
+
     /**
-     * Get the validation messages that apply to the request.
+     * Set Values Display Name
      *
      * @return array
      */
-    public function messages()
+    public function attributes()
     {
         return [
-            'email.required'=> 'El correo es obligatorio',
-            'password.required' => 'La Contraseña es Obligatoria'
+            'email' =>  __('app.login_mail'),
+            'password' =>  __('app.login_pass'),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ClientRequest extends FormRequest
 {
@@ -24,31 +25,31 @@ class ClientRequest extends FormRequest
     public function rules()
     {
         return [
+
             'name' => 'required|min:2|max:150',
-            'email'=> 'required|min:2|max:75|unique:customers,email',
+            'email'=> [
+                'required',
+                'min:2',
+                'max:75',
+                Rule::unique('customers')->ignore($this->id),
+            ],
             'telephone' => 'max:75',
             'clientType'=> 'required|not_in:0',
         ];
     }
 
     /**
-     * Get the validation messages that apply to the request.
+     * Set Values Display Name
      *
      * @return array
      */
-    public function messages()
+    public function attributes()
     {
         return [
-            'name.required'=> 'El Nombre es obligatorio',
-            'name.max'=> 'El tamano maximo es de 150 caracteres',
-            'name.min'=> 'El tamano minimo es de 2 caracteres',
-            'email.required'=> 'El Nombre es obligatorio',
-            'email.max'=> 'El tamano maximo es de 75 caracteres',
-            'email.min'=> 'El tamano minimo es de 2 caracteres',
-            'email.unique'=> 'El correo ya esta utilizado',
-            'telephone.max' => 'El tamano maximo es de 75 caracteres',
-            'clientType.required'=> 'Debe de Seleccionar un tipo de Guia',
-            'clientType.not_in'=> 'Debe de Seleccionar un tipo de Guia',
+            'name' =>  __('app.name'),
+            'email' =>  __('app.email'),
+            'telephone' =>  __('app.telephone'),
+            'clientType' =>  __('app.type_client_singular'),
         ];
     }
 }

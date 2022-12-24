@@ -28,6 +28,7 @@ class TourController extends Controller
     public function create()
     {
 
+        return view('admin.tour.create');
     }
 
     /**

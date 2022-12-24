@@ -1,17 +1,16 @@
 @extends('admin.template')
 
 @php
-    $title = "Tipo de Cliente";
-    $breadcrumbs = ['Inicio'=> route('admin.home'),'Tipo de Clientes'=> route('type-client.index'), 'Editar' => false];
+    $title = __('app.type_client');
+    $breadcrumbs = [__('app.home')=> route('admin.home'),__('app.type_client') => route('type-client.index'), __('app.crud_edit') => false];
 @endphp
 
 @section('content')
-
     <div class="card">
         <div class="card-header">
             <div class="container-fluid">
                 <div class="float-start">
-                    <h4>Editar un Tipo de Cliente</h4>
+                    <h4>{{ __('app.edit_tittle',['object' =>  __('app.type_client_singular') ]) }}</h4>
                 </div>
             </div>
         </div>
@@ -21,7 +20,7 @@
                 @method('PUT')
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="name">Nombre</label>
+                        <label class="form-label" for="name">{{ __('app.name') }}</label>
                         <input type="text" id="name" value="{{ $clientType->name }}" class="form-control "  name="name" >
                         @error('name')
                         <div class="text-danger">
@@ -32,27 +31,22 @@
                 </div>
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="rate">Precio</label>
+                        <label class="form-label" for="rate">{{ __('app.price') }}</label>
                         <input type="number" id="rate" value="{{ $clientType->rate }}" class="form-control" min="0" max="100" name="rate" >
                         @error('rate')
-                        <div class="text-danger">
-                            <div data-field="rate">* {{$message}}</div>
-                        </div>
+                            <div class="text-danger">
+                                <div data-field="rate">* {{$message}}</div>
+                            </div>
                         @enderror
                     </div>
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary" >
-                        Actualizar
-                    </button>
+                    <button type="submit" class="btn btn-primary" >{{ __('app.edit_btn') }}</button>
                 </div>
                 <div class="col-12">
-                    <a href="{{ route('type-client.index') }}"> Volver a la Lista</a>
+                    <a href="{{ route('type-client.index') }}">{{ __('app.go_index')}}</a>
                 </div>
-
             </form>
         </div>
     </div>
-
-
 @endsection

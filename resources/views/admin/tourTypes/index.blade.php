@@ -1,19 +1,20 @@
 @extends('admin.template')
 
 @php
-    $title = __('app.guide');
-    $breadcrumbs = [__('app.home')=> route('admin.home'),__('app.guide') => false];
+    $title = __('app.tour_type');
+    $breadcrumbs = [ __('app.home')=> route('admin.home'),__('app.tour_type') =>false];
 @endphp
 
 @section('content')
+
     <div class="card">
         <div class="card-header">
             <div class="container-fluid">
                 <div class="float-start">
-                    <h4>{{ __('app.guide') }}</h4>
+                    <h4>{{ __('app.tour_type') }}</h4>
                 </div>
                 <div class="float-end">
-                    <a class="text-white" href="{{ route('guides.create') }}">
+                    <a class="text-white" href="{{ route('tour-type.create') }}">
                         <button class="btn btn-primary" type="button">
                             {{ __('app.create') }}
                         </button>
@@ -27,25 +28,20 @@
                 <tr>
                     <th>{{ __('app.id') }}</th>
                     <th>{{ __('app.name') }}</th>
-                    <th>{{ __('app.lastname') }}</th>
-                    <th>{{ __('app.type_guides_singular') }}</th>
                     <th>{{ __('app.crud_action') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($guides as $guide)
+                @foreach($tourTypes as $tourType)
                     <tr>
-                        <th>{{ $guide->id }}</th>
-                        <th>{{ $guide->name }}</th>
-                        <th>{{ $guide->lastName }}</th>
-                        <th>{{ $guide->guidesType->name }}</th>
+                        <th>{{ $tourType->id }}</th>
+                        <th>{{ $tourType->name }}</th>
                         <th>
                             <div class="justify-content-between">
-                                <a class="m-2" href="{{ route('guides.show',$guide->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }}</a>
-                                <a class="m-2" href="{{ route('guides.edit',$guide->id) }}"><i class="bx bx-edit-alt me-1"></i> {{ __('app.crud_edit') }}</a>
-                                <a class="m-2" href="#" onclick="deleteItem({{ $guide->id}},{{ json_encode($guide->name) }})">
-                                    <i class="bx bx-trash me-1"></i> {{ __('app.crud_delete') }}
-                                </a>
+                                <a class="m-2" href="{{ route('tour-type.show',$tourType->id) }}"><i class="bx bxs-show me-1"></i>{{ __('app.crud_show') }}</a>
+                                <a class="m-2" href="{{ route('tour-type.edit',$tourType->id) }}"><i class="bx bx-edit-alt me-1"></i>{{ __('app.crud_edit') }}</a>
+                                <a class="m-2" href="#" onclick="deleteItem({{ $tourType->id}},{{ json_encode($tourType->name) }})">
+                                    <i class="bx bx-trash me-1"></i>{{ __('app.crud_delete') }}</a>
                             </div>
                         </th>
                     </tr>
@@ -54,20 +50,18 @@
             </table>
         </div>
     </div>
-
-
 @endsection
 
 @push('page-scripts')
     <script>
         function deleteItem(id, name){
             let token = '{{ csrf_token()  }}';
-            let route = '{{ route('guides.destroy',0) }}';
+            let route = '{{ route('tour-type.destroy',0) }}';
             const f_route = route.slice(0,-1);
 
             Swal.fire({
                 title: '{{ __('app.delete_title') }}',
-                text: '{{ __('app.delete_text' ,['object'=> __('app.guide_singular')]) }}  ' + name ,
+                text: '{{ __('app.delete_text' ,['object'=> __('app.tour_type_singular')]) }}  ' + name ,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#696cff',
@@ -102,7 +96,7 @@
                                 'error'
                             )
                             @if(app()->hasDebugModeEnabled())
-                                console.log(xhr.responseText)
+                            console.log(xhr.responseText)
                             @endif
                         },
                     });

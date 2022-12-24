@@ -15,34 +15,34 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="index.html" class="app-brand-link gap-2">
-                                <img src="{{ asset('assets/images/logo.jpg') }}"  width="80" height="80">
+                            <a href="{{ route('login') }}" class="app-brand-link gap-2">
+                                <img src="{{ asset('assets/images/logo2.png') }}"  width="160" height="130">
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">Bienvenido a Jungle Life 👋</h4>
-                        <p class="mb-4">Inicie sesión en su cuenta y comience la aventura</p>
+                        <h4 class="mb-2">{{ __('app.login_msg1') }}</h4>
+                        <p class="mb-4">{{ __('app.login_msg2') }}</p>
 
-                        <form action="/login" method="post">
+                        <form action="{{ route('login.post') }}" method="post">
                             @csrf
 
                             <div class="mb-3">
-                                <label for="email" class="form-label">Correo</label>
+                                <label for="email" class="form-label">{{ __('app.login_mail') }}</label>
                                 <input
                                     type="text"
                                     class="form-control"
                                     id="email"
                                     name="email"
-                                    placeholder="Correo"
+                                    placeholder="{{ __('app.login_mail') }}"
                                     autofocus
                                 />
 
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
-                                    <label class="form-label" for="password">Contraseña</label>
+                                    <label class="form-label" for="password">{{ __('app.login_pass') }}</label>
                                     <a href="#">
-                                        <small>Olvido la Contraseña?</small>
+                                        <small>{{ __('app.login_forgot') }}</small>
                                     </a>
                                 </div>
                                 <div class="input-group input-group-merge">
@@ -61,7 +61,7 @@
                             <div class="mb-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember"  value="true" />
-                                    <label class="form-check-label" for="remember-me"> Recordarme </label>
+                                    <label class="form-check-label" for="remember-me">{{ __('app.login_remember') }}</label>
                                 </div>
                             </div>
 
@@ -82,7 +82,7 @@
                                 </div>
                             @endif
                             <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100" type="submit">Ingresar</button>
+                                <button class="btn btn-primary d-grid w-100" type="submit">{{ __('app.login_btn') }}</button>
                             </div>
                         </form>
 
@@ -92,6 +92,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection

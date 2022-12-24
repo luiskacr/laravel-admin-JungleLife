@@ -7,7 +7,7 @@ use App\Http\Requests\ClientTypeRequest;
 use App\Models\ClientType;
 use Illuminate\Support\Facades\DB;
 
-class ClienteTypeController extends Controller
+class ClientTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,8 +34,8 @@ class ClienteTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ClientTypeRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ClientTypeRequest $request)
     {
@@ -60,8 +60,8 @@ class ClienteTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
@@ -73,8 +73,8 @@ class ClienteTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -86,9 +86,9 @@ class ClienteTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ClientTypeRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ClientTypeRequest $request, $id)
     {
