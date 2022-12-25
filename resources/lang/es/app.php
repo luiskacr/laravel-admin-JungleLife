@@ -26,6 +26,11 @@ return [
 
     //Template Interface
     'profile' => 'Mi Perfil',
+    'passwords' => 'Contrasenas',
+    'new_passwords' => 'Nueva Contrasenas',
+    'old_passwords' => 'Vieja Contrasenas',
+    'confirm_passwords' => 'Confirmar Contrasenas',
+    'avatar' => 'Avatar',
     'settings' => 'Configuración',
     'logout' => 'Salir',
 

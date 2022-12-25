@@ -40,6 +40,7 @@ Route::group([
     function(){
         Route::get('/',[\App\Http\Controllers\Home\HomeController::class,'show'])->name('admin.home');
         Route::post('/logout',[\App\Http\Controllers\Auth\LoginController::class,'logout'])->name('logout');
+        Route::get('/my-profile/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'myProfile'])->name('myProfile.show');
 
         //Cruds
         Route::resource('type-client',ClientTypeController::class);
