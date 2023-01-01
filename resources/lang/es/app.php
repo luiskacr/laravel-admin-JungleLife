@@ -21,16 +21,32 @@ return [
     //login Fail
     'not_active' => 'Usuario no se encuentra Activo',
     'throttled' => 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo en :time  segundos ',
-    'user' => 'Nombre de usuario o contraseña incorrectos',
+    'user_error' => 'Nombre de usuario o contraseña incorrectos',
+
+    //Reset Password
+    'reset_msg1' => 'Restablecer Contraseña',
+    'reset_go_Login' => 'Volver al Inicio de Seccion',
+    'reset_btn' => 'Solicitar Restablecer Contraseña',
+    'mail.error' => 'El Correo es incorrecto',
+    'send.email' => 'Se ha enviado el correo de restablecer la contraseña',
+    'confirm.reset.btn' => 'Restablecer',
+    'login_pass.confirm' => 'Confirmar Contraseña',
+
+
+    //Password Reset Mail
+    'Hello' => 'Hola :object',
 
 
     //Template Interface
     'profile' => 'Mi Perfil',
-    'passwords' => 'Contrasenas',
-    'new_passwords' => 'Nueva Contrasenas',
-    'old_passwords' => 'Vieja Contrasenas',
-    'confirm_passwords' => 'Confirmar Contrasenas',
-    'avatar' => 'Avatar',
+    'profile2' => 'Perfil',
+    'passwords' => 'Contraseña',
+    'new_passwords' => 'Nueva Contraseña',
+    'old_passwords' => 'Contraseña Actual',
+    'confirm_passwords' => 'Confirmar Contraseña',
+    'passwords_error' => 'La Contraseña no Coincide',
+    'image_error' => 'Debe de Adjuntar una imagen',
+    'avatars' => 'Avatar',
     'settings' => 'Configuración',
     'logout' => 'Salir',
 
@@ -38,6 +54,7 @@ return [
     'info_tours' => "Informacion para Toures",
     'tour_config_tittle' => 'Configuración de Tours',
     'tour_tittle' => 'Tours',
+    'config' => 'Configuracion',
 
     //Crud Interface
     'home' => 'Inicio',
@@ -74,6 +91,8 @@ return [
     'guide_singular' => "Guia",
     'customer' => "Clientes",
     'customer_single' => "Cliente",
+    'user' => "Usuarios",
+    'user_singular' => "Usuario",
 
     //Crud Attributes
     'id'=> 'Id',
@@ -82,6 +101,15 @@ return [
     'price'=> 'Precio',
     'email'=> 'Email',
     'telephone'=> 'Telefono',
+    'rol'=> 'Rol',
+    'money_type'=> 'Moneda',
+    'status'=> 'Estado',
+    'status_values' => [
+        'true' => 'Activo',
+        'false' => 'Inactivo',
+    ],
     'select_type_guide'=> 'Seleccione un tipo Guia',
     'select_client_type'=> 'Seleccione un tipo Cliente',
+    'select_role'=> 'Seleccione un Rol',
+    'select_money_type'=> 'Seleccione un Tipo de Monda',
 ];

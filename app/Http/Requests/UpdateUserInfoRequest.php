@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClientTypeRequest extends FormRequest
+class UpdateUserInfoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class ClientTypeRequest extends FormRequest
     {
         return [
             'name'=> 'required|min:2|max:75',
-            'rate'=> 'numeric|min:1|max:100',
-            'moneyType'=> "required|not_in:0",
+            'email'=> 'Email|required|min:2|max:75|unique:users',
         ];
     }
 
@@ -39,9 +38,7 @@ class ClientTypeRequest extends FormRequest
     {
         return [
             'name' =>  __('app.name'),
-            'rate' =>  __('app.price'),
-            'moneyType' =>  __('app.money_type'),
+            'email' =>  __('app.email'),
         ];
     }
-
 }

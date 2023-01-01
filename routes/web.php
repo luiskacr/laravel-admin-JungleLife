@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\TypesGuidesController;
 use App\Http\Controllers\Admin\ClientTypeController;
 use App\Http\Controllers\Admin\TourStateController;
 use App\Http\Controllers\Admin\TourTypeController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,11 +26,18 @@ Route::group([
     'middleware'=>'guest',
     ],
     function(){
+        //Login Routes
         Route::get('/',[\App\Http\Controllers\Auth\LoginController::class,'show'])->name('login');
         Route::post('/login',[\App\Http\Controllers\Auth\LoginController::class,'login'])->name('login.post');
+
+        //Password Reset Routes
+        Route::get('password/reset',[\App\Http\Controllers\Auth\ResetPasswordController::class,'show'])->name('password.request');
+        Route::post('password/email',[\App\Http\Controllers\Auth\ResetPasswordController::class,'sendResetLinkEmail'])->name('password.email');
+        Route::get('password/reset/{token}',[\App\Http\Controllers\Auth\ResetPasswordController::class,'showReset'])->name('password.reset');
+        Route::post('password/reset',[\App\Http\Controllers\Auth\ResetPasswordController::class,'resetPassword']);
+
     }
 );
-
 
 //Admin Section
 Route::group([
@@ -38,11 +46,18 @@ Route::group([
     'name' => 'admin.',
 ],
     function(){
+        //Home Route
         Route::get('/',[\App\Http\Controllers\Home\HomeController::class,'show'])->name('admin.home');
+        //Logout Route
         Route::post('/logout',[\App\Http\Controllers\Auth\LoginController::class,'logout'])->name('logout');
-        Route::get('/my-profile/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'myProfile'])->name('myProfile.show');
 
-        //Cruds
+        //Profile Routes
+        Route::get('/my-profile/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'myProfile'])->name('myProfile.show');
+        Route::put('/update-info/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updateInfo'])->name('myProfile.update');
+        Route::put('/update-password/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updatePassword'])->name('myProfile.password');
+        Route::put('/update-avatars/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updateImage'])->name('myProfile.avatars');
+
+        //Crud's Routes
         Route::resource('type-client',ClientTypeController::class);
         Route::resource('type-guides',TypesGuidesController::class);
         Route::resource('guides',GuidesController::class);
@@ -50,6 +65,9 @@ Route::group([
         Route::resource('tours',TourController::class);
         Route::resource('tour-state',TourStateController::class);
         Route::resource('tour-type',TourTypeController::class);
+        Route::resource('users',UserController::class);
+
+        //Custom Crud Routes
 
     }
 );

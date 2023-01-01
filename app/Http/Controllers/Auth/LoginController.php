@@ -70,7 +70,7 @@ class LoginController extends Controller
 
         RateLimiter::hit($this->throttleKey( $request->get('email'), $request->ip() ));
 
-        return redirect()->to('/')->with('error', __('app.user'));
+        return redirect()->to('/')->with('error', __('app.user_error'));
 
     }
 

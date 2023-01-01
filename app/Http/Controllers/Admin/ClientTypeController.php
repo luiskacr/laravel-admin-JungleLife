@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientTypeRequest;
 use App\Models\ClientType;
+use App\Models\MoneyType;
+use http\Env\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientTypeController extends Controller
@@ -28,7 +30,9 @@ class ClientTypeController extends Controller
      */
     public function create()
     {
-        return view('admin.clientType.create');
+        $moneyTypes = MoneyType::all();
+
+        return view('admin.clientType.create')->with('moneyTypes',$moneyTypes);
     }
 
     /**
@@ -39,7 +43,6 @@ class ClientTypeController extends Controller
      */
     public function store(ClientTypeRequest $request)
     {
-
         DB::beginTransaction();
         try{
             ClientType::create([
@@ -125,8 +128,11 @@ class ClientTypeController extends Controller
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
-            return response($e->getMessage(),500);
+
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
+
+            return response($message,500);
         }
-        return response('Exitoso',200);
+        return response(__('app.success'),200);
     }
 }

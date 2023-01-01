@@ -29,7 +29,7 @@ class RoleSeeder extends Seeder
                 'id' => 1,
                 'name' => 'admin',
                 'email' => 'admin@admin.com',
-                'avatar' => null,
+                'avatars' => null,
                 'active' => true,
                 'password'=> bcrypt('admin'),
             ]);

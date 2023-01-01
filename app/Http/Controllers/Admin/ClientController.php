@@ -57,7 +57,7 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_create', ['object' => __('app.type_client_singular')]) : $message =$e->getMessage();
+            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_create', ['object' => __('app.type_client_singular')]) ;
 
             return redirect()->route('clients.create')->with('message',$message);
         }
@@ -68,7 +68,7 @@ class ClientController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\View\View
      */
     public function show($id)
     {
@@ -114,7 +114,7 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.type_client_singular')]) : $message =$e->getMessage();
+            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_update', ['object' => __('app.type_client_singular')]) ;
 
             return redirect()->route('clients.edit')->with('message',$message);
         }
@@ -138,7 +138,7 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_delete') : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
 
             return response($message,500);
         }

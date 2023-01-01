@@ -44,6 +44,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('vendor/toastify/toastify.min.css') }}">
     <script type="text/javascript" src="{{ asset('vendor/toastify/toastify-js.js') }}"></script>
 
+
     <!-- Page CSS -->
     @stack('page-css')
     <!-- Helpers -->
@@ -81,6 +82,7 @@
 
 <!-- Vendors JS -->
 <script src="{{ asset('vendor/dataTables/datatables.min.js') }}"></script>
+
 
 <!-- Main JS -->
 <script src="{{ asset('js/main.js') }}"></script>

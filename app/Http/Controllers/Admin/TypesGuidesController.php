@@ -49,7 +49,7 @@ class TypesGuidesController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.type_guides_singular')]) : $message =$e->getMessage();
+            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_update', ['object' => __('app.type_guides_singular')]) ;
 
             return redirect()->route('type-guides.create')->with('message',$message);
         }
@@ -101,7 +101,7 @@ class TypesGuidesController extends Controller
         }catch (\Exception $e){
             DB:DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.type_guides_singular') ]) : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' => __('app.type_guides_singular') ])  ;
 
             return redirect()->route('type-guides.edit')->with('message',$message);
         }
@@ -125,7 +125,7 @@ class TypesGuidesController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_delete') : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
 
             return response($message,500);
         }

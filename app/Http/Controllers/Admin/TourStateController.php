@@ -50,7 +50,7 @@ class TourStateController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_create', ['object' => __('app.tour_states_singular')]) : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_create', ['object' => __('app.tour_states_singular')]) ;
 
             return redirect()->route('tour-state.create')->with('message',$message);
         }
@@ -103,7 +103,7 @@ class TourStateController extends Controller
         }catch (\Exception $e){
             DB:DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' => __('app.tour_states_singular') ]) : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' => __('app.tour_states_singular') ]) ;
 
             return redirect()->route('tour-state.edit')->with('message',$message);
         }
@@ -128,7 +128,7 @@ class TourStateController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_delete') : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete')  ;
 
             return response($message,500);
         }

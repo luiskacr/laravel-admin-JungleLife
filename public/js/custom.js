@@ -1,7 +1,6 @@
 
 $(document).ready(function (){
     $('#table').dataTable({
-
         language: {
             "decimal": "",
             "emptyTable": "No hay información",
@@ -77,4 +76,3 @@ function infoToast( messaje ){
         onClick: function(){} // Callback after click
     }).showToast();
 }
-

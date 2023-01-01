@@ -40,6 +40,22 @@
                     </div>
                 </div>
                 <div class="col-12">
+                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                        <label class="form-label" for="moneyType">{{ __('app.money_type') }}</label>
+                        <select id="moneyType"  class="form-select" name="moneyType" >
+                            <option value="0">{{ __('app.select_money_type') }}</option>
+                            @foreach($moneyTypes as $moneyType)
+                                <option value="{{ $moneyType->id }}">{{ $moneyType->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('moneyType')
+                        <div class="text-danger">
+                            <div data-field="name">* {{ $message }}</div>
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-12">
                     <div data-field="rate">{{ session('message') }}</div>
                 </div>
                 <div class="col-12">
@@ -51,5 +67,4 @@
             </form>
         </div>
     </div>
-
 @endsection

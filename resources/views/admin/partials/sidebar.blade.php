@@ -21,7 +21,7 @@
                 <div data-i18n="Analytics">{{ __('app.home') }}</div>
             </a>
         </li>
-
+        <!-- Tours -->
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">{{ __('app.tour_tittle') }}</span>
         </li>
@@ -50,7 +50,7 @@
             </ul>
         </li>
 
-
+        <!-- Config Tours -->
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">{{ __('app.tour_config_tittle') }}</span>
         </li>
@@ -81,7 +81,19 @@
                 <div data-i18n="Basic">{{ __('app.tour_states') }}</div>
             </a>
         </li>
+        <!-- Config -->
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">{{ __('app.config') }}</span>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('users.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Basic">{{ __('app.user') }}</div>
+            </a>
+        </li>
 
+
+        <!-- Delete -->
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
         </li>
@@ -108,6 +120,7 @@
                 </li>
             </ul>
         </li>
+        <!-- Delete -->
     </ul>
 </aside>
 <!-- / Menu -->

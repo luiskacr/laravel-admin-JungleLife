@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClientType extends Model
+class MoneyType extends Model
 {
     use HasFactory;
 
@@ -16,17 +16,6 @@ class ClientType extends Model
      */
     protected $fillable = [
         'name',
-        'rate',
-        'money_type',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'rate'=> 'integer',
-        'money_type'=> 'integer',
+        'symbol',
     ];
 }

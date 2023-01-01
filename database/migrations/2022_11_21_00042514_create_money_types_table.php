@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('client_types', function (Blueprint $table) {
+        Schema::create('money_types', function (Blueprint $table) {
             $table->id();
             $table->string('name',75);
-            $table->integer('rate')->nullable();
-            $table->foreignId('money_type')->references('id')->on('money_types');
+            $table->string('symbol',5);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_types');
+        Schema::dropIfExists('money_types');
     }
 };

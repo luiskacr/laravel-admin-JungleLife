@@ -56,7 +56,7 @@ class GuidesController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_create', ['object' =>  __('app.guide_singular')]) : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_create', ['object' =>  __('app.guide_singular')]) ;
 
             return redirect()->route('guides.create')->with('message',$message);
         }
@@ -113,7 +113,7 @@ class GuidesController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_update', ['object' =>  __('app.guide_singular')]) : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' =>  __('app.guide_singular')]) ;
 
             return redirect()->route('guides.edit')->with('message',$message);
         }
@@ -137,7 +137,7 @@ class GuidesController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = __('app.error_delete') : $message = $e->getMessage();
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
 
             return response($message,500);
         }
