@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Models\NewUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use PHPUnit\Exception;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -46,14 +50,31 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try{
+            $user = User::create([
+                'name' => $request->request->get('name'),
+                'email' => $request->request->get('email'),
+                'active' => false,
+                'password' => $request->request->get('email'),
+            ]);
+
+            // Role
+
+            $newUser = NewUser::create([
+                'email'=> $user->email,
+                'token' => Str::random(64),
+            ]);
+
+            $newUser->sendMail($user);
 
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
 
+            report($e);
+
             app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_create', ['object' => __('app.user_singular')]) ;
 
-            return redirect()->route('users.create')->with('message',$message);
+            return redirect()->route('users.index')->with('message',$message);
         }
         return redirect()->route('users.index')->with('success', __('app.success_create ',['object' => __('app.user_singular')] ));
     }
@@ -104,12 +125,37 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try{
-            $clientType = User::findOrFail($id);
-            $clientType->delete();
+            $user = User::findOrFail($id);
+            $user->delete();
 
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
+
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
+
+            return response($message,500);
+        }
+        return response( __('app.success'),200);
+    }
+
+
+    /**
+     * Function for the administrator to send the password reset email to any user
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function adminResetPassword($id){
+        try {
+
+            $user = User::findOrFail($id);
+
+            $status = Password::sendResetLink( [
+                'email'=> $user->email,
+            ]);
+
+        }catch (Exception $e){
 
             app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
 

@@ -56,3 +56,22 @@
     </script>
 @endif
 
+@if (Session::has('message'))
+    <script>
+        Toastify({
+            text: '{{ session('message') }}',
+            avatar: 'https://api.iconify.design/mdi/information-variant.svg?color=white',
+            duration: 3000,
+            className: "bg-info",
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "none",
+            },
+            onClick: function(){} // Callback after click
+        }).showToast();
+    </script>
+@endif
+

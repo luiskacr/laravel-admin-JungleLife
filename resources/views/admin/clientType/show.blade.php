@@ -29,6 +29,12 @@
                     </div>
                 </div>
                 <div class="col-12">
+                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                        <label class="form-label" for="rate">{{ __('app.money_type') }}</label>
+                        <input type="text" id="rate" value="{{ $clientType->moneyType->name }}" class="form-control"  name="rate" disabled>
+                    </div>
+                </div>
+                <div class="col-12">
                     <a href="{{ route('type-client.index') }}">{{ __('app.go_index')}}</a>
                 </div>
             </div>

@@ -25,7 +25,7 @@ class ClientTypeRequest extends FormRequest
     {
         return [
             'name'=> 'required|min:2|max:75',
-            'rate'=> 'numeric|min:1|max:100',
+            'rate'=> 'numeric|min:1|max:10000',
             'moneyType'=> "required|not_in:0",
         ];
     }

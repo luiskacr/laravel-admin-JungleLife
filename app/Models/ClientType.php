@@ -29,4 +29,9 @@ class ClientType extends Model
         'rate'=> 'integer',
         'money_type'=> 'integer',
     ];
+
+    public function moneyType()
+    {
+        return $this->belongsTo(MoneyType::class,'money_type','id');
+    }
 }

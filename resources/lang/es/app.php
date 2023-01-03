@@ -32,10 +32,23 @@ return [
     'confirm.reset.btn' => 'Restablecer',
     'login_pass.confirm' => 'Confirmar Contraseña',
 
+    //Password Reset Admin
+    'admin_reset_text' => 'Que desea resetear la contraseña de ',
+    'admin_success_tittle' => 'Ok',
+    'admin_success_message' => 'Se ha enviado el correo para restablecer la contraseña',
+    'admin_error_message' => 'Hubo un error al intentar Reiniciar la contrasena',
 
     //Password Reset Mail
     'Hello' => 'Hola :object',
 
+    //Welcome User Mail
+    'welcome_subject' => 'Bienvemido a ',
+    'welcome_mgs1' => 'Estás recibiendo este email ya que te incluimos en la familia de Jungle Life. ',
+    'welcome_btn' => 'Crear Contraseña ',
+
+    //Welcome View
+    'welcome_view_message' => 'Para iniciar crea una contraseña ',
+    'welcome_view_success' => 'Se ha creado el usuario Correctamente',
 
     //Template Interface
     'profile' => 'Mi Perfil',

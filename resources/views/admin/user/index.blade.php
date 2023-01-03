@@ -30,6 +30,7 @@
                     <th>{{__('app.email')}}</th>
                     <th>{{__('app.rol')}}</th>
                     <th>{{__('app.status')}}</th>
+                    <th>{{__('app.confirm.reset.btn')}}</th>
                     <th>{{__('app.crud_action')}}</th>
                 </tr>
                 </thead>
@@ -57,11 +58,21 @@
                         </th>
                         <th>{{ $user->email }}</th>
                         <th>{{ $user->getRoleNames()[0] ?? '' }}</th>
+
                         <th>
                             @if($user->active )
                                 <span class="badge bg-label-success">{{ __('app.status_values.true') }}</span>
                             @else
                                 <span class="badge bg-label-info">{{ __('app.status_values.false') }}</span>
+                            @endif
+                        </th>
+                        <th>
+                            @if(!$user->active or auth()->user()->id == $user->id )
+                                <button type="submit" class="btn btn-primary" disabled>{{ __('app.reset_msg1') }}</button>
+                            @else
+                                <button type="submit"
+                                        onclick="resetPassword( {{ json_encode($user->id) }},{{ json_encode($user->name) }}, {{ json_encode(csrf_token())  }}, {{ json_encode( route('users.admin-reset',0) ) }} )"
+                                        class="btn btn-primary">{{ __('app.reset_msg1') }}</button>
                             @endif
                         </th>
                         <th>
@@ -87,5 +98,53 @@
 
 @push('page-scripts')
     @include('admin.partials.delete')
+    <script>
+        function resetPassword(id, name, token, route){
+            const f_route = route.slice(0, -1);
+            Swal.fire({
+                title: '{{ __('app.delete_title') }}',
+                text: '{{ __('app.admin_reset_text' ) }}  ' + name,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: primaryColor.backgroundColor,
+                cancelButtonColor: '#ff3e1d',
+                cancelButtonText: '{{ __('app.delete_cancelButtonText') }}',
+                confirmButtonText: '{{ __('app.delete_confirmButtonText') }}'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: f_route + id,
+                        type: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': token
+                        },
+                        data: {
+                            "id": id,
+                            "_token": token
+                        },
+                        success: function () {
+                            Swal.fire({
+                                title: '{{ __('app.admin_success_tittle') }}',
+                                text: '{{ __('app.admin_success_message') }}',
+                                icon: 'success',
+                            }).then((result) => {
+                               // location.reload();
+                            })
+                        },
+                        error: function (xhr) {
+                            Swal.fire(
+                                '{{ __('app.delete_error') }}',
+                                '{{ __('app.admin_error_message') }}',
+                                'error'
+                            )
+                            @if(app()->hasDebugModeEnabled())
+                            console.log(xhr.responseText)
+                            @endif
+                        },
+                    });
+                }
+            })
+        }
+    </script>
 @endpush
 

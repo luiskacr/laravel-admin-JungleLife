@@ -36,6 +36,9 @@ Route::group([
         Route::get('password/reset/{token}',[\App\Http\Controllers\Auth\ResetPasswordController::class,'showReset'])->name('password.reset');
         Route::post('password/reset',[\App\Http\Controllers\Auth\ResetPasswordController::class,'resetPassword']);
 
+        //New User Password Create
+        Route::get('password/new-user/{token}',[\App\Http\Controllers\Auth\NewUserController::class,'show'])->name('password.new-user');
+        Route::post('password/new-user/',[\App\Http\Controllers\Auth\NewUserController::class,'resetPassword'])->name('password.new-user.reset');
     }
 );
 
@@ -68,7 +71,7 @@ Route::group([
         Route::resource('users',UserController::class);
 
         //Custom Crud Routes
-
+        Route::put('/users/admin-reset-password/{id}',[UserController::class,'adminResetPassword'])->name('users.admin-reset');
     }
 );
 

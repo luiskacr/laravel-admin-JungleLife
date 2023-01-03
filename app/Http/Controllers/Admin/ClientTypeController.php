@@ -48,6 +48,8 @@ class ClientTypeController extends Controller
             ClientType::create([
                 'name'=>$request->request->get('name'),
                 'rate'=>$request->request->getInt('rate'),
+                'money_type'=>$request->request->getInt('moneyType'),
+
             ]);
 
             DB::commit();
@@ -83,7 +85,9 @@ class ClientTypeController extends Controller
     {
         $clientType = ClientType::findOrFail($id);
 
-        return view('admin.clientType.edit')->with('clientType',$clientType);
+        $moneyTypes = MoneyType::all();
+
+        return view('admin.clientType.edit')->with('clientType',$clientType)->with('moneyTypes',$moneyTypes);
     }
 
     /**
@@ -100,6 +104,7 @@ class ClientTypeController extends Controller
             ClientType::whereId($id)->update([
                 'name'=>$request->request->get('name'),
                 'rate'=>$request->request->getInt('rate'),
+                'money_type'=>$request->request->getInt('moneyType'),
             ]);
 
             DB::commit();

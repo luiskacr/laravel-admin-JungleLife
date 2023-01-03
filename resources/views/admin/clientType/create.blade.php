@@ -31,7 +31,7 @@
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                         <label class="form-label" for="rate">{{ __('app.price') }}</label>
-                        <input type="number" id="rate" value="{{ old('rate',0) }}" class="form-control" min="0" max="100"  name="rate">
+                        <input type="number" id="rate" value="{{ old('rate',0) }}" class="form-control" min="1" max="10000"  name="rate">
                         @error('rate')
                             <div class="text-danger">
                                 <div data-field="rate">* {{$message}}</div>

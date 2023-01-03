@@ -41,6 +41,25 @@
                     </div>
                 </div>
                 <div class="col-12">
+                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                        <label class="form-label" for="moneyType">{{ __('app.money_type') }}</label>
+                        <select id="moneyType"  class="form-select" name="moneyType" >
+                            @foreach($moneyTypes as $moneyType)
+                                @if($clientType->money_type ==$moneyType->id )
+                                    <option value="{{ $moneyType->id }}" selected>{{ $moneyType->name }}</option>
+                                @else
+                                    <option value="{{ $moneyType->id }}">{{ $moneyType->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @error('moneyType')
+                        <div class="text-danger">
+                            <div data-field="name">* {{ $message }}</div>
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-12">
                     <button type="submit" class="btn btn-primary" >{{ __('app.edit_btn') }}</button>
                 </div>
                 <div class="col-12">
