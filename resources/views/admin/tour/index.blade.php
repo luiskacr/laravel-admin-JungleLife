@@ -1,7 +1,7 @@
 @extends('admin.template')
 
 @php
-    $title = "Guia";
+    $title = __('app.tour');
     $breadcrumbs = ['Inicio'=> route('admin.home'),'Tours'=>false];
 @endphp
 
@@ -26,24 +26,25 @@
             <table id="table" class="datatables-basic table border-top dataTable no-footer dtr-column">
                 <thead>
                 <tr>
-                    <th>id</th>
-                    <th>Nombre</th>
-                    <th>Acciones</th>
+                    <th>{{ __('app.id') }}</th>
+                    <th>{{ __('app.name') }}</th>
+                    <th>{{ __('app.crud_action') }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($tours as $tour)
                     <tr>
                         <th>{{ $tour->id }}</th>
-                        <th>{{ $tour->name }}</th>
+                        <th>{{ $tour->title }}</th>
 
                         <th>
                             <div class="justify-content-between">
-                                <a class="m-2" href="{{ route('guides.show',$tour->id) }}"><i class="bx bxs-show me-1"></i> Ver</a>
-                                <a class="m-2" href="{{ route('guides.edit',$tour->id) }}"><i class="bx bx-edit-alt me-1"></i> Editar</a>
-                                <a class="m-2" href="#" onclick="deleteItem({{ $tour->id}},
-                                {{ json_encode($tour->name) }})">
-                                    <i class="bx bx-trash me-1"></i> Eliminar</a>
+                                <a class="m-2" href="{{ route('tours.show',$tour->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }} </a>
+                                <a class="m-2" href="{{ route('tours.edit',$tour->id) }}"><i class="bx bx-edit-alt me-1"></i> {{ __('app.crud_edit') }}</a>
+                                <a class="m-2" href="#" onclick="deleteItem({{ $tour->id}},{{ json_encode($tour->title) }},
+                                {{ json_encode(csrf_token())  }}, {{ json_encode(route('tours.destroy',0)) }})">
+                                    <i class="bx bx-trash me-1"></i> {{ __('app.crud_delete') }}
+                                </a>
                             </div>
                         </th>
                     </tr>

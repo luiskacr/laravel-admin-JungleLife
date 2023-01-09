@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Timetables;
 use App\Models\Tour;
+use App\Models\TourType;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Type\Time;
 
 class TourController extends Controller
 {
@@ -27,14 +30,17 @@ class TourController extends Controller
      */
     public function create()
     {
+        $timetables = Timetables::all();
 
-        return view('admin.tour.create');
+        $tourTypes = TourType::all();
+
+        return view('admin.tour.create')->with('timetables',$timetables)->with('tourTypes',$tourTypes);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param ClientRequest $request
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
         public function store(Request $request)
@@ -50,7 +56,9 @@ class TourController extends Controller
      */
     public function show($id)
     {
+        $tour = Tour::findOrFail($id);
 
+        return view('admin.tour.show')->with('tour',$tour);
     }
 
     /**

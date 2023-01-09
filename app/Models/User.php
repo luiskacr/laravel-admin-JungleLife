@@ -64,4 +64,18 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token, $this));
     }
+
+
+    /**
+     * Update the Role on the user
+     *
+     * @param $id
+     * @return void
+     */
+    public function updateRoleById($id)
+    {
+        $this->roles()->detach();
+
+        $this->assignRole($id);
+    }
 }

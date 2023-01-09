@@ -61,7 +61,7 @@ class WelcomeEmailNotification extends Notification
                     ->subject(__('app.welcome_subject') . config('app.name'))
                     ->line(__('app.welcome_mgs1'))
                     ->action(__('app.welcome_btn'), $url)
-                    ->line('Thank you for using our application!');
+                    ->line(__('app.welcome_thanks'));
     }
 
     /**

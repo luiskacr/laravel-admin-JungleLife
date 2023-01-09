@@ -45,6 +45,7 @@ return [
     'welcome_subject' => 'Bienvemido a ',
     'welcome_mgs1' => 'Estás recibiendo este email ya que te incluimos en la familia de Jungle Life. ',
     'welcome_btn' => 'Crear Contraseña ',
+    'welcome_thanks' => 'Gracias por utilizar nuestra aplicación. ',
 
     //Welcome View
     'welcome_view_message' => 'Para iniciar crea una contraseña ',
@@ -61,6 +62,8 @@ return [
     'image_error' => 'Debe de Adjuntar una imagen',
     'avatars' => 'Avatar',
     'settings' => 'Configuración',
+    'calendar' => 'Calendario',
+    'calendar_show' => 'Ver el Calendario',
     'logout' => 'Salir',
 
     //Sidebar
@@ -68,6 +71,11 @@ return [
     'tour_config_tittle' => 'Configuración de Tours',
     'tour_tittle' => 'Tours',
     'config' => 'Configuracion',
+
+    //Calendar
+    'calendar_error' => 'Hubo un error al encontrar los Eventos',
+    'close' => 'Cerrar',
+    'goTour' => 'Ir a ver el Tour',
 
     //Crud Interface
     'home' => 'Inicio',
@@ -92,6 +100,8 @@ return [
 
 
     // Crud Entities
+    'tour' => "Tours",
+    'tour_singular' => "Tour",
     'type_guides' => "Tipos de Guias",
     'type_guides_singular' => "Tipo de Guia",
     'tour_states' => "Estados de Tours",
@@ -106,6 +116,8 @@ return [
     'customer_single' => "Cliente",
     'user' => "Usuarios",
     'user_singular' => "Usuario",
+    "timetables" => 'Horarios',
+    "timetables_singular" => 'Horario',
 
     //Crud Attributes
     'id'=> 'Id',
@@ -116,13 +128,32 @@ return [
     'telephone'=> 'Telefono',
     'rol'=> 'Rol',
     'money_type'=> 'Moneda',
+    'star'=> 'Inicio',
+    'end'=> 'Final',
+    'auto'=> 'Creacion Automatica',
+    'date'=> 'Fecha',
     'status'=> 'Estado',
+    'schedule'=> 'Horario',
+    'information'=> 'Informacion',
+    'from'=> 'Desde ',
+    'to'=> ' Hasta ',
     'status_values' => [
         'true' => 'Activo',
         'false' => 'Inactivo',
     ],
+    'status_values2' => [
+        'true' => 'Si',
+        'false' => 'No',
+    ],
+    'quantity'=> 'Cantidad de ',
+    'creat_by'=> 'Creado por  ',
+    'select_date'=> 'Selecciona la Fecha del Tour',
     'select_type_guide'=> 'Seleccione un tipo Guia',
     'select_client_type'=> 'Seleccione un tipo Cliente',
     'select_role'=> 'Seleccione un Rol',
     'select_money_type'=> 'Seleccione un Tipo de Monda',
+    'select_star'=> 'Seleccione un Hora de Inicio',
+    'select_end'=> 'Seleccione un Hora de Fin',
+    'select_schedule'=> 'Seleccione un Horario',
+    'auto_message'=> 'Este Campo permite Automatizar la creacion de Tour con este Horarios si se activa',
 ];

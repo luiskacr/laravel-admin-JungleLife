@@ -15,7 +15,7 @@ class Tour extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'title',
         'start',
         'end',
         'info',
@@ -36,4 +36,19 @@ class Tour extends Model
         'type' => 'integer',
         'user' => 'integer',
     ];
+
+    public function tourState()
+    {
+        return $this->belongsTo(TourState::class,'state','id');
+    }
+
+    public function tourType()
+    {
+        return $this->belongsTo(TourType::class,'type','id');
+    }
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class,'user','id');
+    }
 }

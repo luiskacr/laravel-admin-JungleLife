@@ -24,6 +24,12 @@ $(document).ready(function (){
     })
 });
 
+$("#date").flatpickr({
+    "dateFormat": "d-m-Y",
+    "minDate": "today",
+    "locale": "es"
+});
+
 
 function successToast( messaje ){
     Toastify({

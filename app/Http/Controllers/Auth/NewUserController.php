@@ -38,6 +38,7 @@ class NewUserController extends Controller
      */
     public function resetPassword(Request $request)
     {
+
         $this->validateRequest($request);
 
         $user = User::where('email',$request->email)->first();
@@ -56,7 +57,7 @@ class NewUserController extends Controller
                 'active' => true
             ]);
 
-            $this->deleteNewUser($user->email);
+            NewUser::where('email',$user->email)->delete();
 
             DB::commit();
         }catch (\Exception $e){
@@ -64,7 +65,7 @@ class NewUserController extends Controller
 
             app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
 
-            return redirect()->route('type-client.edit')->with('error',$message);
+            return redirect()->back()->with('error',$message);
         }
 
         return redirect()->route('login')->with('message', __('app.welcome_view_success'));
@@ -92,18 +93,5 @@ class NewUserController extends Controller
         $this->validate($request, $rules, [], $attribute);
     }
 
-
-    /**
-     * Delete New User Field on the table if the user is created
-     *
-     * @param $email
-     * @return void
-     */
-    public function deleteNewUser($email)
-    {
-        $newUser = NewUser::where('email',$email)->first();
-
-        $newUser->delete();
-    }
 
 }

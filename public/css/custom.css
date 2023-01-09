@@ -9,3 +9,20 @@
     font-size: 0.90rem;
     letter-spacing: 1px;
 }
+
+.flatpickr-input[readonly] {
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.flatpickr-calendar{
+    font-family: var(--bs-body-font-family);
+    font-size: 14px !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    background: transparent;
+    color: var(--kt-gray-600);
+    fill: var(--kt-gray-600);
+    height: 46px;
+}

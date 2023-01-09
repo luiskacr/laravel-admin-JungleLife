@@ -57,7 +57,9 @@ class UserController extends Controller
                 'password' => $request->request->get('email'),
             ]);
 
-            // Role
+            $role = Role::findById($request->request->getInt('role'));
+
+            $user->assignRole($role);
 
             $newUser = NewUser::create([
                 'email'=> $user->email,
@@ -96,23 +98,48 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $roles = Role::all();
+
+        return view('admin.user.edit')->with('user',$user)->with('roles',$roles);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param UserRequest $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
-        //
+
+        DB::beginTransaction();
+        try{
+            $user = User::findOrFail($id);
+
+            $user->updateRoleById($request->request->getInt('role'));
+
+            $user->update([
+                'name' => $request->request->get('name'),
+                'email' => $request->request->get('email'),
+                'active' => $request->request->getBoolean('status')
+            ]);
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+
+            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_update', ['object' => __('app.user_singular')]) ;
+
+            return redirect()->route('users.edit',$id)->with('message',$message);
+        }
+        return redirect()->route('users.index')->with('success',__('app.success_update ',['object' => __('app.user_singular') ]) );
     }
 
     /**
@@ -126,6 +153,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try{
             $user = User::findOrFail($id);
+
             $user->delete();
 
             DB::commit();

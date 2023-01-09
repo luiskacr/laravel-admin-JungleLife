@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\GuidesController;
+use App\Http\Controllers\Admin\TimetablesController;
 use App\Http\Controllers\Admin\TourController;
 use App\Http\Controllers\Admin\TypesGuidesController;
 use App\Http\Controllers\Admin\ClientTypeController;
@@ -60,6 +61,11 @@ Route::group([
         Route::put('/update-password/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updatePassword'])->name('myProfile.password');
         Route::put('/update-avatars/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updateImage'])->name('myProfile.avatars');
 
+        //Calendar Routes
+        Route::get('calendar',[\App\Http\Controllers\Admin\CalendarController::class,'show'])->name('calendar.show');
+        Route::get('calendar/tours',[\App\Http\Controllers\Admin\CalendarController::class,'getTours'])->name('calendar.get');
+        Route::get('calendar/tours/info/{id}',[\App\Http\Controllers\Admin\CalendarController::class,'getInfoTour'])->name('calendar.getInfo');
+
         //Crud's Routes
         Route::resource('type-client',ClientTypeController::class);
         Route::resource('type-guides',TypesGuidesController::class);
@@ -69,6 +75,7 @@ Route::group([
         Route::resource('tour-state',TourStateController::class);
         Route::resource('tour-type',TourTypeController::class);
         Route::resource('users',UserController::class);
+        Route::resource('timetable',TimetablesController::class);
 
         //Custom Crud Routes
         Route::put('/users/admin-reset-password/{id}',[UserController::class,'adminResetPassword'])->name('users.admin-reset');

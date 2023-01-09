@@ -20,8 +20,8 @@
 @isset($actionText)
 <?php
     $color = match ($level) {
-        'success', 'error' => $level,
-        default => 'primary',
+        'primary', 'error' => $level,
+        default => 'success',
     };
 
 ?>
@@ -48,8 +48,8 @@
 @isset($actionText)
 <x-slot:subcopy>
 @lang(
-    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'into your web browser:',
+    "Si tiene problemas para hacer clic en el botón \":actionText\" , copie y pegue la siguiente URL\n".
+    'en su navegador:',
     [
         'actionText' => $actionText,
     ]
