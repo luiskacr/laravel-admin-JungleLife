@@ -40,6 +40,7 @@
     <link rel="stylesheet" href=" {{ asset('vendor/perfect-scrollbar/perfect-scrollbar.css') }}"/>
     <link rel="stylesheet" href=" {{ asset('vendor/dataTables/datatables.min.css') }}"/>
     <link rel="stylesheet" href=" {{ asset('vendor/flatpick@4.6.13/flatpickr.min.css') }}"/>
+    <link rel="stylesheet" href=" {{ asset('vendor/select2@4.1.0/dist/css/select2.min.css') }}"/>
     <!-- Toast  -->
     <link rel="stylesheet" type="text/css" href="{{ asset('vendor/toastify/toastify.min.css') }}">
     <script type="text/javascript" src="{{ asset('vendor/toastify/toastify-js.js') }}"></script>
@@ -87,6 +88,7 @@
 <script src="{{ asset('vendor/fullcalendar@6.0.2/packages/bootstrap5/index.global.min.js') }}"></script>
 <script src="{{ asset('vendor/flatpick@4.6.13/flatpickr.js') }}"></script>
 <script src="{{ asset('vendor/flatpick@4.6.13/es.js') }}"></script>
+<script src="{{ asset('vendor/select2@4.1.0/dist/js/select2.full.min.js') }}"></script>
 
 
 <!-- Main JS -->

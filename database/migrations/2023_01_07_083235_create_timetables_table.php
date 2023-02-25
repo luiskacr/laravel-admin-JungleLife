@@ -18,6 +18,7 @@ return new class extends Migration
             $table->time('start');
             $table->time('end');
             $table->boolean('auto');
+            $table->foreignId('type')->references('id')->on('tour_types');
             $table->timestamps();
         });
     }

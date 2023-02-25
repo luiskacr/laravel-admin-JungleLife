@@ -29,4 +29,14 @@ class TourGuides extends Model
         'guides'=> 'integer'
     ];
 
+    public function getGuides()
+    {
+        return $this->belongsTo(Guides::class,'guides','id');
+    }
+
+    public function getTour()
+    {
+        return $this->belongsTo(Tour::class,'tour','id');
+    }
+
 }

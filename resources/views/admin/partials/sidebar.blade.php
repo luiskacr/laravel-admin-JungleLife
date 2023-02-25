@@ -24,11 +24,47 @@
             <span class="menu-header-text">{{ __('app.tour_tittle') }}</span>
         </li>
 
-        <li class="menu-item {{ $title == __('app.tour') ? 'active' : '' }}">
-            <a href="{{ route('tours.index') }}" class="menu-link">
+        @php( $menuTour = array(__('app.tours_active'),__('app.tours_history'),__('app.tours_book'), __('app.products')))
+        <li class="menu-item {{ in_array($title,$menuTour) ? 'open' : '' }} {{ in_array($title,$menuTour) ? 'active' : ''}} ">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-landscape"></i>
                 <div data-i18n="Basic">{{ __('app.tour') }}</div>
             </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ $title == __('app.tours_active') ? 'active' : '' }}">
+                    <a href="{{ route('tours.index') }}" class="menu-link">
+                        <div data-i18n="Basic">{{ __('app.tours_active') }}</div>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ $title == __('app.tours_book') ? 'active' : '' }}">
+                    <a href="{{ route('booking.index') }}" class="menu-link">
+                        <div data-i18n="Basic">{{ __('app.tours_book') }}</div>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ $title == __('app.products') ? 'active' : '' }}">
+                    <a href="{{ route('product.index') }}" class="menu-link">
+                        <div data-i18n="Basic">{{ __('app.products') }}</div>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ $title == __('app.tours_history') ? 'active' : '' }}">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Basic">{{ __('app.tours_history') }}</div>
+                    </a>
+                </li>
+            </ul>
+
+
+
         </li>
 
         <li class="menu-item {{ $title == __('app.customer') ? 'active' : '' }}">
@@ -53,11 +89,11 @@
         </li>
 
 
-        @php( $menuConfig = array(__('app.type_client'),__('app.type_guides'),__('app.tour_type'), __('app.tour_states'),__('app.timetables')) )
+        @php( $menuConfig = array(__('app.type_client'),__('app.type_guides'),__('app.tour_type'), __('app.tour_states'),__('app.timetables'), __('app.product_type')) )
         <li class="menu-item {{ in_array($title,$menuConfig)  ? 'open' : '' }}  {{ in_array($title,$menuConfig)  ? 'active' : '' }} ">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-wrench"></i>
-                <div data-i18n="Account Settings">{{ __('app.config') }}</div>
+                <i class="menu-icon tf-icons bx bx-slider"></i>
+                <div data-i18n="Account Settings">{{ __('app.config_tour') }}</div>
             </a>
 
             <ul class="menu-sub">
@@ -79,6 +115,11 @@
                 <li class="menu-item {{ $title == __('app.tour_states') ? 'active' : '' }}">
                     <a href="{{  route('tour-state.index')}}" class="menu-link">
                         <div data-i18n="Account">{{ __('app.tour_states') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $title == __('app.product_type') ? 'active' : '' }}">
+                    <a href="{{  route('product-type.index')}}" class="menu-link">
+                        <div data-i18n="Account">{{ __('app.product_type') }}</div>
                     </a>
                 </li>
                 <li class="menu-item {{ $title == __('app.timetables') ? 'active' : '' }}">
@@ -112,7 +153,16 @@
                 <div data-i18n="Basic">Permisos</div>
             </a>
         </li>
-
+        <li class="menu-item {{ $title == __('app.config') ? 'active' : '' }}">
+            <a href="{{ route('configurations.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-wrench"></i>
+                <div data-i18n="Basic">{{ __('app.config') }}</div>
+            </a>
+        </li>
+        <!-- Config -->
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">{{ __('app.reports') }}</span>
+        </li>
 
     </ul>
 </aside>

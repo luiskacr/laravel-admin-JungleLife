@@ -17,6 +17,7 @@ class TourClient extends Model
     protected $fillable = [
         'tour',
         'client',
+        'bookings',
     ];
 
     /**
@@ -26,7 +27,18 @@ class TourClient extends Model
      */
     protected $casts = [
         'tour' => 'integer',
-        'client'=> 'integer'
+        'client'=> 'integer',
+        'bookings'=> 'integer',
     ];
+
+    public function getClient()
+    {
+        return $this->belongsTo(Customer::class,'client','id');
+    }
+
+    public function getTour()
+    {
+        return $this->belongsTo(Tour::class,'tour','id');
+    }
 
 }

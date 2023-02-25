@@ -1,7 +1,7 @@
 @extends('admin.template')
 
 @php
-    $title = __('app.tour');
+    $title = __('app.tours_active');
     $breadcrumbs = ['Inicio'=> route('admin.home'),'Tour'=> route('tours.index'), 'Crear' => false];
 @endphp
 
@@ -38,7 +38,7 @@
                                 <option value="{{ $timetable->id }}">{{ __('app.from'). Carbon\Carbon::parse($timetable->start)->format('g:i A'). __('app.to') . Carbon\Carbon::parse($timetable->end)->format('g:i A')  }}</option>
                             @endforeach
                         </select>
-                        @error('end')
+                        @error('time')
                         <div class="text-danger">
                             <div data-field="end">* {{$message}}</div>
                         </div>

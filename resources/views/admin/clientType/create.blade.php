@@ -29,36 +29,6 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="rate">{{ __('app.price') }}</label>
-                        <input type="number" id="rate" value="{{ old('rate',0) }}" class="form-control" min="1" max="10000"  name="rate">
-                        @error('rate')
-                            <div class="text-danger">
-                                <div data-field="rate">* {{$message}}</div>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="moneyType">{{ __('app.money_type') }}</label>
-                        <select id="moneyType"  class="form-select" name="moneyType" >
-                            <option value="0">{{ __('app.select_money_type') }}</option>
-                            @foreach($moneyTypes as $moneyType)
-                                <option value="{{ $moneyType->id }}">{{ $moneyType->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('moneyType')
-                        <div class="text-danger">
-                            <div data-field="name">* {{ $message }}</div>
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div data-field="rate">{{ session('message') }}</div>
-                </div>
-                <div class="col-12">
                     <button type="submit" class="btn btn-primary" >{{ __('app.create') }}</button>
                 </div>
                 <div class="col-12">

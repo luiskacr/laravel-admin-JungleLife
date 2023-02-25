@@ -94,17 +94,16 @@ class ProfileController extends Controller
         if($request->hasFile('avatar')){
             DB::beginTransaction();
             try{
-                $user = User::whereId($id);
-
+                $user = User::findOrFail($id);
 
                 $file = $request->file('avatar');
                 $destinationPath = 'assets/avatars/';
 
-                $filename = time() . '-id=' .$id . '-name=' . $file->getClientOriginalName();
+                $filename = time() . '&id=' .$id . '&name=' . $user->name .'.' . $file->extension();
                 $uploadSuccess = $request->file('avatar')->move($destinationPath,$filename);
 
                 $user->update([
-                    'avatar' => $destinationPath . $filename
+                    'avatars' => $destinationPath . $filename
                 ]);
 
                 DB::commit();

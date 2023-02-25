@@ -19,5 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(TourStateSeeder::class);
         $this->call(TourTypeSeeder::class);
         $this->call(TourSeeder::class);
+        $this->call(ConfigSeeder::class);
+        $this->call(InvoiceStateSeeder::class);
+        $this->call(PaymentTypeSeeder::class);
+        $this->call(ClientTypeSeeder::class);
     }
 }

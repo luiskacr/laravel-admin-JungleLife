@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TimetablesRequest;
 use App\Models\Timetables;
+use App\Models\TourType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +32,9 @@ class TimetablesController extends Controller
      */
     public function create()
     {
-        return view('admin.timetables.create');
+        $tourTypes = TourType::all();
+
+        return view('admin.timetables.create')->with('tourTypes',$tourTypes);
     }
 
 

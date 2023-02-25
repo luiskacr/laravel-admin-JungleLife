@@ -18,6 +18,7 @@ class Timetables extends Model
         'start',
         'end',
         'auto',
+        'type'
     ];
 
     /**
@@ -29,6 +30,13 @@ class Timetables extends Model
         'start' => 'datetime:H:i',
         'end' => 'datetime:H:i',
         'auto' => 'boolean',
+        'type' => 'integer'
     ];
+
+    public function tourType()
+    {
+        return $this->belongsTo(TourType::class,'type','id');
+    }
+
 
 }

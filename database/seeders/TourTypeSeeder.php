@@ -16,10 +16,19 @@ class TourTypeSeeder extends Seeder
     public function run()
     {
         TourType::create([
-            'name'=> 'Interno'
+            'name'=> 'Perezosos'
         ]);
+
         TourType::create([
-            'name'=> 'Externo'
+            'name'=> 'Aves'
+        ]);
+
+        TourType::create([
+            'name'=> 'Nocturno'
+        ])
+
+        ;TourType::create([
+            'name'=> 'Ranas'
         ]);
     }
 }

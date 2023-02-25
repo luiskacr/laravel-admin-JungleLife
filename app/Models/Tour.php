@@ -51,4 +51,14 @@ class Tour extends Model
     {
         return $this->belongsTo(User::class,'user','id');
     }
+
+    public function availableSpace()
+    {
+        $config = Configuration::select('data')->where('id', 1)->get();
+        $clientTourMax = $config[0]->data["value"];
+        $tourGuides = TourGuides::where('tour',"=",$this->id)->count();
+        $tourClients = TourClient::where('tour',"=",$this->id)->count();
+        $available = ($tourGuides==0) ? $clientTourMax : $tourGuides * $clientTourMax;
+        return $available - $tourClients;
+    }
 }

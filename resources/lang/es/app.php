@@ -5,6 +5,9 @@ return [
     'error_create'=>  'Hubo un error al crear el :object',
     'error_update'=>  'Hubo un error al actualizar el :object',
     'error_delete'=>  'Hubo un error Interno',
+    'error_select'=>  'Debe de Seleccionar una Opcion',
+    'error_tour_exist_guide'=>  'El Guia ya existe en el Tour',
+    'error_tour_exist_client'=>  'El Cliente ya existe en el Tour',
     'success_create '=> 'Se ha creado con exito el :object',
     'success_update '=> 'Se ha actualizado con exito el :object',
     'success'=> 'Exitoso',
@@ -70,7 +73,9 @@ return [
     'info_tours' => "Informacion para Toures",
     'tour_config_tittle' => 'Configuración de Tours',
     'tour_tittle' => 'Tours',
+    'config_tour' => 'Opciones de Tour',
     'config' => 'Configuracion',
+    'reports' => 'Reportes',
 
     //Calendar
     'calendar_error' => 'Hubo un error al encontrar los Eventos',
@@ -102,6 +107,11 @@ return [
     // Crud Entities
     'tour' => "Tours",
     'tour_singular' => "Tour",
+    'tours_active' => "Tours Activos",
+    'tours_history' => "Historial de Tours",
+    'tours_book' => "Reservar Tour",
+    'invoice' => "Factura",
+    'booking' => "Reservas",
     'type_guides' => "Tipos de Guias",
     'type_guides_singular' => "Tipo de Guia",
     'tour_states' => "Estados de Tours",
@@ -118,6 +128,16 @@ return [
     'user_singular' => "Usuario",
     "timetables" => 'Horarios',
     "timetables_singular" => 'Horario',
+    "create_by" => 'Creado por',
+    "tittle_view_guide" => 'Ver los Guias del Tour',
+    "tittle_view_clients" => 'Ver los Clientes del Tour',
+    "tittle_config" => 'Configuraciones del Sitio',
+    'products' => 'Productos',
+    'products_singular' => 'Producto',
+    'product_type' => 'Tipos de Productos',
+    'product_type_singular' => 'Tipo de Producto',
+
+
 
     //Crud Attributes
     'id'=> 'Id',
@@ -135,6 +155,7 @@ return [
     'status'=> 'Estado',
     'schedule'=> 'Horario',
     'information'=> 'Informacion',
+    'description' => 'Descripcion',
     'from'=> 'Desde ',
     'to'=> ' Hasta ',
     'status_values' => [
@@ -155,5 +176,31 @@ return [
     'select_star'=> 'Seleccione un Hora de Inicio',
     'select_end'=> 'Seleccione un Hora de Fin',
     'select_schedule'=> 'Seleccione un Horario',
+    'select_tour_type'=> 'Seleccione un Tipo de Producto',
+    'select_guide' => 'Seleccione un Guia',
+    'product_type_select' => 'Seleccion un Tipo de Producto',
     'auto_message'=> 'Este Campo permite Automatizar la creacion de Tour con este Horarios si se activa',
+    'add_tour_guide_tittle' => 'Incluir un Guia en el Tour',
+    'add_tour' => 'Incluir en el Tour',
+    'add_tour_client_tittle' => 'Incluir un Cliente en el Tour',
+    'search_client' => 'Buscar un Cliente',
+    'search_client_error1' => 'Debe de Seleccionar un cliente',
+    'search_product' => 'Seleccion de Producto',
+    'add_product' => 'Incluir Producto',
+    'not_products' => 'No Posee productos seleccionados',
+    'available_space' => 'Espacios Disponibles: ',
+    'not_space' => 'No hay suficiente espacio en el Tour para incluir',
+
+    //booking
+    'tittle_tour' => 'Seleccion de Tour',
+    'select_tour' => 'Seleccione un Tour',
+    'select_client' => 'Seleccione un Client',
+    'end_booking' => 'Finalizar Reserva',
+    'no_tour' => 'No se encontraron disponibles Tour para la Fecha: ',
+    'send_invoice' => 'Requiere Factura',
+    'send_electronic_invoice' => 'Requiere Factura Electronica',
+    'required_credit' => 'Requiere Credito',
+    'total' => 'Total',
+
+
 ];

@@ -16,8 +16,6 @@ return new class extends Migration
         Schema::create('client_types', function (Blueprint $table) {
             $table->id();
             $table->string('name',75);
-            $table->integer('rate')->nullable();
-            $table->foreignId('money_type')->references('id')->on('money_types');
             $table->timestamps();
         });
     }

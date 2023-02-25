@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\GuidesController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductTypeController;
 use App\Http\Controllers\Admin\TimetablesController;
 use App\Http\Controllers\Admin\TourController;
 use App\Http\Controllers\Admin\TypesGuidesController;
@@ -61,10 +63,22 @@ Route::group([
         Route::put('/update-password/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updatePassword'])->name('myProfile.password');
         Route::put('/update-avatars/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updateImage'])->name('myProfile.avatars');
 
+        //Configurations Routes
+        Route::get('/configurations',[\App\Http\Controllers\Admin\ConfigurationController::class,'index'])->name('configurations.index');
+        Route::Put('/configurations/update',[\App\Http\Controllers\Admin\ConfigurationController::class,'update'])->name('configurations.update');
+
         //Calendar Routes
         Route::get('calendar',[\App\Http\Controllers\Admin\CalendarController::class,'show'])->name('calendar.show');
         Route::get('calendar/tours',[\App\Http\Controllers\Admin\CalendarController::class,'getTours'])->name('calendar.get');
         Route::get('calendar/tours/info/{id}',[\App\Http\Controllers\Admin\CalendarController::class,'getInfoTour'])->name('calendar.getInfo');
+
+        //Booking
+        Route::get('booking',[\App\Http\Controllers\Admin\BookingController::class,'index'])->name('booking.index');
+        Route::Post('booking',[\App\Http\Controllers\Admin\BookingController::class,'getTour'])->name('booking.Tour');
+        Route::Post('booking/availableSpace/',[\App\Http\Controllers\Admin\BookingController::class,'availableSpace'])->name('booking.availableSpace');
+        Route::Post('booking/createClient/',[\App\Http\Controllers\Admin\BookingController::class,'createClient'])->name('booking.createClient');
+        Route::Post('booking/Client/',[\App\Http\Controllers\Admin\BookingController::class,'getClient'])->name('booking.getClient');
+
 
         //Crud's Routes
         Route::resource('type-client',ClientTypeController::class);
@@ -76,10 +90,19 @@ Route::group([
         Route::resource('tour-type',TourTypeController::class);
         Route::resource('users',UserController::class);
         Route::resource('timetable',TimetablesController::class);
+        Route::resource('product',ProductController::class);
+        Route::resource('product-type',ProductTypeController::class);
+
+        //Tour Options
+        Route::Post('/tours/{id}/guide', [\App\Http\Controllers\Admin\TourOptionsController::class,'setTourGuide'])->name('tour.guide.create');
+        Route::delete('/tours/{id}/guide',[\App\Http\Controllers\Admin\TourOptionsController::class,'deleteTourGuide'])->name('tour.guide.delete');
+        Route::Post('/tours/{id}/guide/create',[\App\Http\Controllers\Admin\TourOptionsController::class,'createGuide'])->name('tour.guide.make');
+        Route::Post('/tours/{id}/costumer/search',[\App\Http\Controllers\Admin\TourOptionsController::class,'searchCustomer'])->name('tour.costumer.search');
+        Route::Post('/tours/{id}/costumer',[\App\Http\Controllers\Admin\TourOptionsController::class,'setClientTour'])->name('tour.costumer.create');
+        Route::Post('/tours/{id}/costumer/create',[\App\Http\Controllers\Admin\TourOptionsController::class,'createClient'])->name('tour.costumer.make');
+        Route::Post('/tours/costumer/valid-email',[\App\Http\Controllers\Admin\TourOptionsController::class,'validateCustomerEmail'])->name('tour.costumer.email');
 
         //Custom Crud Routes
         Route::put('/users/admin-reset-password/{id}',[UserController::class,'adminResetPassword'])->name('users.admin-reset');
     }
 );
-
-

@@ -27,7 +27,6 @@
                     <tr>
                         <th>{{ __('app.id') }}</th>
                         <th>{{ __('app.name') }}</th>
-                        <th>{{ __('app.price') }}</th>
                         <th>{{ __('app.crud_action') }}</th>
                     </tr>
                 </thead>
@@ -36,9 +35,6 @@
                         <tr>
                             <th>{{ $clientType->id }}</th>
                             <th>{{ $clientType->name }}</th>
-                            <th>
-                                {{ $clientType->moneyType->symbol }} {{ $clientType->rate }}
-                            </th>
                             <th>
                                 <div class="justify-content-between">
                                     <a class="m-2" href="{{ route('type-client.show',$clientType->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }}</a>

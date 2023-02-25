@@ -18,8 +18,8 @@ class TourSeeder extends Seeder
     {
         Tour::create([
             'title' => 'Test',
-            'start' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-01-09 12:00:00'),
-            'end' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-01-09 13:00:00'),
+            'start' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-02-09 12:00:00'),
+            'end' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-02-09 13:00:00'),
             'info' => 'Auto',
             'state' =>1,
             'type' =>1,
@@ -28,8 +28,8 @@ class TourSeeder extends Seeder
 
         Tour::create([
             'title' => 'Test',
-            'start' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-01-09 14:00:00'),
-            'end' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-01-09 15:00:00'),
+            'start' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-02-09 14:00:00'),
+            'end' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-02-09 15:00:00'),
             'info' => 'Auto',
             'state' =>1,
             'type' =>1,
@@ -38,8 +38,8 @@ class TourSeeder extends Seeder
 
         Tour::create([
             'title' => 'Test',
-            'start' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-01-10 09:00:00'),
-            'end' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-01-10 10:00:00'),
+            'start' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-02-10 09:00:00'),
+            'end' => Carbon::createFromFormat('Y-m-d H:i:s', '2023-02-10 10:00:00'),
             'info' => 'Auto',
             'state' =>1,
             'type' =>1,

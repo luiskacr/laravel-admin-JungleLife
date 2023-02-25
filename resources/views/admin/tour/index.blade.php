@@ -1,12 +1,11 @@
 @extends('admin.template')
 
 @php
-    $title = __('app.tour');
-    $breadcrumbs = ['Inicio'=> route('admin.home'),'Tours'=>false];
+    $title = __('app.tours_active');
+    $breadcrumbs = [__('app.home')=> route('admin.home'),'Tours'=>false];
 @endphp
 
 @section('content')
-
     <div class="card">
         <div class="card-header">
             <div class="container-fluid">
@@ -28,6 +27,9 @@
                 <tr>
                     <th>{{ __('app.id') }}</th>
                     <th>{{ __('app.name') }}</th>
+                    <th>{{ __('app.tour_states_singular') }}</th>
+                    <th>{{ __('app.available_space') }}</th>
+                    <th>{{ __('app.tour_type_singular') }}</th>
                     <th>{{ __('app.crud_action') }}</th>
                 </tr>
                 </thead>
@@ -36,6 +38,9 @@
                     <tr>
                         <th>{{ $tour->id }}</th>
                         <th>{{ $tour->title }}</th>
+                        <th>{{ $tour->tourState->name }}</th>
+                        <th>{{ $tour->availableSpace() }}</th>
+                        <th>{{ $tour->tourType->name }}</th>
 
                         <th>
                             <div class="justify-content-between">
@@ -53,13 +58,10 @@
             </table>
         </div>
     </div>
-
-
 @endsection
 
 @push('page-scripts')
     <script>
-
         function deleteItem(id, name){
             let token = '{{ csrf_token()  }}';
             let route = '{{ route('tours.destroy',0) }}';

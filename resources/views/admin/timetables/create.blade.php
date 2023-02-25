@@ -65,6 +65,24 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="col-12">
+                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                        <label class="form-label" for="tour-state">{{ __('app.tour_type_singular') }}</label>
+                        <select id="tour-state" class="form-select" name="tour-state">
+                            <option value="0" selected>{{ __('app.select_tour_type') }}</option>
+                            @foreach($tourTypes as $tourType)
+                                <option value="{{ $tourType->id }}">{{ $tourType->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('tour-state')
+                        <div class="text-danger">
+                            <div data-field="name">* {{$message}}</div>
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="col-12">
                     <div class="text-primary">{{ __('app.auto_message') }}</div>
                 </div>

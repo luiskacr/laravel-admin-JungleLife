@@ -143,6 +143,19 @@
 
                 locale:'es',
 
+                timeFormat: 'H(:mm)',
+
+                slotLabelFormat:{
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                    meridiem: 'short',
+                },
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                },
 
                 themeSystem: 'bootstrap5',
 

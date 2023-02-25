@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tour;
+use App\Models\TourClient;
+use App\Models\TourGuides;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -39,8 +41,8 @@ class CalendarController extends Controller
                     $data[]=[
                         'id'=>  $event->id,
                         'title' =>  $event->title,
-                        'start' =>  $event->start,
-                        'end' =>  $event->end,
+                        'start' =>  Carbon::parse($event->start)->format('Y-m-d H:i:s'),
+                        'end' =>  Carbon::parse($event->end)->format('Y-m-d H:i:s'),
                         'backgroundColor' => $event->state == 1 ? "#378006" : "#696cff",
                         'borderColor' => $event->state == 1 ? "#378006" : "#696cff",
                         'color' => $event->state == 1 ? "#378006" : "#696cff",
@@ -69,6 +71,8 @@ class CalendarController extends Controller
     public function getInfoTour($id)
     {
         $tour = Tour::findOrFail($id);
+        $tourGuides = TourGuides::where('tour','=',$id)->get();
+        $tourClients = TourClient::where('tour','=',$id)->get();
 
         return response()->json([
             'title' => $tour->title,
@@ -79,8 +83,8 @@ class CalendarController extends Controller
             'state' => $tour->tourState->name,
             'type' => $tour->tourType->name,
             'user' => $tour->getUser->name,
-            'guides' => 0,
-            'clients' => 0,
+            'guides' => $tourGuides->count(),
+            'clients' => $tourClients->count(),
             'route' => route('tours.show',$id)
         ],200);
     }

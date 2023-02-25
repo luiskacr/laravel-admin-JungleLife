@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('tour')->references('id')->on('tours');
             $table->foreignId('client')->references('id')->on('customers');
+            $table->integer('bookings');
             $table->timestamps();
         });
     }

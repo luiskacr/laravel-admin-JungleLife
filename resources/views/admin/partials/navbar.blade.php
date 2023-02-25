@@ -23,10 +23,10 @@
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        @if(auth()->user()->avatar == null)
+                        @if(auth()->user()->avatars == null)
                             <img src="https://ui-avatars.com/api/?background=3B574B&color=fff&bold=true&name={{auth()->user()->name }}" alt class="w-px-40 h-auto rounded-circle" />
                         @else
-                            <img src="{{ asset(auth()->user()->avatar ) }}" alt class="w-px-40 h-auto rounded-circle" />
+                            <img src="{{ asset(auth()->user()->avatars ) }}" alt class="w-px-40 h-auto rounded-circle" />
                         @endif
                     </div>
                 </a>

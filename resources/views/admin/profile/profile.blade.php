@@ -65,10 +65,10 @@
                             <div class="d-flex justify-content-center">
                                 <div class="avatar avatar-lg me-2">
                                     @php
-                                        if(auth()->user()->avatar == null){
+                                        if(auth()->user()->avatars == null){
                                             $image = 'https://ui-avatars.com/api/?background=3B574B&color=fff&bold=true&name='.auth()->user()->name ;
                                         }else{
-                                            $image =  asset(auth()->user()->avatar );
+                                            $image =  asset(auth()->user()->avatars );
                                         }
                                     @endphp
                                     <img src="{{$image}}" alt="Avatar" class="rounded-circle">
