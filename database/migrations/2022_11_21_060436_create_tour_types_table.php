@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('tour_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name',75);
+            $table->foreignId('money')->references('id')->on('money_types');
+            $table->decimal('fee1')->nullable();
+            $table->decimal('fee2')->nullable();
+            $table->decimal('fee3')->nullable();
+            $table->decimal('fee4')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('tour_types');
+    }
+};
