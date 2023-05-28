@@ -4,7 +4,7 @@ return [
     //Controllers message
     'error_create'=>  'Hubo un error al crear el :object',
     'error_update'=>  'Hubo un error al actualizar el :object',
-    'error_delete'=>  'Hubo un error Interno',
+    'error_delete'=>  'Hubo un error interno',
     'error_select'=>  'Debe de Seleccionar una Opcion',
     'error_tour_exist_guide'=>  'El Guia ya existe en el Tour',
     'error_tour_exist_client'=>  'El Cliente ya existe en el Tour',
