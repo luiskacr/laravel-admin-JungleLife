@@ -1,5 +1,13 @@
 /** @Luiska change's **/
 
+/**
+Main color: #3B574B
+Variants: #3B574B, #5E7D6A, #819F89, #A4C1A8.
+
+Main color lighter: #4F7363
+Variants: #4F7363, #345051, #1B2E2F, #001314.
+**/
+
 :root {
     --main-color: #3B574B;
     --main-color-lighter: #4F7363;
@@ -28,7 +36,17 @@ a:hover {
     box-shadow: 0 0 0.25rem 0.05rem var(--main-color-lighter);
 }
 
-/* Btn */
+.bg-menu-theme .menu-inner > .menu-item.active > .menu-link {
+    color: #5E7D6A;
+    background-color: rgba(59, 87, 75, 0.15) !important;
+}
+
+.bg-menu-theme .menu-inner > .menu-item.active:before {
+   border-color: #5E7D6A;
+    background-color: rgba(59, 87, 75, 0.15) !important;
+}
+
+    /* Btn */
 
 .btn-primary{
     background: var(--main-color);
@@ -111,6 +129,8 @@ a:hover {
     font-family: var(--bs-body-font-family);
     font-size: 14px !important;
 }
+/**
+ESTO DA ERROR, REVISAR LUEGO.
 
 .flatpickr-months .flatpickr-month {
     background: transparent;
@@ -118,6 +138,7 @@ a:hover {
     fill: var(--kt-gray-600);
     height: 46px;
 }
+**/
 
 /* Select2 */
 
