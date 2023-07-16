@@ -17,12 +17,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client')->references('id')->on('customers');
             $table->date('date');
-            $table->integer('total');
+            $table->decimal('total');
             $table->foreignId('state')->references('id')->on('invoice_states');
             $table->foreignId('type')->references('id')->on('payment_types');
             $table->foreignId('money')->references('id')->on('payment_types');
             $table->foreignId('exchange')->references('id')->on('exchange_rates');
+            $table->text('info')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

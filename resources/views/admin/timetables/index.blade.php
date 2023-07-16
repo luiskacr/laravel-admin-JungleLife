@@ -51,8 +51,13 @@
                             <div class="justify-content-between">
                                 <a class="m-2" href="{{ route('timetable.show',$timetable->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }}</a>
                                 <a class="m-2" href="{{ route('timetable.edit',$timetable->id) }}"><i class="bx bx-edit-alt me-1"></i> {{ __('app.crud_edit') }}</a>
-                                <a class="m-2" href="#" onclick="deleteItem({{ $timetable->id}},{{ json_encode($timetable->start) }},
-                                {{ json_encode(csrf_token()) }}, {{ json_encode(route('timetable.destroy',0)) }} )">
+                                <a class="m-2" href="#" onclick="deleteItem(
+                                    {{ $timetable->id}},
+                                    {{ json_encode($timetable->start) }},
+                                    {{ json_encode(csrf_token()) }},
+                                    {{ json_encode(route('timetable.destroy',0)) }} ,
+                                    '{{ __('app.timetables_singular') }}'
+                                    )">
                                     <i class="bx bx-trash me-1"></i> {{ __('app.crud_delete') }}</a>
                             </div>
                         </th>

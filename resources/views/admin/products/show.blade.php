@@ -27,7 +27,7 @@
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                         <label class="form-label" for="price">{{ __('app.price') }}</label>
-                        <input type="number" id="price" value="{{ $product->price }}" class="form-control "  name="price" disabled>
+                        <input type="text" id="price" value="{{$product->moneyType->symbol  . $product->price }}" class="form-control "  name="price" disabled>
                     </div>
                 </div>
 
@@ -38,6 +38,15 @@
                     </div>
                 </div>
 
+                @if($product->type == 1 )
+                    <div class="col-12">
+                        <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                            <label class="form-label" for="type">{{ __('app.tour_type_singular') }}</label>
+                            <input type="text" id="type" value="{{ $product->getTourType->name }}" class="form-control "  name="type" disabled>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                         <label class="form-label" for="money">{{ __('app.money_type') }}</label>
@@ -47,7 +56,7 @@
 
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                        <label class="form-label" for="description">{{ __('app.money_type') }}</label>
+                        <label class="form-label" for="description">{{ __('app.description') }}</label>
                         <input type="text" id="description" value="{{ $product->description}}" class="form-control "  name="description" disabled>
                     </div>
                 </div>

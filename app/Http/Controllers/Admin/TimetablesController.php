@@ -6,49 +6,51 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TimetablesRequest;
 use App\Models\Timetables;
 use App\Models\TourType;
+use App\Traits\ResponseTrait;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Exception;
 
 class TimetablesController extends Controller
 {
+    use ResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index()
+    public function index():View
     {
-        $timetables = Timetables::all();
-
-        return view('admin.timetables.index')->with('timetables', $timetables);
+        return view('admin.timetables.index')
+            ->with('timetables', Timetables::all() );
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create():View
     {
-        $tourTypes = TourType::all();
-
-        return view('admin.timetables.create')->with('tourTypes',$tourTypes);
+        return view('admin.timetables.create')
+            ->with('tourTypes', TourType::all());
     }
-
 
     /**
      *  Store a newly created resource in storage.
      *
      * @param TimetablesRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(TimetablesRequest $request)
+    public function store(TimetablesRequest $request):RedirectResponse
     {
         DB::beginTransaction();
         try{
-
             Timetables::create([
                 'start' => Carbon::createFromFormat('H:i:s',$request->request->get('start')),
                 'end'=> Carbon::createFromFormat('H:i:s',$request->request->get('end')),
@@ -60,51 +62,44 @@ class TimetablesController extends Controller
         }catch (Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_create', ['object' => __('app.timetables_singular')]) ;
-
-            return redirect()->route('timetable.create')->with('message',$message);
+            return $this->errorResponse('timetable.create' , $e->getMessage(), __('app.error_create', ['object' => __('app.timetables_singular') ]) );
         }
-
-        return redirect()->route('timetable.index')->with('success', __('app.success_create ',['object' => __('app.timetables_singular')] ));
+        return $this->successCreateResponse('timetable.index',__('app.timetables_singular'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function show($id)
+    public function show(int $id):View
     {
-        $timetable = Timetables::findOrFail($id);
-
-        return view('admin.timetables.show')->with('timetable',$timetable);
+        return view('admin.timetables.show')
+            ->with('timetable',Timetables::findOrFail($id) );
     }
-
 
     /**
      * Display the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function edit($id)
+    public function edit(int $id):View
     {
-        $timetable = Timetables::findOrFail($id);
-
-        $tourTypes = TourType::all();
-
-        return view('admin.timetables.edit')->with('timetable',$timetable)->with("tourTypes",$tourTypes);
+        return view('admin.timetables.edit')
+            ->with('timetable', Timetables::findOrFail($id) )
+            ->with("tourTypes", TourType::all());
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param TimetablesRequest $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(TimetablesRequest $request, $id)
+    public function update(TimetablesRequest $request, int $id):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -119,12 +114,9 @@ class TimetablesController extends Controller
         }catch (\Exception $e){
             DB:DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' => __('app.timetables_singular') ]) ;
-
-            return redirect()->route('timetable.edit')->with('message',$message);
+            return $this->errorResponse('timetable.edit' , $e->getMessage(), __('app.error_update', ['object' => __('app.timetables_singular') ]) );
         }
-
-        return redirect()->route('timetable.index')->with('success',__('app.success_update ', ['object' => __('app.timetables_singular') ]));
+        return $this->successUpdateResponse('timetable.index', __('app.timetables_singular') );
     }
 
 
@@ -132,9 +124,9 @@ class TimetablesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id):Response
     {
         DB::beginTransaction();
         try{
@@ -145,10 +137,8 @@ class TimetablesController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete')  ;
-
-            return response($message,500);
+            return $this->errorDestroyResponse( $e, __('app.error_delete'), 500 );
         }
-        return response(__('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 }

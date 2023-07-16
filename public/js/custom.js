@@ -1,4 +1,5 @@
 
+
 $(document).ready(function (){
     $('#table').dataTable({
         language: {
@@ -22,8 +23,45 @@ $(document).ready(function (){
             }
         },
         "bSort": false,
+        responsive: true,
+        
     })
 });
+
+
+(function ($, DataTable) {
+
+    // Datatable global configuration
+    $.extend(true, DataTable.defaults, {
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+        responsive: true,
+
+    });
+
+})(jQuery, jQuery.fn.dataTable);
 
 $("#date").flatpickr({
     "dateFormat": "d-m-Y",
@@ -32,9 +70,9 @@ $("#date").flatpickr({
 });
 
 
-function successToast( messaje ){
+function successToast( message ){
     Toastify({
-        text: messaje,
+        text: message,
         avatar: 'https://api.iconify.design/gridicons/checkmark.svg?color=white',
         duration: 3000,
         className: "bg-success",
@@ -50,9 +88,9 @@ function successToast( messaje ){
 
 }
 
-function dangerToast( messaje ){
+function dangerToast( message ){
     Toastify({
-        text: messaje,
+        text: message,
         avatar: 'https://api.iconify.design/ic/baseline-warning.svg?color=white',
         duration: 3000,
         className: "bg-danger",
@@ -67,9 +105,9 @@ function dangerToast( messaje ){
     }).showToast();
 }
 
-function infoToast( messaje ){
+function infoToast( message ){
     Toastify({
-        text: messaje,
+        text: message,
         avatar: 'https://api.iconify.design/bi/info-circle.svg?color=white',
         duration: 3000,
         className: "bg-info",
@@ -82,4 +120,8 @@ function infoToast( messaje ){
         },
         onClick: function(){} // Callback after click
     }).showToast();
+}
+
+function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
 }

@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserInfoRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PHPUnit\Exception;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -16,15 +19,13 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function myProfile($id)
+    public function myProfile(int $id):View
     {
-
-        $user = User::findOrFail($id);
-
-        return view('admin.profile.profile')->with('user',$user);
+        return view('admin.profile.profile')
+            ->with('user',User::findOrFail($id) );
     }
 
 
@@ -32,10 +33,10 @@ class ProfileController extends Controller
      * Update profile information
      *
      * @param UpdateUserInfoRequest $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function updateInfo(UpdateUserInfoRequest $request, $id)
+    public function updateInfo(UpdateUserInfoRequest $request,int $id):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -45,7 +46,7 @@ class ProfileController extends Controller
             ]);
 
             DB::commit();
-        }catch (Exception $e){
+        }catch (\Exception $e){
             DB::rollBack();
 
             app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' => __('app.profile2')])  ;
@@ -95,6 +96,11 @@ class ProfileController extends Controller
             DB::beginTransaction();
             try{
                 $user = User::findOrFail($id);
+
+                if (!empty($user->avatars)) {
+                    $previousAvatarPath = $user->avatars;
+                    File::delete($previousAvatarPath);
+                }
 
                 $file = $request->file('avatar');
                 $destinationPath = 'assets/avatars/';

@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 
 class ResetPasswordController extends Controller
@@ -17,31 +20,33 @@ class ResetPasswordController extends Controller
     /**
      * Display the login view.
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Routing\Redirector
+     * @return View | RedirectResponse
      */
-    public function show()
+    public function show(): View | RedirectResponse
     {
-        if(Auth::check()){
+        if(Auth::check())
+        {
             return redirect('admin.home');
         }
+
         return view('auth.passwordReset');
     }
-
 
     /**
      * Send to the user the e-mail to reset the password
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function sendResetLinkEmail(Request $request)
+    public function sendResetLinkEmail(Request $request):RedirectResponse
     {
         $this->validateEmail($request);
 
-        $user = User::where('email','=', $request->request->get('email'))->first();
+        $user = User::where('email','=', $request->request->get('email') )->first();
 
-        if($user == null) {
-
+        if($user == null)
+        {
             return redirect()->route('password.request')->with('error',__('app.mail.error'));
         }
 
@@ -52,30 +57,28 @@ class ResetPasswordController extends Controller
         return $status === Password::RESET_LINK_SENT
             ? back()->with(['status' => __($status)])
             : back()->withErrors(['email' => __($status)]);
-
     }
-
 
     /**
      * Display the Reset Password view.
      *
      * @param Request $request
      * @param $token
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function showReset(Request $request, $token = null)
+    public function showReset(Request $request, $token = null):View
     {
-        return view('auth.reset')->with(['token' => $token, 'email' => $request->email] );
+        return view('auth.reset')
+            ->with(['token' => $token, 'email' => $request->email ] );
     }
-
 
     /**
      * Performs password reset
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request):RedirectResponse
     {
         $request->validate([
             'token' => 'required',
@@ -101,13 +104,13 @@ class ResetPasswordController extends Controller
     }
 
     /**
-     * Verify mail
+     * Verify mail Format
      *
      * @param Request $request
      * @return void
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
-    protected function validateEmail(Request $request)
+    protected function validateEmail(Request $request):void
     {
         $this->validate($request,['email' => 'required|email']);
     }

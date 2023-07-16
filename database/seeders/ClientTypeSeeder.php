@@ -28,7 +28,7 @@ class ClientTypeSeeder extends Seeder
         ]);
 
         ClientType::create([
-            'name' => 'CLP'
+            'name' => 'CPL'
         ]);
     }
 }

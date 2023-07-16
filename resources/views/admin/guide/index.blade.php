@@ -21,8 +21,8 @@
                 </div>
             </div>
         </div>
-        <div class="card-datatable  table-responsive">
-            <table id="table" class="datatables-basic table border-top dataTable no-footer dtr-column">
+        <div class="card-datatable table-responsive pt-0">
+            <table id="table" class="datatables-basic table border-top">
                 <thead>
                 <tr>
                     <th>{{ __('app.id') }}</th>
@@ -44,7 +44,7 @@
                                 <a class="m-2" href="{{ route('guides.show',$guide->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }}</a>
                                 <a class="m-2" href="{{ route('guides.edit',$guide->id) }}"><i class="bx bx-edit-alt me-1"></i> {{ __('app.crud_edit') }}</a>
                                 <a class="m-2" href="#" onclick="deleteItem({{ $guide->id}},{{ json_encode($guide->name) }},
-                                {{ json_encode(csrf_token())  }}, {{ json_encode(route('guides.destroy',0)) }})">
+                                {{ json_encode(csrf_token())  }}, {{ json_encode(route('guides.destroy',0)) }}, '{{ __('app.guide_singular') }}'  )">
                                     <i class="bx bx-trash me-1"></i> {{ __('app.crud_delete') }}
                                 </a>
                             </div>

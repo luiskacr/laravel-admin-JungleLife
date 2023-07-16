@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,7 +13,7 @@ use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -47,10 +48,14 @@ class User extends Authenticatable
         'active'=> 'boolean'
     ];
 
-    /*
+    /**
      * Function to always set the password in encrypted mode
+     *
+     * @param $value
+     * @return void
      */
-    public function setPasswordAttribute($value){
+    public function setPasswordAttribute($value): void
+    {
         $this->attributes['password'] = bcrypt($value);
     }
 
@@ -60,11 +65,10 @@ class User extends Authenticatable
      * @param  string  $token
      * @return void
      */
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token):void
     {
         $this->notify(new ResetPasswordNotification($token, $this));
     }
-
 
     /**
      * Update the Role on the user
@@ -72,7 +76,7 @@ class User extends Authenticatable
      * @param $id
      * @return void
      */
-    public function updateRoleById($id)
+    public function updateRoleById($id):void
     {
         $this->roles()->detach();
 

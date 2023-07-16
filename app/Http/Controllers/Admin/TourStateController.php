@@ -5,29 +5,34 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TourStateRequest;
 use App\Models\TourState;
+use App\Traits\ResponseTrait;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class TourStateController extends Controller
 {
+    use ResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index()
+    public function index():View
     {
-        $stateTours = TourState::all();
-
-        return view('admin.tourState.index')->with('stateTours',$stateTours);
+        return view('admin.tourState.index')
+            ->with('stateTours', TourState::all() );
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create():View
     {
         return view('admin.tourState.create');
     }
@@ -36,9 +41,9 @@ class TourStateController extends Controller
      *  Store a newly created resource in storage.
      *
      * @param TourStateRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(TourStateRequest $request)
+    public function store(TourStateRequest $request):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -50,48 +55,43 @@ class TourStateController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_create', ['object' => __('app.tour_states_singular')]) ;
-
-            return redirect()->route('tour-state.create')->with('message',$message);
+            return $this->errorResponse('tour-state.create' , $e->getMessage(), __('app.error_create', ['object' => __('app.tour_states_singular') ]) );
         }
-
-        return redirect()->route('tour-state.index')->with('success', __('app.success_create ',['object' => __('app.tour_states_singular')] ));
+        return $this->successCreateResponse('tour-state.index',__('app.tour_states_singular'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function show($id)
+    public function show(int $id):View
     {
-        $tourState = TourState::findOrFail($id);
-
-        return view('admin.tourState.show')->with('tourState',$tourState);
+        return view('admin.tourState.show')
+            ->with('tourState', TourState::findOrFail($id) );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function edit($id)
+    public function edit(int $id):View
     {
-        $tourState = TourState::findOrFail($id);
-
-        return view('admin.tourState.edit')->with('tourState',$tourState);
+        return view('admin.tourState.edit')
+            ->with('tourState',TourState::findOrFail($id));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param TourStateRequest $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(TourStateRequest $request, $id)
+    public function update(TourStateRequest $request,int  $id):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -101,23 +101,20 @@ class TourStateController extends Controller
 
             DB::commit();
         }catch (\Exception $e){
-            DB:DB::rollback();
+            DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' => __('app.tour_states_singular') ]) ;
-
-            return redirect()->route('tour-state.edit')->with('message',$message);
+            return $this->errorResponse('tour-state.edit' , $e->getMessage(), __('app.error_update', ['object' => __('app.tour_states_singular') ]) );
         }
-
-        return redirect()->route('tour-state.index')->with('success',__('app.success_update ', ['object' => __('app.tour_states_singular') ]));
+        return $this->successUpdateResponse('tour-state.index', __('app.tour_states_singular') );
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id):Response
     {
         DB::beginTransaction();
         try{
@@ -128,10 +125,8 @@ class TourStateController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete')  ;
-
-            return response($message,500);
+            return $this->errorDestroyResponse( $e, __('app.error_delete'), 500 );
         }
-        return response(__('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 }

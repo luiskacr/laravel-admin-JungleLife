@@ -37,15 +37,23 @@
                     <tr>
                         <th>{{ $product->id }}</th>
                         <th>{{ $product->name }}</th>
-                        <th>{{ $product->moneyType->symbol }}{{ $product->price }}</th>
+                        @if(is_null($product->price) or $product->price == 0)
+                            <th>0</th>
+                        @else
+                            <th>{{ $product->moneyType->symbol }}{{ $product->price }}</th>
+                        @endif
                         <th>{{ $product->productType->name }}</th>
                         <th>
                             <div class="justify-content-between">
                                 <a class="m-2" href="{{ route('product.show',$product->id) }}"><i class="bx bxs-show me-1"></i>{{ __('app.crud_show') }}</a>
-                                <a class="m-2" href="{{ route('product.edit',$product->id) }}"><i class="bx bx-edit-alt me-1"></i>{{ __('app.crud_edit') }}</a>
-                                <a class="m-2" href="#" onclick="deleteItem({{ $product->id}},{{ json_encode($product->name)}},
-                                {{json_encode(csrf_token()) }},{{ json_encode(route('product.destroy',0)) }} )">
-                                    <i class="bx bx-trash me-1"></i>{{ __('app.crud_delete') }}</a>
+                                @if($product->price !=null)
+
+                                    <a class="m-2" href="{{ route('product.edit',$product->id) }}"><i class="bx bx-edit-alt me-1"></i>{{ __('app.crud_edit') }}</a>
+                                    <a class="m-2" href="#" onclick="deleteItem({{ $product->id}},{{ json_encode($product->name)}},
+                                        {{json_encode(csrf_token()) }},{{ json_encode(route('product.destroy',0)) }} )">
+                                        <i class="bx bx-trash me-1"></i>{{ __('app.crud_delete') }}</a>
+
+                                @endif
                             </div>
                         </th>
                     </tr>

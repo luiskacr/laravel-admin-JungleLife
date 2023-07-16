@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Guides extends Model
 {
@@ -29,7 +30,12 @@ class Guides extends Model
         'type' => 'integer',
     ];
 
-    public function guidesType()
+    /**
+     * Return a Relation Guides Type
+     *
+     * @return BelongsTo
+     */
+    public function guidesType():BelongsTo
     {
         return $this->belongsTo(GuidesType::class,'type','id');
     }

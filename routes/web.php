@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ExchangeRateController;
 use App\Http\Controllers\Admin\GuidesController;
 use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\InvoiceController;
@@ -56,6 +57,8 @@ Route::group([
     function(){
         //Home Route
         Route::get('/',[\App\Http\Controllers\Home\HomeController::class,'show'])->name('admin.home');
+        Route::get('/getTableReport',[\App\Http\Controllers\Home\HomeController::class,'getTableReport'])->name('admin.tableReport');
+
         //Logout Route
         Route::post('/logout',[\App\Http\Controllers\Auth\LoginController::class,'logout'])->name('logout');
 
@@ -83,6 +86,21 @@ Route::group([
         Route::Post('booking/tour/',[\App\Http\Controllers\Admin\BookingController::class,'booking'])->name('booking.tour');
         Route::get('booking/thanks/{id}',[\App\Http\Controllers\Admin\BookingController::class,'thanks'])->name('booking.thanks');
 
+        //Exchange
+        Route::post('/exchange-rate/search',[ExchangeRateController::class,'searchNewExchangeRate'])->name('exchange-rate.search');
+
+        //Approvals
+        Route::get('/approvals', [\App\Http\Controllers\Admin\ApprovalController::class, 'index'])->name('approvals.index');
+        Route::post('/approvals', [\App\Http\Controllers\Admin\ApprovalController::class, 'store'])->name('approvals.store');
+        Route::get('/approvals/create', [\App\Http\Controllers\Admin\ApprovalController::class, 'create'])->name('approvals.create');
+        Route::post('/approvals/get-tour-values', [\App\Http\Controllers\Admin\ApprovalController::class, 'getTourSpacesValues'])->name('approvals.tour-values');
+        Route::get('/approvals/{id}/edit', [\App\Http\Controllers\Admin\ApprovalController::class, 'edit'])->name('approvals.edit');
+        Route::post('/approvals/{id}/update', [\App\Http\Controllers\Admin\ApprovalController::class, 'update'])->name('approvals.update');
+
+        //Invoice
+        Route::resource('invoice',InvoiceController::class)->only(["index","show", "destroy","edit","update"]);
+        Route::get('invoice/{id}/mail',[InvoiceController::class,'showInvoice'])->name('invoice.show-invoice');
+        Route::post('invoice/{id}/send',[InvoiceController::class,'sendInvoice'])->name('invoice.send-invoice');
 
         //Crud's Routes
         Route::resource('type-client',ClientTypeController::class);
@@ -96,8 +114,8 @@ Route::group([
         Route::resource('timetable',TimetablesController::class);
         Route::resource('product',ProductController::class);
         Route::resource('product-type',ProductTypeController::class);
-        Route::resource('invoice',InvoiceController::class);
         Route::resource('tour-history',HistoryController::class)->only(["index","show"]);
+        Route::resource('exchange-rate',ExchangeRateController::class)->only(["index"]);
 
         //Tour Options
         Route::Post('/tours/{id}/guide', [\App\Http\Controllers\Admin\TourOptionsController::class,'setTourGuide'])->name('tour.guide.create');
@@ -106,6 +124,7 @@ Route::group([
         Route::Post('/tours/{id}/costumer/search',[\App\Http\Controllers\Admin\TourOptionsController::class,'searchCustomer'])->name('tour.costumer.search');
         Route::Post('/tours/{id}/costumer',[\App\Http\Controllers\Admin\TourOptionsController::class,'setClientTour'])->name('tour.costumer.create');
         Route::Post('/tours/{id}/costumer/create',[\App\Http\Controllers\Admin\TourOptionsController::class,'createClient'])->name('tour.costumer.make');
+        Route::Post('/tours/{id}/set/costumer-guide',[\App\Http\Controllers\Admin\TourOptionsController::class,'setGuideToCustomer'])->name('tour.costumer.guide');
         Route::Post('/tours/costumer/valid-email',[\App\Http\Controllers\Admin\TourOptionsController::class,'validateCustomerEmail'])->name('tour.costumer.email');
         Route::Post('/tours/costumer/present',[\App\Http\Controllers\Admin\TourOptionsController::class,'presentCostumer'])->name('tour.costumer.present');
 

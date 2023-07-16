@@ -7,17 +7,17 @@ use App\Models\Tour;
 use App\Models\TourClient;
 use App\Models\TourGuides;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class CalendarController extends Controller
 {
-
     /**
-     * Display a Calendar
+     * Display a View with the Calendar
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function show()
+    public function show(): View
     {
         return view('admin.calendar.show');
     }
@@ -43,9 +43,9 @@ class CalendarController extends Controller
                         'title' =>  $event->title,
                         'start' =>  Carbon::parse($event->start)->format('Y-m-d H:i:s'),
                         'end' =>  Carbon::parse($event->end)->format('Y-m-d H:i:s'),
-                        'backgroundColor' => $event->state == 1 ? "#378006" : "#696cff",
-                        'borderColor' => $event->state == 1 ? "#378006" : "#696cff",
-                        'color' => $event->state == 1 ? "#378006" : "#696cff",
+                        'backgroundColor' => $event->state == 1 ? "#378006" : "#808080;",
+                        'borderColor' => $event->state == 1 ? "#378006" : "#808080;",
+                        'color' => $event->state == 1 ? "#378006" : "#808080;",
                         'className' => $event->state == 1 ? "event-open" : "event-close",
                     ];
                 }
@@ -55,7 +55,7 @@ class CalendarController extends Controller
             return response()->json($events);
         }catch (\Exception $e){
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
+            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete');
 
             return response($message,500);
         }

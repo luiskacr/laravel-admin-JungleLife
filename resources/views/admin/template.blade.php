@@ -29,22 +29,18 @@
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{asset('assets/icons/boxicons.css')}}"/>
+    <!-- Vendors CSS-->
+    <link rel="stylesheet" href=" {{ asset('vendor/dataTables@1.13.5/datatables.css') }}"/>
+    <link rel="stylesheet" href=" {{ asset('vendor/perfect-scrollbar/perfect-scrollbar.css') }}"/>
+    <link rel="stylesheet" href=" {{ asset('vendor/flatpick@4.6.13/flatpickr.min.css') }}"/>
+    <link rel="stylesheet" href=" {{ asset('vendor/select2@4.1.0/dist/css/select2.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/toastify/toastify.min.css') }}">
+    <script type="text/javascript" src="{{ asset('vendor/toastify/toastify-js.js') }}"></script>
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('css/core.css' )}}"/>
     <link rel="stylesheet" href="{{ asset('css/theme-default.css') }}" class="template-customizer-theme-css"/>
     <link rel="stylesheet" href="{{ asset('css/demo.css') }}"/>
-
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href=" {{ asset('vendor/perfect-scrollbar/perfect-scrollbar.css') }}"/>
-    <link rel="stylesheet" href=" {{ asset('vendor/dataTables/datatables.min.css') }}"/>
-    <link rel="stylesheet" href=" {{ asset('vendor/flatpick@4.6.13/flatpickr.min.css') }}"/>
-    <link rel="stylesheet" href=" {{ asset('vendor/select2@4.1.0/dist/css/select2.min.css') }}"/>
-    <!-- Toast  -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/toastify/toastify.min.css') }}">
-    <script type="text/javascript" src="{{ asset('vendor/toastify/toastify-js.js') }}"></script>
-
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}"/>
@@ -83,13 +79,14 @@
 <!-- endbuild -->
 
 <!-- Vendors JS -->
-<script src="{{ asset('vendor/dataTables/datatables.min.js') }}"></script>
+<script src="{{ asset('vendor/dataTables@1.13.5/datatables.min.js') }}"></script>
 <script src="{{ asset('vendor/fullcalendar@6.0.2/dist/index.global.min.js') }}"></script>
 <script src="{{ asset('vendor/fullcalendar@6.0.2/packages/core/locales-all.global.min.js') }}"></script>
 <script src="{{ asset('vendor/fullcalendar@6.0.2/packages/bootstrap5/index.global.min.js') }}"></script>
 <script src="{{ asset('vendor/flatpick@4.6.13/flatpickr.js') }}"></script>
 <script src="{{ asset('vendor/flatpick@4.6.13/es.js') }}"></script>
 <script src="{{ asset('vendor/select2@4.1.0/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('vendor/select2@4.1.0/dist/js/i18n/es.js') }}"></script>
 
 
 <!-- Main JS -->

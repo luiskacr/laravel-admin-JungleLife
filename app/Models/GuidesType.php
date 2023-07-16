@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GuidesType extends Model
 {
@@ -18,7 +19,12 @@ class GuidesType extends Model
         'name',
     ];
 
-    public function guide()
+    /**
+     * Return a Guide Relation
+     *
+     * @return HasMany
+     */
+    public function guide():hasMany
     {
         return $this->hasMany(Guides::class,'type','id');
     }

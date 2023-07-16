@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Timetables extends Model
 {
@@ -33,7 +34,12 @@ class Timetables extends Model
         'type' => 'integer'
     ];
 
-    public function tourType()
+    /**
+     * Return a Tour Type Relation
+     *
+     * @return BelongsTo
+     */
+    public function tourType():belongsTo
     {
         return $this->belongsTo(TourType::class,'type','id');
     }

@@ -89,9 +89,15 @@ class TourOptionsController extends Controller
         $search = $request->search;
 
         if($search==''){
-            $customers = Customer::orderby('id','desc')->select('id','name','email')->limit(5)->get();
+            $customers = Customer::orderby('id','desc')->select('id','name','email')
+                ->limit(5)
+                ->get();
         }else{
-            $customers = Customer::orderby('name','asc')->select('id','name','email')->where('name', 'like', '%' .$search . '%')->limit(5)->get();
+            $customers = Customer::orderby('name','asc')->select('id','name','email')
+                ->where('name', 'like', '%' .$search . '%')
+                ->orWhere('email', 'like', '%' .$search . '%')
+                ->limit(5)
+                ->get();
         }
         $response = array();
         foreach($customers as $customer){
@@ -164,6 +170,35 @@ class TourOptionsController extends Controller
 
         return response()->json([
             'message' => __('app.success_is_present')
+        ]);
+    }
+
+    public function setGuideToCustomer(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+
+            $tourClients = TourClient::findOrFail($request->request->getInt('tourClients'));
+
+            $tourClients->update([
+                'guides' => $request->request->getInt('value') == 0
+                    ? null
+                    : $request->request->getInt('value')
+            ]);
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+
+            app()->hasDebugModeEnabled()
+                ? $message = $e->getMessage()
+                : $message = __('app.error_delete') ;
+
+            return response($message,500);
+        }
+
+        return response()->json([
+            'message' => __('app.success_set_guide_to_costumer')
         ]);
     }
 

@@ -2,47 +2,52 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\CustomerDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\ClientType;
+use App\Models\Configuration;
 use App\Models\Customer;
-use Illuminate\Http\Request;
+use App\Models\TourClient;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\View\View;
 
 class ClientController extends Controller
 {
+    use ResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @param CustomerDataTable $dataTable
+     * @return mixed
      */
-    public function index()
+    public function index(CustomerDataTable $dataTable):mixed
     {
-        $clients = Customer::all();
-
-        return view('admin.client.index')->with('clients',$clients);
+        return $dataTable->render('admin.client.index');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create():View
     {
-        $clientTypes = ClientType::all();
-
-        return view('admin.client.create')->with('clientTypes',$clientTypes);
+        return view('admin.client.create')
+            ->with('clientTypes', ClientType::all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param ClientRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(ClientRequest $request)
+    public function store(ClientRequest $request):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -57,39 +62,38 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_create', ['object' => __('app.type_client_singular')]) ;
-
-            return redirect()->route('clients.create')->with('message',$message);
+            return $this->errorResponse('clients.create', $e->getMessage(),  __('app.error_create', ['object' => __('app.customer_single') ]) );
         }
-        return redirect()->route('clients.index')->with('success',__('app.success_create ',['object' => __('app.type_client_singular') ] ));
+        return $this->successCreateResponse('clients.index',__('app.customer_single'));
     }
 
     /**
      * Display the specified resource.
      *
      * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function show($id)
+    public function show($id):View
     {
-        $client = Customer::findOrFail($id);
+        $config = Configuration::findOrFail(4);
 
-        return view('admin.client.show')->with('client',$client);
+        return view('admin.client.show')
+            ->with('client', Customer::findOrFail($id) )
+            ->with('tourClients', TourClient::where('client', '=', $id)->get() )
+            ->with('prefix',$config->data['value']);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function edit($id)
+    public function edit($id):View
     {
-        $client = Customer::findOrFail($id);
-
-        $clientTypes = ClientType::all();
-
-        return view('admin.client.edit')->with('client',$client)->with('clientTypes',$clientTypes);
+        return view('admin.client.edit')
+            ->with('client', Customer::findOrFail($id) )
+            ->with('clientTypes',ClientType::all());
     }
 
     /**
@@ -97,9 +101,9 @@ class ClientController extends Controller
      *
      * @param ClientRequest $request
      * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(ClientRequest $request, $id)
+    public function update(ClientRequest $request, $id):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -114,23 +118,22 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_update', ['object' => __('app.type_client_singular')]) ;
-
-            return redirect()->route('clients.edit')->with('message',$message);
+            return $this->errorResponse('clients.edit', $e->getMessage(),  __('app.error_update', ['object' => __('app.customer_single')] ));
         }
-        return redirect()->route('clients.index')->with('success',__('app.success_update ',['object' => __('app.type_client_singular') ]) );
+        return $this->successUpdateResponse('clients.index', __('app.customer_single') );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id):Response
     {
         DB::beginTransaction();
         try{
+
             $client = Customer::findOrFail($id);
             $client->delete();
 
@@ -138,10 +141,8 @@ class ClientController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
-
-            return response($message,500);
+            return $this->errorDestroyResponse( $e , __('app.error_delete'), 500 );
         }
-        return response(__('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 }

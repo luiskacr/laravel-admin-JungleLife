@@ -42,10 +42,10 @@
                             <div class="d-flex justify-content-start align-items-center user-name">
                                 <div class="avatar-wrapper">
                                     <div class="avatar avatar-sm me-3">
-                                        @if($user->avatar == null)
+                                        @if( $user->avatars == null)
                                             <img src="https://ui-avatars.com/api/?background=3B574B&color=fff&bold=true&name={{ $user->name }}" alt="Avatar" class="rounded-circle">
                                         @else
-                                            <img src="{{ asset( $user->avatar ) }}" alt="Avatar" class="rounded-circle">
+                                            <img src="{{ asset( $user->avatars ) }}" alt="Avatar" class="rounded-circle">
                                         @endif
                                     </div>
                                 </div>
@@ -82,8 +82,13 @@
                                 @if( auth()->user()->id == $user->id )
                                     <a class="m-2 text-muted" href="javascript:void(0)" disabled="true"><i class="bx bx-trash me-1"></i>{{ __('app.crud_delete')}}</a>
                                 @else
-                                    <a class="m-2" href="#" onclick="deleteItem({{ $user->id}},{{ json_encode($user->name) }},
-                                    {{ json_encode(csrf_token())  }},{{ json_encode(route('users.destroy',0)) }})">
+                                    <a class="m-2" href="#" onclick="deleteItem(
+                                        {{ $user->id}},
+                                        {{ json_encode($user->name) }},
+                                        {{ json_encode(csrf_token())  }},
+                                        {{ json_encode(route('users.destroy',0)) }},
+                                        '{{ __('app.user_singular') }}'
+                                        )">
                                         <i class="bx bx-trash me-1"></i>{{ __('app.crud_delete')}}</a>
                                 @endif
                             </div>

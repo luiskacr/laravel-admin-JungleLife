@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\ToursDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\ClientType;
-use App\Models\Customer;
 use App\Models\Guides;
 use App\Models\GuidesType;
 use App\Models\Timetables;
@@ -13,52 +13,54 @@ use App\Models\TourClient;
 use App\Models\TourGuides;
 use App\Models\TourState;
 use App\Models\TourType;
+use App\Traits\ResponseTrait;
+use App\Traits\TourTraits;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Ramsey\Uuid\Type\Time;
+use Illuminate\Validation\ValidationException;
+
 
 class TourController extends Controller
 {
+    use TourTraits, ResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @param ToursDataTable $dataTable
+     * @return mixed
      */
-    public function index()
+    public function index(ToursDataTable $dataTable):mixed
     {
-        $tours =Tour::where('state' ,'=','1')
-            ->orderBy('end', 'asc')
-            ->get();
-
-        return view('admin.tour.index')
-            ->with('tours',$tours);
+        return $dataTable->render('admin.tour.index');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create():View
     {
-        $timetables = Timetables::all();
-
-        $tourTypes = TourType::all();
-
         return view('admin.tour.create')
-            ->with('timetables',$timetables)
-            ->with('tourTypes',$tourTypes);
+            ->with('timetables', Timetables::all() )
+            ->with('tourTypes', TourType::all() );
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-        public function store(Request $request)
+    public function store(Request $request):RedirectResponse
     {
         $this->validateCreateRequest($request);
 
@@ -67,84 +69,62 @@ class TourController extends Controller
 
             $timetable = Timetables::findOrFail($request->request->getInt('time'));
 
-            Tour::create([
-                'title' =>  __('app.tour_singular') . ' del ' .  Carbon::parse($request->request->get('date'))->format('d/m/Y') . ' ' . __('app.from'). Carbon::parse($timetable->start)->format('g:i A'). __('app.to') . Carbon::parse($timetable->end)->format('g:i A') ,
-                'start' => Carbon::parse($request->request->get('date'). ' '. Carbon::parse($timetable->start)->format('g:i A'))->format('Y-m-d H:i:s') ,
-                'end' => Carbon::parse($request->request->get('date'). ' '. Carbon::parse($timetable->end)->format('g:i A'))->format('Y-m-d H:i:s'),
-                'info' => $request->request->get('info'),
-                'state' => 1,
-                'type' => 1,
-                'user' => Auth::user()->id,
-            ]);
+            $this->creatTour($timetable, Carbon::parse($request->request->get('date')), Auth::user()->id , $request->request->get('info') );
 
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_create', ['object' => __('app.tour_singular')]) ;
-
-            return redirect()->route('tours.create')->with('message',$message);
+            return $this->errorResponse('tours.create' , $e->getMessage(), __('app.error_create', ['object' => __('app.tour_singular') ]) );
         }
-        return redirect()->route('tours.index')
-            ->with('success',__('app.success_create ',['object' => __('app.tour_singular') ] ));
+        return $this->successCreateResponse('tours.index',__('app.tour_singular'));
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\View |\Illuminate\Http\RedirectResponse
+     * @return View
      */
-    public function show($id)
+    public function show(int $id):View
     {
         $tour = Tour::findOrFail($id);
 
-        if($tour->state != 1 ){
-            return redirect()->route('tour-history.index')
-                ->with('error',__('app.error_not_found',['object' => __('app.tour_singular') ] ));
+        if($tour->state != 1 )
+        {
+            $this->errorAbort404();
         }
-
-        $tour_has_guides = TourGuides::all()->where('tour','=',$id);
-        $guides = Guides::all();
-        $typeGuides = GuidesType::all();
-        $clientTypes = ClientType::all();
-        $tour_has_clients = TourClient::all()->where('tour','=',$id);
 
         return view('admin.tour.show')
             ->with('tour',$tour)
-            ->with('tourGuides',$tour_has_guides)
-            ->with('guides',$guides)
-            ->with('typeGuides',$typeGuides)
-            ->with('clients',$tour_has_clients)
-            ->with('clientTypes',$clientTypes);
+            ->with('tourGuides',TourGuides::all()->where('tour','=',$id))
+            ->with('guides',Guides::all())
+            ->with('typeGuides', GuidesType::all())
+            ->with('clients',TourClient::all()->where('tour','=',$id))
+            ->with('clientTypes',ClientType::all())
+            ->with('selectedGuides',$tour->selectedGuides());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return View
      */
-    public function edit($id)
+    public function edit(int $id):View
     {
         $tour = Tour::findOrFail($id);
 
-        if($tour->state != 1 ){
-            return redirect()->route('tour-history.index')
-                ->with('error',__('app.error_not_found',['object' => __('app.tour_singular') ] ));
+        if($tour->state != 1 )
+        {
+            $this->errorAbort404();
         }
-
-        $tourStates = TourState::all();
-
-        $tourTypes = TourType::all();
-
-        $timetables = Timetables::all();
 
         return view('admin.tour.edit')
             ->with('tour',$tour)
-            ->with('tourStates',$tourStates)
-            ->with('tourTypes',$tourTypes)
-            ->with('timetables',$timetables);
+            ->with('tourStates', TourState::all())
+            ->with('tourTypes', TourType::all())
+            ->with('timetables',Timetables::all());
     }
 
     /**
@@ -152,9 +132,10 @@ class TourController extends Controller
      *
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id):RedirectResponse
     {
         $this->validateUpdateRequest($request);
 
@@ -163,7 +144,8 @@ class TourController extends Controller
 
             $timetable = Timetables::findOrFail($request->request->getInt('time'));
 
-            Tour::whereId($id)->update([
+            $tour = Tour::findOrFail($id);
+            $tour->update([
                 'title' => $request->request->get('name'),
                 'start' => Carbon::parse($request->request->get('date'). ' '. Carbon::parse($timetable->start)->format('g:i A'))->format('Y-m-d H:i:s') ,
                 'end' => Carbon::parse($request->request->get('date'). ' '. Carbon::parse($timetable->end)->format('g:i A'))->format('Y-m-d H:i:s'),
@@ -176,29 +158,26 @@ class TourController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_update', ['object' => __('app.tour_singular')]) ;
-
-            return redirect()->route('tours.update',$id)->with('message',$message);
+            return $this->errorResponse('tours.update' , $e->getMessage(), __('app.error_update', ['object' => __('app.tour_singular') ]) );
         }
+        return $this->successUpdateResponse('tours.index', __('app.tour_singular') );
 
-        return redirect()->route('tours.index')
-            ->with('success',__('app.success_update',['object' => __('app.tour_singular') ] ));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response | JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id):Response | JsonResponse
     {
         DB::beginTransaction();
         try{
             $tour = Tour::findOrFail($id);
 
             if($tour->state != 1 ){
-                return response("Error",404);
+                return $this->errorJsonResponse('', 'Not Found',null , 404);
             }
 
             $tour->delete();
@@ -207,53 +186,10 @@ class TourController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
-
-            return response($message,500);
+            return $this->errorDestroyResponse( $e , __('app.error_delete'), 500 );
         }
-        return response(__('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 
-    /**
-     *  Validate the Create Request Form
-     *
-     * @param Request $request
-     * @return void
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function validateCreateRequest(Request $request)
-    {
-        $rules = [
-            'date' => 'required|date',
-            'time' => 'required|not_in:0',
-        ];
 
-        $attrubutes =[
-            'date' => __('app.date'),
-            'time' => __('app.timetables'),
-        ];
-
-        $this->validate($request, $rules, [], $attrubutes);
-    }
-
-    public function validateUpdateRequest(Request $request)
-    {
-        $rules = [
-            'name' => 'required|min:2|max:100',
-            'date' => 'required|date',
-            'time' => 'required|not_in:0',
-            'tour-state' => 'required|not_in:0',
-            'info' => 'max:500',
-        ];
-
-        $attrubutes =[
-            'name' => __('app.name'),
-            'date' => __('app.date'),
-            'time' => __('app.timetables'),
-            'tour-state' => __('app.tour_states_singular'),
-            'info' => __('app.info_tours'),
-        ];
-
-        $this->validate($request, $rules, [], $attrubutes);
-    }
 }

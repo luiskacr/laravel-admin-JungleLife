@@ -19,8 +19,10 @@ return new class extends Migration
             $table->string('description',250)->nullable();
             $table->decimal('price')->nullable();
             $table->foreignId('type')->references('id')->on('product_types');
+            $table->foreignId('tourType')->nullable()->references('id')->on('tour_types');
             $table->foreignId('money')->references('id')->on('money_types');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

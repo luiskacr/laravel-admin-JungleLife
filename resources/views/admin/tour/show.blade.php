@@ -14,6 +14,12 @@
         #table_wrapper {
             padding: 0px;
         }
+        #table{
+            width: inherit !important;
+        }
+        #tableClients{
+            width: inherit !important;
+        }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="card">
@@ -84,10 +90,13 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="col-md-12 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                            <label class="form-label" for="tourState">{{ __('app.tour_states_singular') }}</label>
-                            <textarea type="text" id="tourState"  class="form-control "   disabled>{{ $tour->info }}</textarea>
+                        <div class="row">
+                            <div class="col-md-12 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="tourState">{{ __('app.tour_states_singular') }}</label>
+                                <textarea type="text" id="tourState"  class="form-control "   disabled>{{ $tour->info }}</textarea>
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="tab-pane fade" id="navs-top-profile" role="tabpanel">
@@ -151,44 +160,63 @@
                             </div>
 
                         </div>
-
-                        <div class="card-datatable  table-responsive">
-                            <table id="table" class="datatables-basic table border-top dataTable no-footer dtr-column">
-                                <thead>
+                    </div>
+                    <div class="card-datatable table-responsive pt-0">
+                        <table id="table" class="datatables-basic table border-top">
+                            <thead>
+                            <tr>
+                                <th>{{ __('app.name') }}</th>
+                                <th>{{ __('app.email') }}</th>
+                                <th>{{ __('app.quantity2') }}</th>
+                                <th>{{ __('app.quantity_royalties') }}</th>
+                                <th>{{ __('app.present') }}</th>
+                                <th>{{ __('app.guide') }}</th>
+                                <th>{{ __('app.crud_action') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($clients as $client)
                                 <tr>
-                                    <th>{{ __('app.name') }}</th>
-                                    <th>{{ __('app.email') }}</th>
-                                    <th>{{ __('app.quantity2') }}</th>
-                                    <th>{{ __('app.present') }}</th>
-                                    <th>{{ __('app.crud_action') }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($clients as $client)
-                                    <tr>
-                                        <th>{{ $client->getClient->name }}</th>
-                                        <th>{{ $client->getClient->email }}</th>
-                                        <th>{{ $client->getCount() }}</th>
-                                        <th>
-                                            <div class="form-check form-switch mb-2">
-                                                <input class="form-check-input" type="checkbox" id="present"  {{ $client->present ? 'checked' : ''}} onchange="isPresent( {{ $client->id }} )" >
-                                                <label class="form-check-label" for="present">Presente</label>
-                                            </div>
-                                        </th>
-                                        <th>
-                                            <div class="justify-content-between">
-                                                <a class="m-2" href="{{ route('clients.show',$client->getClient->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }}</a><br>
-                                                <a class="m-2" href="#" onclick="deleteItem({{ $client->getClient->id}},{{ json_encode($client->getClient->name) }},
+                                    <th>{{ $client->getClient->name }}</th>
+                                    <th>{{ $client->getClient->email }}</th>
+                                    <th>{{ $client->bookings }}</th>
+                                    <th>{{ $client->royalties}}</th>
+                                    <th>
+                                        <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" id="present"  {{ $client->present ? 'checked' : ''}} onchange="isPresent( {{ $client->id }} )" >
+                                            <label class="form-check-label" for="present">Presente</label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="">
+                                            <select  class="form-select" onchange="selectClientGuide(this, {{ json_encode($client->id) }})">
+                                                @if( $client->guides == null)
+                                                    <option value="0" selected>{{ __('app.select_guide') }}</option>
+                                                @else
+                                                    <option value="0">{{ __('app.select_guide') }}</option>
+                                                @endif
+                                                @foreach($selectedGuides as $guide)
+                                                    @if($client->guides == $guide->id)
+                                                        <option value="{{ $guide->id }}" selected>{{$guide->name}}  {{$guide->lastName}}</option>
+                                                    @else
+                                                        <option value="{{ $guide->id }}">{{$guide->name}}  {{$guide->lastName}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="justify-content-between">
+                                            <a class="m-2" href="{{ route('clients.show',$client->getClient->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }}</a><br>
+                                            <a class="m-2" href="#" onclick="deleteItem({{ $client->getClient->id}},{{ json_encode($client->getClient->name) }},
                                                 {{ json_encode(csrf_token()) }}, {{ json_encode(route('clients.destroy',0)) }} )">
-                                                    <i class="bx bx-trash me-1"></i> {{ __('app.crud_delete') }}</a>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
+                                                <i class="bx bx-trash me-1"></i> {{ __('app.crud_delete') }}</a>
+                                        </div>
+                                    </th>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -409,6 +437,8 @@
                     }
                 },
                 "bSort": false,
+                responsive: true,
+
             })
         });
 
@@ -454,6 +484,8 @@
             const value = selectOption.value;
             const route = '{{ route('tour.guide.create',$tour->id) }}'
             let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            console.log(value)
 
             if(value === '0'){
                 document.getElementById('guideError').style.visibility = 'visible'
@@ -958,9 +990,44 @@
             })
         }
 
-        function sleep (time) {
-            return new Promise((resolve) => setTimeout(resolve, time));
+        function selectClientGuide(value, tourClient){
+            let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            let route = '{{ route('tour.costumer.guide', $tour->id ) }}'
+            let tour = {{ $tour->id }};
+
+            let data = {
+                tour: tour,
+                tourClients : tourClient,
+                value : Number(value.value)
+            }
+
+            fetch(route,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json, text-plain, */*",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-TOKEN": token
+                },
+                credentials: "same-origin",
+                body: JSON.stringify(data)
+            }).then(result => result.json().then( data => {
+                Swal.fire(
+                    '{{ __('app.success') }}',
+                    data.message,
+                    'success'
+                )
+            })).catch(error => {
+                sleep(500).then(() => {
+                    Swal.fire(
+                        '{{ __('app.delete_error') }}',
+                        '{{ __('app.error_delete') }}',
+                        'error'
+                    )
+                });
+            })
         }
+
 
     </script>
 @endpush

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +21,7 @@ class Product extends Model
         'description',
         'price',
         'type',
+        'tourType',
         'money',
     ];
 
@@ -30,17 +33,37 @@ class Product extends Model
     protected $casts = [
         'price' => 'decimal:2',
         'type' => 'integer',
+        'tourType' => 'integer',
         'money' => 'integer',
     ];
 
-
-    public function moneyType()
+    /**
+     * Return a Money Type Relation
+     *
+     * @return BelongsTo
+     */
+    public function moneyType():belongsTo
     {
         return $this->belongsTo(MoneyType::class,'money','id');
     }
 
-    public function productType()
+    /**
+     * Return a Product Type Relation
+     *
+     * @return BelongsTo
+     */
+    public function productType():belongsTo
     {
         return $this->belongsTo(ProductType::class,'type','id');
+    }
+
+    /**
+     * Return a Tour Type Relation
+     *
+     * @return BelongsTo
+     */
+    public function getTourType():belongsTo
+    {
+        return $this->belongsTo(TourType::class,'tourType','id');
     }
 }

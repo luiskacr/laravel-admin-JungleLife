@@ -66,9 +66,9 @@
                             <tr>
                                 <th scope="col">{{ $counter }}</th>
                                 <th scope="col">{{ $product->getProduct->name }}</th>
-                                <th scope="col">{{  $product->getProduct->moneyType->symbol . $product->getProduct->price }}</th>
+                                <th scope="col">{{ $product->getMoney->symbol . $product->price }}</th>
                                 <th scope="col">{{ $product->quantity }}</th>
-                                <th scope="col">{{ $product->getProduct->moneyType->symbol . $product->total }}</th>
+                                <th scope="col">{{ $product->getMoney->symbol . $product->total }}</th>
                             </tr>
                             @php
                                 $counter++;

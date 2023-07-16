@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Console\Commands\ExchangeRate;
+use App\Console\Commands\DailyExchangeRate;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MoneyTypeSeeder::class);
         $this->call(TourStateSeeder::class);
         $this->call(TourTypeSeeder::class);
-        $this->call(TourSeeder::class);
         $this->call(ConfigSeeder::class);
         $this->call(InvoiceStateSeeder::class);
         $this->call(PaymentTypeSeeder::class);
@@ -28,5 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductTypeSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(ExchangeRateSeeder::class);
+        $this->call(TimeTableSeeder::class);
+        $this->call(TourSeeder::class);
+        $this->call(ApprovalsOptionsSeeder::class);
     }
 }

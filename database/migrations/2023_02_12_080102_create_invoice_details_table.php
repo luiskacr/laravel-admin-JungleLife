@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('invoice_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice')->references('id')->on('invoices');
+            $table->foreignId('tour')->nullable()->references('id')->on('tours');
             $table->foreignId('product')->references('id')->on('products');
-            $table->foreignId('tour')->references('id')->on('tours');
+            $table->decimal('price');
             $table->integer('quantity');
-            $table->integer('total');
+            $table->decimal('total');
             $table->foreignId('money')->references('id')->on('money_types');
             $table->foreignId('exchange')->references('id')->on('exchange_rates');
             $table->timestamps();

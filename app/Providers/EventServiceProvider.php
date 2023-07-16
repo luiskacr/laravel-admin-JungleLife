@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Tour;
+use App\Models\User;
+use App\Observers\TourObserver;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,9 +29,10 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot():void
     {
-        //
+        Tour::observe(TourObserver::class);
+        User::observe(UserObserver::class);
     }
 
     /**

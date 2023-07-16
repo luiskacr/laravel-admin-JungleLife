@@ -31,7 +31,7 @@
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                         <label class="form-label" for="email">{{__('app.email')}}</label>
-                        <input type="text" id="email" value="{{ old('name') }}" class="form-control "  name="email">
+                        <input type="text" id="email" value="{{ old('email') }}" class="form-control "  name="email">
                         @error('email')
                         <div class="text-danger">
                             <div data-field="name">* {{$message}}</div>

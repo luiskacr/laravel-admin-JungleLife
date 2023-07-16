@@ -31,7 +31,12 @@ class ExchangeRate extends Model
         'sel'=> 'integer'
     ];
 
-    public function getTextName()
+    /**
+     * Return an Exchange Rate format Text Name
+     *
+     * @return string
+     */
+    public function getTextName():string
     {
         return __('app.exchange_buy') . ': ' . $this->buy . " " . __('app.exchange_sell') . ': ' . $this->sell;
     }

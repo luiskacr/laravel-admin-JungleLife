@@ -11,6 +11,7 @@ Variants: #4F7363, #345051, #1B2E2F, #001314.
 :root {
     --main-color: #3B574B;
     --main-color-lighter: #4F7363;
+    --main-color-darker: #334b41;
 }
 
 /** Custom Colors change's **/
@@ -46,7 +47,7 @@ a:hover {
     background-color: rgba(59, 87, 75, 0.15) !important;
 }
 
-    /* Btn */
+/* Btn */
 
 .btn-primary{
     background: var(--main-color);
@@ -70,6 +71,13 @@ a:hover {
     background: var(--main-color);
     border-color: var(--main-color) ;
 
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    background: var(--main-color);
+    border-color: var(--main-color) ;
+    box-shadow: 0 0.125rem 0.25rem 0 var(--main-color);
+    opacity: 0.65;
 }
 
 /* Table */
@@ -163,6 +171,11 @@ ESTO DA ERROR, REVISAR LUEGO.
     background-color: var(--main-color);
 }
 
+/* DataTables */
+
+.custom-select {
+    padding-right: 17px;
+}
 
 /* Custom Environment */
 

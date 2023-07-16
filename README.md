@@ -26,7 +26,7 @@ A list of technologies used within the project:
 * [Laravel Spanish](https://github.com/Laraveles/spanish.git): Version 1.5
 * [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/installation-laravel): Version 5.6
 * [Mysql](https://www.mysql.com/): Version 5.7
-* [Mailtrap](https://mailtrap.io/)
+* [Mailtrap Account](https://mailtrap.io/)
 
 ## Installation
 ***
@@ -72,6 +72,8 @@ DB_DATABASE=junglelife
 DB_USERNAME="Username of the previously configured database"
 DB_PASSWORD="Password of the previously configured database"
 
+QUEUE_CONNECTION=database
+
 MAIL_MAILER="replace with mailtrap account information"
 MAIL_HOST="replace with mailtrap account information"
 MAIL_PORT="replace with mailtrap account information"
@@ -95,16 +97,20 @@ API_TIPO_CAMBIO="https://tipodecambio.paginasweb.cr/api/"
 11. Start the Development Server, Run the following command in the terminal:
 > php artisan serve
 
-12. Optional: To Run a schedule Commands, You should validate that inside the `./app/Console/Kernel.php` file is commented the different calendared events every minute and leave commented to work every minute. (This for tests not to do in production).
+12. Test Optional: To Run a schedule Commands, (For test proposes you most validated the file `./app/Console/Kernel.php` to confirm if all $schedule have his everyMinute() version ).
 
 ```php
-  $schedule->command('exchange-rate:get')->everyMinute();
-  $schedule->command('tours:close')->everyMinute();
+  $schedule->command('command:name')->everyMinute();
 ```
 > php artisan schedule:work   
 
 
-13. Installation is complete, and you can access the provided link in the console.
+13. Test Optional: To Run a Jobs and Queue
+> php artisan queue:work --tries=3 --delay=2
+
+for production, you shout config a supervisor or worker [Laravel Supervisor](https://laravel.com/docs/9.x/queues#supervisor-configuration)
+
+14. Installation is complete, and you can access the provided link in the console.
 
 
 ## Collaboration

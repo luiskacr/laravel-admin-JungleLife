@@ -6,43 +6,44 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TourTypeRequest;
 use App\Models\MoneyType;
 use App\Models\TourType;
-use Illuminate\Http\Request;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class TourTypeController extends Controller
 {
+    use ResponseTrait;
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index()
+    public function index():View
     {
-        $tourTypes = TourType::all();
-
-        return view('admin.tourTypes.index')->with('tourTypes',$tourTypes);
+        return view('admin.tourTypes.index')
+            ->with('tourTypes',TourType::all());
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create():View
     {
-        $moneyTypes = MoneyType::all();
-
-        return view('admin.tourTypes.create')->with('moneyTypes',$moneyTypes);
+        return view('admin.tourTypes.create')
+            ->with('moneyTypes',MoneyType::all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param TourTypeRequest $request
-     * @param $atributeEs
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(TourTypeRequest $request)
+    public function store(TourTypeRequest $request):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -59,49 +60,44 @@ class TourTypeController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' => __('app.tour_type_singular')])  ;
-
-            return redirect()->route('tour-type.create')->with('message',$message);
+            return $this->errorResponse('tour-type.create' , $e->getMessage(), __('app.error_create', ['object' => __('app.tour_type_singular') ]) );
         }
-        return redirect()->route('tour-type.index')->with('success', __('app.success_create ',['object' => __('app.tour_type_singular') ] ));
+        return $this->successCreateResponse('tour-type.index',__('app.tour_type_singular'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function show($id)
+    public function show(int $id):View
     {
-        $tourType = TourType::findOrFail($id);
-
-        return view('admin.tourTypes.show')->with('tourType',$tourType);
+        return view('admin.tourTypes.show')
+            ->with('tourType', TourType::findOrFail($id) );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function edit($id)
+    public function edit(int $id):View
     {
-        $tourType = TourType::findOrFail($id);
-
-        $moneyTypes = MoneyType::all();
-
-        return view('admin.tourTypes.edit')->with('tourType',$tourType)->with('moneyTypes',$moneyTypes);
+        return view('admin.tourTypes.edit')
+            ->with('tourType', TourType::findOrFail($id) )
+            ->with('moneyTypes', MoneyType::all() );
     }
 
     /**
      *  Update the specified resource in storage.
      *
      * @param TourTypeRequest $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(TourTypeRequest $request, $id)
+    public function update(TourTypeRequest $request,int $id):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -118,20 +114,18 @@ class TourTypeController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_update', ['object' => __('app.tour_type_singular') ]) ;
-
-            return redirect()->route('tour-type.edit')->with('message',$message);
+            return $this->errorResponse('tour-type.edit' , $e->getMessage(), __('app.error_update', ['object' => __('app.tour_type_singular') ]) );
         }
-        return redirect()->route('tour-type.index')->with('success' ,__('app.success_update ',['object' => __('app.tour_type_singular') ]));
+        return $this->successUpdateResponse('tour-type.index', __('app.tour_type_singular') );
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id):Response
     {
         DB::beginTransaction();
         try{
@@ -142,10 +136,12 @@ class TourTypeController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete');
+            if ($e->getCode() === '23000') {
+                return $this->errorIntegrityHandleResponse();
+            }
 
-            return response($message,500);
+            return $this->errorDestroyResponse( $e, __('app.error_delete'), 500 );
         }
-        return response( __('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 }

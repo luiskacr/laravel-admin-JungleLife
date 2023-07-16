@@ -1,10 +1,14 @@
 <?php
 
 return [
+    //Color
+    'delete_color' => 'rgb(59, 87, 75)',
+
     //Controllers message
     'error_create'=>  'Hubo un error al crear el :object',
     'error_update'=>  'Hubo un error al actualizar el :object',
     'error_delete'=>  'Hubo un error interno',
+    'error_delete_integrity'=>  'El registro seleccionado no puede ser eliminado porque está asociado a otros elementos en el sistema',
     'error_select'=>  'Debe de seleccionar una opción',
     'error_tour_exist_guide'=>  'El guía ya existe en el tour',
     'error_tour_exist_client'=>  'El cliente ya existe en el tour',
@@ -12,6 +16,9 @@ return [
     'success_create '=> 'Se ha creado con éxito el :object',
     'success_update '=> 'Se ha actualizado con éxito el :object',
     'success'=> 'Exitoso',
+
+    //Error page
+    'error_exchange_rate_tittle'=>  'No se ha creado un tipo de Cambio para el dia de Hoy',
 
     //login
     'login_msg1' => 'Bienvenido a Jungle Life 👋',
@@ -42,6 +49,9 @@ return [
     'admin_success_message' => 'Se ha enviado el correo para restablecer la contraseña',
     'admin_error_message' => 'Hubo un error al intentar reiniciar la contraseña',
 
+    //Mail template
+    'template_rights' => 'Jungle Life. Todos los derechos reservados.',
+
     //Password Reset Mail
     'Hello' => 'Hola :object',
 
@@ -51,7 +61,22 @@ return [
     'welcome_btn' => 'Crear contraseña ',
     'welcome_thanks' => 'Gracias por utilizar nuestra aplicación. ',
 
-    //Welcome View
+    //Approval Mail
+    'approval_subject' => 'Se a creado una solicitud  de cambio en ',
+    'approval_mgs1' => 'Estás recibiendo porque se ha solicitado realizar un cambio del maximo al ',
+    'approval_btn' => 'Ir a la solicitud ',
+
+    //Thanks Mail
+    'thanks_mail_mg1' => 'Gracias por utilizar nuestros servicios',
+
+    //Invoice
+    'invoice_thanks' => 'Gracias por visitarnos',
+    'invoice_tittle' => 'Comprobante de Compra',
+    'invoice_btn_show' => 'Ver Factura',
+    'invoice_btn_send' => 'Enviar Factura',
+    'invoice_message_send' => 'Se ha incluido la factura en la cola de Envio',
+
+    //Welcome to View
     'welcome_view_message' => 'Para iniciar crea una contraseña ',
     'welcome_view_success' => '¡Se ha creado el usuario correctamente!',
 
@@ -79,6 +104,15 @@ return [
     'log_tittle' => 'Log de errores',
     'reports' => 'Reportes',
 
+    //Home
+    'welcome_home' => 'Bienvenido',
+    'welcome_invoice' => 'Facturas',
+    'welcome_web' => 'Ventas Web',
+    'data_monthly' => 'Datos Mensuales',
+    'data_daily' => 'Datos Diarios',
+    'data_all' => 'Datos Totales',
+
+
     //Calendar
     'calendar_error' => 'Hubo un error al encontrar los eventos',
     'close' => 'Cerrar',
@@ -89,6 +123,7 @@ return [
     'create' => 'Crear',
     'crud_show' => 'Ver',
     'crud_edit' => 'Editar',
+    'approval_edit' => 'Verificar',
     'crud_delete' => 'Eliminar',
     'crud_action' => 'Acciones',
     'show_tittle' => 'Ver un :object',
@@ -96,7 +131,7 @@ return [
     'create_tittle' => 'Crear un :object',
     'edit_btn' => 'Actualizar',
     'delete_title' => '¿Esta seguro?',
-    'delete_text' => 'Que desea eliminar el :object',
+    'delete_text' => 'Que desea eliminar el ',
     'delete_confirmButtonText' => '¡Confirmar!',
     'delete_cancelButtonText' => 'Cancelar',
     'delete_success_tittle' => '¡Eliminado!',
@@ -104,6 +139,8 @@ return [
     'delete_error' => 'Error',
     'delete_error_text' => 'Se produjo un error al intentar eliminarlo',
     'go_index' => 'Volver a la lista',
+    'go_exchange' => 'Ir a los Tipos de Cambios',
+    'msg_contact_admin' => 'Favor Contactar con un administrador',
 
 
     // Crud Entities
@@ -142,6 +179,10 @@ return [
     'product_type' => 'Tipos de productos',
     'product_type_singular' => 'Tipo de producto',
     'payment_type' => 'Tipo de pago',
+    'exchange_rate_force'=> 'Buscar tipo de Cambio',
+    'increase_request'=> 'Solicitud de Aumento',
+    'requests_for_increases'=> 'Solicitudes',
+    'requests_for_increases_singular'=> 'Solicitud',
 
 
 
@@ -157,11 +198,13 @@ return [
     'star'=> 'Inicio',
     'end'=> 'Final',
     'auto'=> 'Creacion automática',
+    'auto_system'=> 'Creado automaticamente por el sistema',
     'date'=> 'Fecha',
     'status'=> 'Estado',
     'schedule'=> 'Horario',
     'information'=> 'Información',
     'description' => 'Descripción',
+    'comments' => 'Comentarios',
     'from'=> 'Desde ',
     'to'=> ' Hasta ',
     'type'=> ' Tipo ',
@@ -176,6 +219,7 @@ return [
     ],
     'quantity'=> 'Cantidad de ',
     'quantity2'=> 'Cantidad ',
+    'quantity_royalties'=> 'Regalias',
     'creat_by'=> 'Creado por  ',
     'select_date'=> 'Selecciona la fecha del tour',
     'select_type_guide'=> 'Seleccione un tipo guia',
@@ -183,10 +227,11 @@ return [
     'select_role'=> 'Seleccione un rol',
     'select_money_type'=> 'Seleccione un tipo de moneda',
     'select_payment_type'=> 'Seleccione un tipo de pago',
+    'select_payment_type_error'=> 'Debe de seleccionar un tipo de pago',
     'select_star'=> 'Seleccione un hora de inicio',
     'select_end'=> 'Seleccione un hora de fin',
     'select_schedule'=> 'Seleccione un horario',
-    'select_tour_type'=> 'Seleccione un tipo de producto',
+    'select_tour_type'=> 'Seleccione un tipo de Tour',
     'select_guide' => 'Seleccione un guia',
     'product_type_select' => 'Seleccione un tipo de producto',
     'auto_message'=> 'Este campo permite automatizar la creacion de tour con este horarios si se activa',
@@ -199,6 +244,7 @@ return [
     'add_product' => 'Incluir producto',
     'not_products' => 'No posee productos seleccionados',
     'available_space' => 'Espacios disponibles: ',
+    'used_space' => 'Espacios usados',
     'not_space' => 'No hay suficiente espacio en el tour para incluir',
 
     //booking
@@ -215,7 +261,11 @@ return [
     'final_step' => 'Finalizar compra',
     'thanks' => 'Muchas gracias por su compra',
     'present' => 'Esta presente',
+    'present_1' => 'Presente',
+    'no_present' => 'No presente',
+    'no_guide' => 'Guia no asignado',
     'success_is_present' => 'Se ha modificado con éxito el estado el del cliente',
+    'success_set_guide_to_costumer' => 'Se ha modificado con éxito el guia del cliente',
     'fee' => 'Comisiones',
     'fee_1' => 'De 1 a 2',
     'fee_2' => 'De 3 a 4',
@@ -225,13 +275,39 @@ return [
     'exchange_buy' => 'Compra',
     'exchange_sell' => 'Venta',
 
+    //Approval
+    'btn_approved' => 'Aprobar',
+    'btn_rejected' => 'Rechazar',
+    'btn_request' => 'Solicitar Aprobación',
+    'approve_user' => 'Solicitante',
+    'approve_date' => 'Fecha de Solicitud',
+    'approve_reviewer' => 'Aprobador',
+    'approve_guide_qty' => 'Cantidad de Clientes por Guia',
+    'approve_booking' => 'Reservas Actuales',
+    'approve_space' => 'Espacio actual del Tour',
+    'approve_new' => 'Nuevo Valor de Cantidad de Clientes por Guia ',
+    'approve_msg1' => 'Se aprueba el aumento automáticamente ',
+    'approve_msg2' => 'Se crea la solicitud de aumento',
+    'approve_msg3' => 'Se procesa la solicitud',
+    'approve_mail_title' => 'Muchas Gracias por Visitarnos',
+
+
     //Invoice
     'invoice_subject' => 'Gracias por su compra',
+    'detail' => 'Detalle',
 
     //Config
-
+    'config_basic' => 'Basica',
+    'config_email' => 'Correos',
+    'config_api' => 'API',
     'config_error' => 'Al intentar actualizar las configuraciones',
-    'config_success' => 'Se ha actualizado con exito las configuraciones',
+    'config_5' => 'Activo envia',
+    'config_tittle_mail_thanks' => 'Correos de Agradecimientos',
+
+    //Reports
+    'profits' => 'Ganancias',
+    'guides_cost' => 'Costos de Guias',
+
 
 
     //Environment

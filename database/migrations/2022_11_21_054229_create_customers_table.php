@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('telephone',50)->nullable();
             $table->foreignId('clientType')->references('id')->on('client_types');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -2,13 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\Timetables;
 use App\Models\Tour;
+use App\Traits\TourTraits;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TourSeeder extends Seeder
 {
+    use tourTraits;
+
     /**
      * Run the database seeds.
      *
@@ -16,18 +20,26 @@ class TourSeeder extends Seeder
      */
     public function run()
     {
-        $tour=6;
+        try{
+            DB::beginTransaction();
 
-        for ($x = 0; $x <= $tour ; $x++){
-            Tour::create([
-                'title' => 'Test',
-                'start' => Carbon::now('America/Costa_Rica')->set(['hour'=> 9,'second'=>0])->add($x,'day')->format('Y-m-d H:i:s'),
-                'end' => Carbon::now('America/Costa_Rica')->set(['hour'=> 10,'second'=>0])->add($x,'day')->format('Y-m-d H:i:s'),
-                'info' => 'Auto',
-                'state' =>1,
-                'type' =>1,
-                'user' =>1 ,
-            ]);
+            $timeTables = Timetables::all();
+            $today = Carbon::now();
+            $lastDay = $today->copy()->addYear();
+
+
+            while ($today->lt($lastDay)) {
+
+                foreach ($timeTables as $timeTable){
+                    $this->creatTour($timeTable, $today, 1 , __('app.auto_system') );
+                }
+
+                $today->addDay();
+            }
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollback();
         }
 
     }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class TourTypeRequest extends FormRequest

@@ -1,17 +1,13 @@
 <script>
 
-    const primaryElement = document.querySelector('.btn-primary')
-    const primaryColor = getComputedStyle(primaryElement)
-
-
-    function deleteItem(id, name, token, route) {
+    function deleteItem(id, name, token, route, entity) {
         const f_route = route.slice(0, -1);
         Swal.fire({
             title: '{{ __('app.delete_title') }}',
-            text: '{{ __('app.delete_text' ,['object'=> __('app.type_guides_singular')]) }}  ' + name,
+            text: '{{ __('app.delete_text') }} ' + entity + ' ' + name,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: primaryColor.backgroundColor,
+            confirmButtonColor: '{{ __('app.delete_color') }}',
             cancelButtonColor: '#ff3e1d',
             cancelButtonText: '{{ __('app.delete_cancelButtonText') }}',
             confirmButtonText: '{{ __('app.delete_confirmButtonText') }}'
@@ -36,15 +32,25 @@
                             location.reload();
                         })
                     },
-                    error: function (xhr) {
-                        Swal.fire(
-                            '{{ __('app.delete_error') }}',
-                            '{{ __('app.delete_error_text') }}',
-                            'error'
-                        )
-                        @if(app()->hasDebugModeEnabled())
-                        console.log(xhr.responseText)
-                        @endif
+                    error: function (request, status, error) {
+
+                        if(error === 'Conflict'){
+                            Swal.fire(
+                                '{{ __('app.delete_error') }}',
+                                request.responseText,
+                                'error'
+                            )
+                        }else{
+                            Swal.fire(
+                                '{{ __('app.delete_error') }}',
+                                '{{ __('app.delete_error_text') }}',
+                                'error'
+                            )
+
+                            @if( app()->hasDebugModeEnabled() )
+                                console.log(request.responseText)
+                            @endif
+                        }
                     },
                 });
             }

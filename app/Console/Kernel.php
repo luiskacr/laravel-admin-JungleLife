@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      *
      * @return \DateTimeZone|string|null
      */
-    protected function scheduleTimezone()
+    protected function scheduleTimezone(): \DateTimeZone|string|null
     {
         return 'America/Costa_Rica';
     }
@@ -20,17 +20,20 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule):void
     {
-//        $schedule->command('exchange-rate:get')->dailyAt('6:00');
-//        $schedule->command('tours:close')->hourlyAt(20);
-//
-//        //test
-        $schedule->command('exchange-rate:get')->everyMinute();
-        $schedule->command('tours:close')->everyMinute();
+        if(app()->environment('production')){
+            $schedule->command('exchange-rate:get')->dailyAt('1:00');
+            $schedule->command('tours:create')->dailyAt('1:00');
+            $schedule->command('tours:close')->hourlyAt(15);
+        }else{
+            $schedule->command('exchange-rate:get')->everyMinute();
+            $schedule->command('tours:create')->everyMinute();
+            $schedule->command('tours:close')->everyMinute();
+        }
     }
 
     /**

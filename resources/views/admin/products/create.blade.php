@@ -39,16 +39,39 @@
                         @enderror
                     </div>
 
-                    <div class="col-12">
-                        <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                            <label class="form-label" for="type">{{ __('app.product_type_singular') }}</label>
-                            <select id="type"  class="form-select" name="type" >
-                                <option value="0">{{ __('app.product_type_select') }}</option>
-                                @foreach($types as $type)
+                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                        <label class="form-label" for="type">{{ __('app.product_type_singular') }}</label>
+                        <select id="type"  class="form-select" name="type" onchange="typeTourValidation()" >
+                            <option value="0">{{ __('app.product_type_select') }}</option>
+                            @foreach($types as $type)
+                                @if( old('type') == $type->id)
+                                    <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
+                                @else
                                     <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @error('type')
+                        <div class="text-danger">
+                            <div data-field="name">* {{ $message }}</div>
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div id="tourTypeSection" >
+                        <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                            <label class="form-label" for="tourType">{{ __('app.tour_type_singular') }}</label>
+                            <select id="tourType"  class="form-select" name="tourType" >
+                                <option value="0">{{ __('app.select_tour_type') }}</option>
+                                @foreach($tourTypes as $tourType)
+                                    @if( old('tourType') == $tourType->id)
+                                        <option value="{{ $tourType->id }}" selected>{{ $tourType->name }}</option>
+                                    @else
+                                        <option value="{{ $tourType->id }}">{{ $tourType->name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
-                            @error('type')
+                            @error('tourType')
                             <div class="text-danger">
                                 <div data-field="name">* {{ $message }}</div>
                             </div>
@@ -56,21 +79,19 @@
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                            <label class="form-label" for="money">{{ __('app.money_type') }}</label>
-                            <select id="money"  class="form-select" name="money" >
-                                <option value="0">{{ __('app.select_money_type') }}</option>
-                                @foreach($moneyTypes as $moneyType)
-                                    <option value="{{ $moneyType->id }}">{{ $moneyType->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('money')
-                            <div class="text-danger">
-                                <div data-field="name">* {{ $message }}</div>
-                            </div>
-                            @enderror
+                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                        <label class="form-label" for="money">{{ __('app.money_type') }}</label>
+                        <select id="money"  class="form-select" name="money" >
+                            <option value="">{{ __('app.select_money_type') }}</option>
+                            @foreach($moneyTypes as $moneyType)
+                                <option value="{{ $moneyType->id }}">{{ $moneyType->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('money')
+                        <div class="text-danger">
+                            <div data-field="name">* {{ $message }}</div>
                         </div>
+                        @enderror
                     </div>
 
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
@@ -94,3 +115,19 @@
         </div>
     </div>
 @endsection
+
+@push('page-scripts')
+    <script>
+        function typeTourValidation(){
+            let select = document.getElementById('type').value;
+            if(select === 1 || select === "1"){
+                document.getElementById('tourTypeSection').style.display = ''
+            }else{
+                document.getElementById('tourTypeSection').style.display = 'none'
+            }
+        }
+
+        typeTourValidation()
+
+    </script>
+@endpush

@@ -2,58 +2,59 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\ToursHistoryDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\ClientType;
+use App\Models\Configuration;
 use App\Models\Guides;
 use App\Models\GuidesType;
+use App\Models\MoneyType;
 use App\Models\Tour;
 use App\Models\TourClient;
 use App\Models\TourGuides;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class HistoryController extends Controller
 {
+    use ResponseTrait;
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @param ToursHistoryDataTable $dataTable
+     * @return mixed
      */
-    public function index()
+    public function index(ToursHistoryDataTable $dataTable):mixed
     {
-        $tours =Tour::where('state' ,'=','2')
-            ->orderBy('end', 'asc')
-            ->get();
-
-        return view('admin.historyTour.index')
-            ->with('tours',$tours);
+        return $dataTable->render('admin.historyTour.index');
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return View
      */
-    public function show($id)
+    public function show(int $id):View
     {
         $tour = Tour::findOrFail($id);
 
-        if($tour->state != 2 ){
-            return redirect()->route('tour-history.index')
-                ->with('error',__('app.error_not_found',['object' => __('app.tour_singular') ] ));
+        if($tour->state != 2 )
+        {
+            $this->errorAbort404();
         }
 
-        $tour_has_guides = TourGuides::all()->where('tour','=',$id);
-        $guides = Guides::all();
-        $typeGuides = GuidesType::all();
-        $clientTypes = ClientType::all();
-        $tour_has_clients = TourClient::all()->where('tour','=',$id);
+        $config = Configuration::findOrFail(4);
 
         return view('admin.historyTour.show')
             ->with('tour',$tour)
-            ->with('tourGuides',$tour_has_guides)
-            ->with('guides',$guides)
-            ->with('typeGuides',$typeGuides)
-            ->with('clients',$tour_has_clients)
-            ->with('clientTypes',$clientTypes);
+            ->with('tourGuides',TourGuides::all()->where('tour','=',$id))
+            ->with('typeGuides',GuidesType::all())
+            ->with('clients', TourClient::all()->where('tour','=',$id))
+            ->with('account',$tour->GuidesPayment())
+            ->with('prefix',$config->data['value'])
+            ->with('clientTypes',ClientType::all())
+            ->with('money',MoneyType::all());
     }
 }

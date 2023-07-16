@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class TourGuides extends Model
 {
@@ -29,12 +31,22 @@ class TourGuides extends Model
         'guides'=> 'integer',
     ];
 
-    public function getGuides()
+    /**
+     * Return a Guides relation
+     *
+     * @return BelongsTo
+     */
+    public function getGuides():belongsTo
     {
         return $this->belongsTo(Guides::class,'guides','id');
     }
 
-    public function getTour()
+    /**
+     * Return a Tour relation
+     *
+     * @return BelongsTo
+     */
+    public function getTour():belongsTo
     {
         return $this->belongsTo(Tour::class,'tour','id');
     }

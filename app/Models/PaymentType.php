@@ -18,5 +18,4 @@ class PaymentType extends Model
         'name',
     ];
 
-
 }

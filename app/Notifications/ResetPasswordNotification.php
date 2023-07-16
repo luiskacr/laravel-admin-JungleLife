@@ -9,38 +9,44 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
 
-class ResetPasswordNotification extends Notification
+class ResetPasswordNotification extends Notification implements ShouldQueue
 {
+    use Queueable;
     /**
      * The password reset token.
      *
      * @var string
      */
-    public $token;
+    public string $token;
 
     /**
      * The callback that should be used to create the reset password URL.
      *
-     * @var (\Closure(mixed, string): string)|null
+     * @var string
      */
-    public static $createUrlCallback;
+    public static string $createUrlCallback;
 
     /**
      * The callback that should be used to build the mail message.
      *
      * @var (\Closure(mixed, string): \Illuminate\Notifications\Messages\MailMessage)|null
      */
-    public static $toMailCallback;
+    public static  $toMailCallback;
 
+    /**
+     * Set a User information
+     *
+     * @var User
+     */
     public User $user;
 
     /**
      * Create a notification instance.
      *
-     * @param  string  $token
-     * @return void
+     * @param string $token
+     * @param User $user
      */
-    public function __construct($token,User $user)
+    public function __construct(string $token,User $user)
     {
         $this->token = $token;
         $this->user = $user;
@@ -50,9 +56,9 @@ class ResetPasswordNotification extends Notification
      * Get the notification's channels.
      *
      * @param  mixed  $notifiable
-     * @return array|string
+     * @return array
      */
-    public function via($notifiable)
+    public function via(string $notifiable):array
     {
         return ['mail'];
     }
@@ -113,7 +119,7 @@ class ResetPasswordNotification extends Notification
      * @param  \Closure(mixed, string): string  $callback
      * @return void
      */
-    public static function createUrlUsing($callback)
+    public static function createUrlUsing($callback):void
     {
         static::$createUrlCallback = $callback;
     }
@@ -124,7 +130,7 @@ class ResetPasswordNotification extends Notification
      * @param  \Closure(mixed, string): \Illuminate\Notifications\Messages\MailMessage  $callback
      * @return void
      */
-    public static function toMailUsing($callback)
+    public static function toMailUsing($callback):void
     {
         static::$toMailCallback = $callback;
     }

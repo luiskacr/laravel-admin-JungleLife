@@ -33,5 +33,46 @@ class ConfigSeeder extends Seeder
                 'value' => true
             ]
         ]);
+        Configuration::create([
+            'name'=> 'Prefijo de Factura',
+            'data'=> [
+                'value' => 'JL000'
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Mensaje de Inicio',
+            'data'=> [
+                'value' => 'Siempre parece imposible... hasta que se hace - Nelson Mandela'
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Envio de Correo Automatico de Agradecimiento',
+            'data'=> [
+                'value' => true
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Envio de Correo Automatico a ',
+            'data'=> [
+                'value' => [
+                    1 => false,
+                    2 => false,
+                    3 => false,
+                    4 => false,
+                    5 => true,
+                ]
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Mensaje del Correo de Agradecimiento',
+            'data'=> [
+                'value' => 'Queremos expresar nuestro agradecimiento por confiar en nosotros para crear momentos memorables y ofrecerte un servicio excepcional. Valoramos tu apoyo y la oportunidad de servirte en tu viaje. Cada cliente es importante para nosotros, y nos complace haber tenido la oportunidad de acompañarte en esta aventura.'
+            ]
+        ]);
+
     }
 }

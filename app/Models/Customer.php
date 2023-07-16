@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -30,10 +32,14 @@ class Customer extends Model
         'clientType' => 'integer',
     ];
 
-    public function clientTypes()
+    /**
+     * Return a Relation with Client Type
+     *
+     * @return BelongsTo
+     */
+    public function clientTypes():BelongsTo
     {
         return $this->belongsTo(ClientType::class,'clientType','id');
     }
-
 
 }

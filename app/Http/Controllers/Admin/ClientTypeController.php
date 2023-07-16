@@ -5,30 +5,33 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientTypeRequest;
 use App\Models\ClientType;
-use App\Models\MoneyType;
-use http\Env\Request;
+use App\Traits\ResponseTrait;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class ClientTypeController extends Controller
 {
+    use ResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index()
+    public function index():View
     {
-        $clientTypes = ClientType::all();
-
-        return view('admin.clientType.index')->with('clientTypes',$clientTypes);
+        return view('admin.clientType.index')
+            ->with('clientTypes', ClientType::all()) ;
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create():View
     {
         return view('admin.clientType.create');
     }
@@ -37,9 +40,9 @@ class ClientTypeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ClientTypeRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(ClientTypeRequest $request)
+    public function store(ClientTypeRequest $request):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -49,48 +52,45 @@ class ClientTypeController extends Controller
 
             DB::commit();
         }catch (\Exception $e){
-
             DB::rollback();
 
-            return redirect()->route('type-client.create')->with('message',$e->getMessage());
+            return $this->errorResponse('type-client.create', $e->getMessage(), __('app.error_create', ['object' => __('app.type_client_singular') ]));
         }
-        return redirect()->route('type-client.index')->with('success','Se ha creado el tipo');
+        return $this->successCreateResponse('type-client.index',__('app.type_client_singular'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function show($id)
+    public function show(int $id):View
     {
-        $clientType = ClientType::findOrFail($id);
-
-        return view('admin.clientType.show')->with('clientType',$clientType);
+        return view('admin.clientType.show')
+            ->with('clientType', ClientType::findOrFail($id));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $id
+     * @return View
      */
-    public function edit($id)
+    public function edit(int $id):View
     {
-        $clientType = ClientType::findOrFail($id);
-
-        return view('admin.clientType.edit')->with('clientType',$clientType);
+        return view('admin.clientType.edit')
+            ->with('clientType', ClientType::findOrFail($id) );
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param ClientTypeRequest $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(ClientTypeRequest $request, $id)
+    public function update(ClientTypeRequest $request,int  $id):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -100,21 +100,20 @@ class ClientTypeController extends Controller
 
             DB::commit();
         }catch (\Exception $e){
-
             DB::rollback();
 
-            return redirect()->route('type-client.edit')->with('message',$e->getMessage());
+            return $this->errorResponse('type-client.edit' , $e->getMessage(), __('app.error_update', ['object' => __('app.type_client_singular') ]) );
         }
-        return redirect()->route('type-client.index')->with('success','Se ha creado el tipo');
+        return $this->successUpdateResponse('type-client.index', __('app.type_client_singular') );
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id):Response
     {
         DB::beginTransaction();
         try{
@@ -125,10 +124,12 @@ class ClientTypeController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
+            if ($e->getCode() === '23000') {
+                return $this->errorIntegrityHandleResponse();
+            }
 
-            return response($message,500);
+            return $this->errorDestroyResponse( $e, __('app.error_delete'), 500 );
         }
-        return response(__('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 }

@@ -24,7 +24,7 @@
             <span class="menu-header-text">{{ __('app.tour_tittle') }}</span>
         </li>
 
-        @php( $menuTour = array(__('app.tours_active'),__('app.tours_history'),__('app.tours_book'), __('app.products')))
+        @php( $menuTour = array(__('app.tours_active'),__('app.tours_history'),__('app.tours_book'), __('app.products'), __('app.increase_request')))
         <li class="menu-item {{ in_array($title,$menuTour) ? 'open' : '' }} {{ in_array($title,$menuTour) ? 'active' : ''}} ">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-landscape"></i>
@@ -62,6 +62,13 @@
                     </a>
                 </li>
             </ul>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $title == __('app.increase_request') ? 'active' : '' }}">
+                    <a href="{{ route('approvals.create')  }}" class="menu-link">
+                        <div data-i18n="Basic">{{ __('app.increase_request') }}</div>
+                    </a>
+                </li>
+            </ul>
 
         </li>
 
@@ -95,7 +102,7 @@
         </li>
 
 
-        @php( $menuConfig = array(__('app.type_client'),__('app.type_guides'),__('app.tour_type'), __('app.tour_states'),__('app.timetables'), __('app.product_type')) )
+        @php( $menuConfig = array(__('app.type_client'),__('app.type_guides'),__('app.tour_type'), __('app.tour_states'),__('app.timetables'), __('app.product_type'), __('app.exchange')) )
         <li class="menu-item {{ in_array($title,$menuConfig)  ? 'open' : '' }}  {{ in_array($title,$menuConfig)  ? 'active' : '' }} ">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-slider"></i>
@@ -133,6 +140,12 @@
                         <div data-i18n="Account">{{ __('app.timetables') }}</div>
                     </a>
                 </li>
+                <li class="menu-item {{ $title == __('app.exchange') ? 'active' : '' }}">
+                    <a href="{{  route('exchange-rate.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('app.exchange') }}</div>
+                    </a>
+                </li>
+
             </ul>
         </li>
 
@@ -166,6 +179,13 @@
             <a href="{{ route('configurations.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-wrench"></i>
                 <div data-i18n="Basic">{{ __('app.config') }}</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{ $title == __('app.requests_for_increases') ? 'active' : '' }}">
+            <a href="{{ route('approvals.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-upvote "></i>
+                <div data-i18n="Basic">{{ __('app.requests_for_increases') }}</div>
             </a>
         </li>
         <!-- Config -->

@@ -3,7 +3,7 @@
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
 {{-- config('app.name') --}}
-    <img src="{{asset('assets/images/logo2.png')}}" height="75px">
+    <img src="{{ asset('assets/images/logo2.png') }}" height="75px">
 </x-mail::header>
 </x-slot:header>
 
@@ -22,7 +22,7 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-© {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+© {{ date('Y') }} {{ __('app.template_rights') }}
 </x-mail::footer>
 </x-slot:footer>
 </x-mail::layout>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TourType extends Model
 {
@@ -36,8 +37,12 @@ class TourType extends Model
         'money' => 'integer',
     ];
 
-
-    public function moneyType()
+    /**
+     * Return a Money Type relation
+     *
+     * @return BelongsTo
+     */
+    public function moneyType():BelongsTo
     {
         return $this->belongsTo(MoneyType::class,'money','id');
     }

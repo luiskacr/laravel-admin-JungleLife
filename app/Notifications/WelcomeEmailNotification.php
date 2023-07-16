@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class WelcomeEmailNotification extends Notification
+class WelcomeEmailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -18,10 +18,6 @@ class WelcomeEmailNotification extends Notification
      */
     public NewUser $newUser;
 
-    /**
-     * @var User
-     */
-    public User $user;
 
 
     /**
@@ -29,10 +25,9 @@ class WelcomeEmailNotification extends Notification
      *
      * @return void
      */
-    public function __construct(NewUser $newUser, User $user)
+    public function __construct(NewUser $newUser)
     {
         $this->newUser = $newUser;
-        $this->user = $user;
     }
 
     /**
@@ -57,7 +52,7 @@ class WelcomeEmailNotification extends Notification
         $url = $this->createUrl();
 
         return (new MailMessage)
-                    ->greeting(__('app.Hello', ['object' => $this->user->name]))
+                    ->greeting(__('app.Hello', ['object' => $this->newUser->name ]))
                     ->subject(__('app.welcome_subject') . config('app.name'))
                     ->line(__('app.welcome_mgs1'))
                     ->action(__('app.welcome_btn'), $url)

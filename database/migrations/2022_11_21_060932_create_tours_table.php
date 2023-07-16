@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('type')->references('id')->on('tour_types');
             $table->foreignId('user')->references('id')->on('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

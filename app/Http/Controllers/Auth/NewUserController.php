@@ -5,46 +5,49 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\NewUser;
 use App\Models\User;
+use App\Traits\ResponseTrait;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Nette\Schema\ValidationException;
 
 class NewUserController extends Controller
 {
-
+    use ResponseTrait;
     /**
      * Validate the Token and Show the view
      *
      * @param Request $request
-     * @param $token
-     * @return \Illuminate\Contracts\View\View|void
+     * @param null $token
+     * @return View
      */
-    public function show(Request $request,$token = null)
+    public function show(Request $request, $token = null):View
     {
         $newUser = NewUser::where('email',$request->email)->first();
 
         if($newUser == null or $newUser->token != $token){
-            abort(404);
-        }else{
-            return view('auth.newUser')->with('newUser',$newUser);
+            $this->errorAbort404();
         }
+        return view('auth.newUser')
+            ->with('newUser',$newUser);
     }
 
     /**
      * Ends the user creation process set the password
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return RedirectResponse
+     * @throws ValidationException|\Illuminate\Validation\ValidationException
      */
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request): RedirectResponse
     {
-
         $this->validateRequest($request);
 
         $user = User::where('email',$request->email)->first();
 
-        if($user == null){
-
+        if($user == null)
+        {
             return redirect()->route('password.new-user',['token' => $request->token,'email',$request->email] )
                 ->with('error',__('app.error_delete'));
         }
@@ -78,7 +81,7 @@ class NewUserController extends Controller
      * @return void
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validateRequest(Request $request)
+    public function validateRequest(Request $request):void
     {
         $rules = [
             'token' => 'required',

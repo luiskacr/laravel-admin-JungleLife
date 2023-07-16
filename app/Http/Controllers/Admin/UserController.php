@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\NewUser;
 use App\Models\User;
+use App\Traits\ResponseTrait;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -16,37 +20,37 @@ use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
+    use ResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index()
-    {
-        $users = User::all();
-
-        return view('admin.user.index')->with('users',$users);
+    public function index():View
+    {;
+        return view('admin.user.index')
+            ->with('users', User::all());
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create():View
     {
-        $roles = Role::all();
-
-        return view('admin.user.create')->with('roles',$roles);
+        return view('admin.user.create')
+            ->with('roles',Role::all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param UserRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request):RedirectResponse
     {
         DB::beginTransaction();
         try{
@@ -58,55 +62,48 @@ class UserController extends Controller
             ]);
 
             $role = Role::findById($request->request->getInt('role'));
-
             $user->assignRole($role);
 
             $newUser = NewUser::create([
                 'email'=> $user->email,
+                'name'=> $user->name,
                 'token' => Str::random(64),
             ]);
 
-            $newUser->sendMail($user);
+            $newUser->sendMail();
 
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
 
-            report($e);
-
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_create', ['object' => __('app.user_singular')]) ;
-
-            return redirect()->route('users.index')->with('message',$message);
+            return $this->errorResponse('users.index' , $e->getMessage(), __('app.error_create', ['object' => __('app.user_singular') ]) );
         }
-        return redirect()->route('users.index')->with('success', __('app.success_create ',['object' => __('app.user_singular')] ));
+        return $this->successCreateResponse('users.index',__('app.user_singular'));
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function show($id)
+    public function show(int $id):View
     {
-        $user = User::findOrFail($id);
-
-        return view('admin.user.show')->with('user',$user);
+        return view('admin.user.show')
+            ->with('user', User::findOrFail($id) );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function edit($id)
+    public function edit(int $id):View
     {
-        $user = User::findOrFail($id);
-
-        $roles = Role::all();
-
-        return view('admin.user.edit')->with('user',$user)->with('roles',$roles);
+        return view('admin.user.edit')
+            ->with('user', User::findOrFail($id) )
+            ->with('roles', Role::all() );
     }
 
     /**
@@ -114,11 +111,10 @@ class UserController extends Controller
      *
      * @param UserRequest $request
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request,int  $id):RedirectResponse
     {
-
         DB::beginTransaction();
         try{
             $user = User::findOrFail($id);
@@ -135,18 +131,16 @@ class UserController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
 
-            app()->hasDebugModeEnabled() ? $message =$e->getMessage() : $message = __('app.error_update', ['object' => __('app.user_singular')]) ;
-
-            return redirect()->route('users.edit',$id)->with('message',$message);
+            return $this->errorResponse('users.edit' , $e->getMessage(), __('app.error_update', ['object' => __('app.user_singular') ]) );
         }
-        return redirect()->route('users.index')->with('success',__('app.success_update ',['object' => __('app.user_singular') ]) );
+        return $this->successUpdateResponse('users.index', __('app.user_singular') );
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -160,22 +154,21 @@ class UserController extends Controller
         }catch (\Exception $e){
             DB::rollback();
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
-
-            return response($message,500);
+            return $this->errorDestroyResponse( $e, __('app.error_delete'), 500 );
         }
-        return response( __('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 
 
     /**
      * Function for the administrator to send the password reset email to any user
      *
-     * @param $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function adminResetPassword($id){
-        try {
+    public function adminResetPassword(int $id):Response
+    {
+        try{
 
             $user = User::findOrFail($id);
 
@@ -185,10 +178,8 @@ class UserController extends Controller
 
         }catch (Exception $e){
 
-            app()->hasDebugModeEnabled() ? $message = $e->getMessage() : $message = __('app.error_delete') ;
-
-            return response($message,500);
+            return $this->errorDestroyResponse( $e, __('app.error_delete'), 500 );
         }
-        return response( __('app.success'),200);
+        return $this->successDestroyResponse(__('app.success'));
     }
 }

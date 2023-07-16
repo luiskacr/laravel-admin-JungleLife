@@ -25,7 +25,6 @@
             100% { transform: rotate(360deg); }
         }
 
-
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div id="card-loader" class="card">
@@ -73,31 +72,37 @@
                                 </div>
                             </div>
                         </div>
+
                         <input id="exchange_rates" type="hidden"  data-id="{{ $exchange_rates['id'] }}" data-sell="{{ $exchange_rates['sell'] }}"  data-buy="{{ $exchange_rates['buy']}}"   >
 
                         <div id="product-list" class="row product-list ">
-                            <div class="">
-                                <div class="float-start">
-                                    <h4 id="available"></h4>
+                            <div class="card-header">
+                                <div class="container-fluid">
+                                    <div class="float-start">
+                                        <h4 id="available"></h4>
+                                    </div>
+                                    <div class="float-end">
+                                        <button id="btn-create-product"  class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#searchProductModal">
+                                            {{ __('app.search_product') }}
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="float-end">
-                                    <button id="btn-create-product"  class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#searchProductModal">
-                                        {{ __('app.search_product') }}
-                                    </button>
-                                </div>
+                            </div>
+                            <div class="card-datatable  table-responsive mt-5">
                                 <table id="productTable" class="datatables-basic table no-footer dtr-column">
                                     <thead>
                                     <tr>
-                                        <th >{{ __('app.id') }}</th>
+                                        <th>SKU</th>
                                         <th>{{ __('app.products_singular') }}</th>
                                         <th>{{ __('app.quantity') }}</th>
+                                        <th>{{ __('app.money_type') }}</th>
                                         <th>{{ __('app.price') }}</th>
                                         <th>{{ __('app.crud_action') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr id="table-empty">
-                                        <th colspan="5">
+                                        <th colspan="6">
                                             {{ __('app.not_products') }}
                                         </th>
                                     </tr>
@@ -128,7 +133,7 @@
                                                         <select id="product"  class="form-select" name="product" >
                                                             <option value="0">{{ __('app.search_product') }}</option>
                                                             @foreach($products as $product)
-                                                                <option value="{{ $product->id }}" data-price="{{ $product->price }}" data-currency="{{ $product->moneyType->symbol }}">{{ $product->name }}</option>
+                                                                <option value="{{ $product->id }}" data-price="{{ $product->price }}" data-type="{{ $product->type }}"  data-tourType="{{ $product->tourType }}"  data-currency="{{ $product->moneyType->symbol }}">{{ $product->name }}</option>
                                                             @endforeach
                                                         </select>
                                                         <div id="product-error" class="text-danger">
@@ -263,12 +268,28 @@
                             </div>
                             <div class="col-md-6 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                                 <label class="form-label" for="payment_type">{{ __('app.payment_type') }}</label>
-                                <select id="payment_type"  class="form-select" onchange="paymentMethod(this)" >
+                                <select id="payment_type"  class="form-select"  >
                                     <option value="0">{{ __('app.select_payment_type') }}</option>
                                     @foreach($paymentTypes as $payment)
                                         <option value="{{ $payment->id }}" >{{ $payment->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-md-6 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="currency">{{ __('app.payment_type') }}</label>
+                                <select id="currency"  class="form-select" onchange="changeCurrency(this)" >
+                                    @foreach($moneyTypes as $money)
+                                        @if($money->id ==2)
+                                            <option value="{{ $money->id }}" data-symbol="{{ $money->symbol }}" selected>{{ $money->name }}</option>
+                                        @else
+                                            <option value="{{ $money->id }}" data-symbol="{{ $money->symbol }}" >{{ $money->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="info">{{ __('app.comments') }} </label>
+                                <textarea class="form-control" id="info"></textarea>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -276,6 +297,7 @@
                                 <table id="invoice" class="datatables-basic table no-footer dtr-column">
                                     <thead>
                                     <tr>
+                                        <th>sku</th>
                                         <th>{{ __('app.products_singular') }}</th>
                                         <th>{{ __('app.quantity') }}</th>
                                         <th>{{ __('app.price') }}</th>
@@ -288,7 +310,7 @@
                                     </tbody>
                                     <tfoot style="text-align:end">
                                         <tr>
-                                            <th colspan="3">
+                                            <th colspan="4">
                                                 {{__('app.total')}}
                                             </th>
                                             <th id="invoiceTotal"></th>
@@ -316,7 +338,7 @@
                             </div>
                             <div class="col-md-3 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                                 <div class="form-check mt-3">
-                                    <input class="form-check-input" type="checkbox" value="" id="requiredCredit">
+                                    <input class="form-check-input"  type="checkbox" value="" id="requiredCredit">
                                     <label class="form-check-label" for="invoice">
                                         {{ __('app.required_credit') }}
                                     </label>
@@ -341,21 +363,36 @@
         let shoppingCar;
         let selectTour;
         let payment_Option;
+        let availableSpaceOnTour = 0;
+        let currency = 2;
         let exchangeRate={
             'id' : {{ $exchange_rates['id'] }} ,
             'buy' : {{ $exchange_rates['buy'] }} ,
             'sell' : {{ $exchange_rates['sell'] }} ,
         }
+        let jsonProducts = {!! json_encode($products) !!};
+        let user = {!! json_encode(auth()) !!};
 
-        let availableSpaceOnTour = 0;
+        document.getElementById('requiredCredit').addEventListener('change', ()=> {
+            let selection = document.getElementById('requiredCredit').checked
+            if(selection === true){
+                document.getElementById('payment_type').value = 4
+                document.getElementById("payment_type").disabled = true;
+                document.getElementById("requiredInvoice").disabled = true;
+                document.getElementById("requiredInvoice").checked = false;
+            }else{
+                document.getElementById("payment_type").disabled = false;
+                document.getElementById("requiredInvoice").disabled = false;
+            }
+        })
 
         $(".select2-tour").select2({
             theme: "bootstrap4",
-            placeholder: "{{ __('app.select_tour') }}"
+            placeholder: "{{ __('app.select_tour') }}",
         });
 
         $("#searchCostumer").select2({
-            placeholder: 'Buscar un cliente',
+            placeholder: ' {{ __('app.search_client') }} ',
             width: 'resolve',
             language: "es",
             ajax: {
@@ -378,6 +415,7 @@
             },
 
         });
+
 
         async function createNewClient(){
             if(newClientValidation()){
@@ -549,6 +587,7 @@
             return validation;
         }
 
+
         async  function getAvailable(value){
             let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             let route = '{{ route('booking.availableSpace') }}'
@@ -571,8 +610,10 @@
             return await response.json();
         }
 
+
         async function hasSelectTour(value) {
             if (value !== undefined) {
+                filterTourTypes(value)
                 availableSpaceOnTour = await getAvailable(value);
                 document.getElementById('available').innerHTML = "{{ __('app.available_space') }}" + availableSpaceOnTour;
                 document.getElementById('product-list').style.display = "initial";
@@ -580,6 +621,28 @@
                 document.getElementById('product-list').style.display = "none";
             }
         }
+
+
+        function filterTourTypes(value){
+            let tour = selectTour.filter(selectTour => {
+                return   selectTour.id === Number(value);
+            })
+
+            let selectProduct = document.getElementById('product');
+            for (let i = 0; i < selectProduct.options.length; i++) {
+                let option = selectProduct.options[i];
+
+                if(option.getAttribute('data-type') === '1'){
+                    if(option.getAttribute('data-tourtype') ===  tour[0].type.toString() || option.getAttribute('data-price') === ''){
+                        option.style.display = '';
+                    }else{
+                        option.style.display = 'none';
+                    }
+                }
+            }
+
+        }
+
 
         function hasDate(){
             const dateSelector = document.getElementById('date');
@@ -608,7 +671,7 @@
                                     results: $.map(data, function (item){
                                         return {
                                             text: item.title,
-                                            id : item.id
+                                            id : item.id,
                                         }
                                     })
                                 };
@@ -623,8 +686,9 @@
                     document.getElementById('searchTour').disabled = true;
                 }
             })
-
         }
+
+
         function deleteProduct(btn,quantity){
             availableSpaceOnTour = availableSpaceOnTour +quantity;
             document.getElementById('available').innerHTML = "{{ __('app.available_space') }}" + availableSpaceOnTour;
@@ -678,9 +742,13 @@
                 const product_id = product.value;
                 const product_name = product.options[product.selectedIndex].text;
                 const product_price = product.options[product.selectedIndex].dataset.price;
+                const product_currency = product.options[product.selectedIndex].dataset.currency;
                 const quantity = document.getElementById('quantity').value;
+                let jsonProduct = jsonProducts.filter(product => {
+                    return Number(product.id) === Number(product_id)
+                })
 
-                addRow(product_id,product_name,quantity,product_price)
+                addRow(product_id,product_name,quantity,product_currency,product_price)
 
                 if(table.rows.length !== 0){
                     document.getElementById('table-empty').style.display = 'none'
@@ -688,18 +756,21 @@
                 }
                 document.getElementById('btn-nav-customer').disabled = false;
                 document.getElementById('goClient').style.display = ''
-                availableSpaceOnTour = availableSpaceOnTour - quantity;
+
+                if(jsonProduct[0].type === 1){
+                    availableSpaceOnTour = availableSpaceOnTour - quantity;
+                }
+
                 document.getElementById('available').innerHTML = "{{ __('app.available_space') }}" + availableSpaceOnTour;
                 document.getElementById('closeProductSearch').click();
 
-                quantity.value = 1
-                product.value = 0
-
+                document.getElementById('quantity').value = '';
+                document.getElementById('product').value = 0
 
             }
         }
 
-        function addRow(id,name,quantity,price){
+        function addRow(id,name,quantity,currency,price){
             const table = document.getElementById("productTable");
             let newRow = table.insertRow()
             let cell1 = newRow.insertCell(0);
@@ -707,12 +778,14 @@
             let cell3 = newRow.insertCell(2);
             let cell4 = newRow.insertCell(3);
             let cell5 = newRow.insertCell(4);
+            let cell6 = newRow.insertCell(5);
 
             cell1.innerHTML = id;
             cell2.innerHTML = name;
             cell3.innerHTML = quantity;
-            cell4.innerHTML = price;
-            cell5.innerHTML = '<a class="m-2" href="#" onclick="deleteProduct(this,'+quantity+')" ><i class="bx bx-trash me-1"></i>{{ __('app.crud_delete') }}</a>'
+            cell4.innerHTML = currency;
+            cell5.innerHTML = price === '' ? 0 : price;
+            cell6.innerHTML = '<a class="m-2" href="#" onclick="deleteProduct(this,'+quantity+')" ><i class="bx bx-trash me-1"></i>{{ __('app.crud_delete') }}</a>'
         }
 
         function isSelectedClient(value){
@@ -782,6 +855,7 @@
             const tbody = document.querySelector('#invoice tbody');
             tbody.innerHTML = "";
             const invoiceTable = document.getElementById('invoice');
+            document.getElementById('currency').value = 2;
             let allProducts = [];
 
             productTable.querySelectorAll('tr').forEach(row => {
@@ -793,20 +867,37 @@
                     const id = row.querySelector('td:first-child').textContent;
                     const product = row.querySelector('td:nth-child(2)').textContent;
                     const quantity = Number(row.querySelector('td:nth-child(3)').textContent);
-                    const price = row.querySelector('td:nth-child(4)').textContent;
-                    const subtotal = parseFloat(quantity) * parseFloat(price);
-                    total = total + subtotal
+                    let price;
+                    let subtotal;
+                    let jsonProduct = jsonProducts.filter(product => {
+                        return Number(product.id) === Number(id)
+                    })
+
+                    if(jsonProduct[0].money === 2){
+                        price = row.querySelector('td:nth-child(5)').textContent;
+                        subtotal = parseFloat(quantity) * parseFloat(price);
+                        total = total + subtotal
+                    }else{
+                        price = Number(row.querySelector('td:nth-child(5)').textContent) / exchangeRate.buy
+                        price = parseFloat(price.toFixed(2));
+                        subtotal = parseFloat(quantity) * parseFloat(price);
+                        subtotal = parseFloat(subtotal.toFixed(2));
+                        total = total + subtotal
+                        total = parseFloat(total.toFixed(2));
+                    }
 
                     let newRow = invoiceTable.querySelector('tbody').insertRow();
-                    let cell1 = newRow.insertCell(0)
-                    let cell2 = newRow.insertCell(1)
-                    let cell3 = newRow.insertCell(2)
-                    let cell4 = newRow.insertCell(3)
+                    let cell0 = newRow.insertCell(0)
+                    let cell1 = newRow.insertCell(1)
+                    let cell2 = newRow.insertCell(2)
+                    let cell3 = newRow.insertCell(3)
+                    let cell4 = newRow.insertCell(4)
 
+                    cell0.innerHTML = id;
                     cell1.innerHTML = product;
                     cell2.innerHTML = quantity;
-                    cell3.innerHTML = price;
-                    cell4.innerHTML = subtotal;
+                    cell3.innerHTML = '$' + price;
+                    cell4.innerHTML = '$' + subtotal;
 
                     let productInfo = {
                         id : id,
@@ -816,7 +907,6 @@
                     }
                     allProducts.push(productInfo)
                 }
-
             });
 
             shoppingCar = {
@@ -824,50 +914,114 @@
                 product: allProducts,
             }
 
-            document.getElementById('invoiceTotal').innerHTML = total;
-
+            document.getElementById('invoiceTotal').innerHTML ='$'+ total;
         }
 
-        function paymentMethod(selected){
-            if(selected.value === 0){
-                payment_Option = selected.value
-                    Swal.fire(
-                        '{{ __('app.delete_error') }}',
-                        '{{ __('app.error_delete') }}',
-                        '{{ __('config_error') }}'
-                    );
+        function changeCurrency(select){
+            let total = 0;
+            const tbody = document.querySelector('#invoice tbody');
+            let allProducts = [];
+            let symbol = select.value === '2' ? '$': '₡';
+
+            tbody.querySelectorAll('tr').forEach(row => {
+                let id = row.querySelector('td:first-child').textContent;
+                let quantity = row.querySelector('td:nth-child(3)').textContent;
+                let newPrice;
+                let subTotal;
+
+                let jsonProduct = jsonProducts.filter(product => {
+                    return Number(product.id) === Number(id)
+                })
+
+                if(select.value === '2'){
+                    if(jsonProduct[0].money ===2){
+                        newPrice = Number(jsonProduct[0].price)
+                    }else{
+                        newPrice = Number(jsonProduct[0].price) / exchangeRate.buy
+                        newPrice = parseFloat(newPrice.toFixed(2));
+                    }
+                    subTotal = quantity * newPrice;
+                    total = total + subTotal;
+                }else{
+                    if(jsonProduct[0].money ===2){
+                        newPrice = Number(jsonProduct[0].price) * exchangeRate.sell
+                        newPrice = parseFloat(newPrice.toFixed(2));
+                    }else{
+                        newPrice = Number(jsonProduct[0].price)
+                    }
+                    subTotal = quantity * newPrice;
+                    total = total + subTotal;
+                }
+
+                let productInfo = {
+                    id : id,
+                    name: jsonProduct[0].name,
+                    quantity : quantity,
+                    price : newPrice,
+                }
+
+                allProducts.push(productInfo)
+                row.querySelector('td:nth-child(4)').textContent = symbol + newPrice;
+                row.querySelector('td:nth-child(5)').textContent = symbol +  subTotal
+
+            });
+            shoppingCar['product'] = allProducts
+            currency = select.value === '2' ? 2 : 1;
+            total = parseFloat(total.toFixed(2));
+            document.getElementById('invoiceTotal').innerHTML =  symbol + total;
+        }
+
+
+        function validatePaymentMethod(){
+            const selected = document.getElementById('payment_type').value;
+
+            if(Number(selected) === 0){
+
+                    Swal.fire({
+                        title: '{{  __('app.delete_error') }}',
+                        text: '{{ __('app.select_payment_type_error') }}',
+                        icon: 'error',
+                    });
+                return false
             }else{
-                payment_Option = selected.value
+                payment_Option = selected
+
+                return true
             }
         }
 
         function finishBooking(){
-            let loader = createLoader();
+            if(validatePaymentMethod()){
+                let loader = createLoader();
 
-            const requiredInvoice = document.getElementById('requiredInvoice');
-            const requiredElectronicInvoice = document.getElementById('requiredElectronicInvoice');
-            const requiredCredit = document.getElementById('requiredCredit');
-            let today = new Date().toISOString();
+                const requiredInvoice = document.getElementById('requiredInvoice');
+                const requiredElectronicInvoice = document.getElementById('requiredElectronicInvoice');
+                const requiredCredit = document.getElementById('requiredCredit');
+                const info = document.getElementById('info');
+                let today = new Date().toISOString();
 
-            shoppingCar = {
-                invoice :{
-                    date:today,
-                    invoice : requiredInvoice.checked,
-                    electronic_invoice : requiredElectronicInvoice.checked,
-                    credit: requiredCredit.checked,
-                    currency : 2,
-                    paymentType : Number(payment_Option),
-                    total : Number(document.getElementById('invoiceTotal').textContent),
-                    exchange : exchangeRate,
-                },
-                ...shoppingCar
+                shoppingCar = {
+                    invoice :{
+                        date:today,
+                        invoice : requiredInvoice.checked,
+                        electronic_invoice : requiredElectronicInvoice.checked,
+                        credit: requiredCredit.checked,
+                        currency : currency,
+                        paymentType : Number(payment_Option),
+                        total : Number(document.getElementById('invoiceTotal').textContent.slice(1)),
+                        exchange : exchangeRate,
+                        info : info.value ,
+                    },
+                    ...shoppingCar
+                }
+
+                let reservation = sendBooking(shoppingCar,loader);
             }
 
-            let reservation = sendBooking(shoppingCar,loader);
         }
 
-        async function sendBooking(shoppingCar, loader) {
 
+        async function sendBooking(shoppingCar, loader) {
             const route = '{{ route('booking.tour')}}';
             let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             return await fetch(route, {
@@ -924,7 +1078,6 @@
         function removeLoader(loader) {
             let card = document.getElementById('card-loader');
             card.style.opacity = '1';
-
             card.removeChild(loader);
         }
 
@@ -949,9 +1102,6 @@
             fillInvoice()
         }
 
-        function sleep (time) {
-            return new Promise((resolve) => setTimeout(resolve, time));
-        }
 
         run()
     </script>

@@ -9,9 +9,8 @@ use Illuminate\Notifications\Notifiable;
 
 class NewUser extends Model
 {
-    use HasFactory;
+    use HasFactory,Notifiable;
 
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +19,7 @@ class NewUser extends Model
      */
     protected $fillable = [
         'email',
+        'name',
         'token',
     ];
 
@@ -28,8 +28,8 @@ class NewUser extends Model
      *
      * @return void
      */
-    public function sendMail(User $user)
+    public function sendMail():void
     {
-        $this->notify(new WelcomeEmailNotification($this,$user));
+        $this->notify(new WelcomeEmailNotification($this));
     }
 }

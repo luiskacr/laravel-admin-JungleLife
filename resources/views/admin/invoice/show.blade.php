@@ -14,7 +14,7 @@
 
                 <div class="col-md-12 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                     <div class="float-start">
-                        <h4> Cliente </h4>
+                        <h4> {{ __('app.customer_single') }} </h4>
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
 
                 <div class="col-md-12 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                     <div class="float-start">
-                        <h4> Factura </h4>
+                        <h4> {{__('app.invoice')}} # {{ $prefix . $invoice->id }}</h4>
                     </div>
                 </div>
 
@@ -66,12 +66,28 @@
                     <input type="text" id="name" value="{{ $invoice->getMoney->name }}" class="form-control "  name="name" disabled>
                 </div>
 
+                <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                    <label class="form-label" for="name">{{ __('app.payment_type') }}</label>
+                    <input type="text" id="name" value="{{ $invoice->getType->name }}" class="form-control "  name="name" disabled>
+                </div>
+
+                <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                    <label class="form-label" for="name">{{ __('app.state') }}</label>
+                    <input type="text" id="name" value="{{ $invoice->getState->name }}" class="form-control "  name="name" disabled>
+                </div>
+
+
+                <div class="col-md-12 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                    <label class="form-label" for="info">{{ __('app.comments') }}</label>
+                    <textarea class="form-control" name="info" id="info" disabled>{{ $invoice->info }}</textarea>
+                </div>
+
             </div>
             <div class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-5">
 
                 <div class="col-md-12 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                     <div class="float-start">
-                        <h4> Detalle </h4>
+                        <h4> {{ __('app.detail') }}  </h4>
                     </div>
                 </div>
 
@@ -94,7 +110,7 @@
                                 <th> {{ $counter  }} </th>
                                 <th> {{ $detail->getProduct->name }} </th>
                                 <th> {{ $detail->quantity }} </th>
-                                <th> {{ $detail->getMoney->symbol . $detail->getProduct->price  }} </th>
+                                <th> {{ $detail->getMoney->symbol . $detail->price  }} </th>
                                 <th> {{  $detail->getMoney->symbol .  $detail->total }} </th>
                             </tr>
                             @php

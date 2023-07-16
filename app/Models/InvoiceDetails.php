@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class InvoiceDetails extends Model
 {
@@ -19,6 +20,7 @@ class InvoiceDetails extends Model
         'product',
         'tour',
         'quantity',
+        'price',
         'total',
         'money',
         'exchange',
@@ -34,17 +36,28 @@ class InvoiceDetails extends Model
         'tour' => 'integer',
         'product' => 'integer',
         'quantity' => 'integer',
-        'total' => 'integer',
+        'price' => 'decimal:2',
+        'total' => 'decimal:2',
         'money' => 'integer',
         'exchange' => 'integer',
     ];
 
-    public function getProduct()
+    /**
+     * Return a Product Relation
+     *
+     * @return BelongsTo
+     */
+    public function getProduct():belongsTo
     {
-        return $this->belongsTo(Product::class,'product','id');
+        return $this->belongsTo(Product::class,'product','id')->withTrashed();
     }
 
-    public function getMoney()
+    /**
+     * Return a Money Type Relation
+     *
+     * @return BelongsTo
+     */
+    public function getMoney():belongsTo
     {
         return $this->belongsTo(MoneyType::class,'money','id');
     }

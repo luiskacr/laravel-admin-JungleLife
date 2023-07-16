@@ -17,7 +17,6 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-
         try{
             DB::beginTransaction();
 
@@ -38,8 +37,6 @@ class RoleSeeder extends Seeder
 
             $user = User::find(1);
             $user->assignRole('Administrador');
-
-
 
             DB::commit();
 
