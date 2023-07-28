@@ -188,4 +188,25 @@ trait TourTraits
         }
     }
 
+    /**
+     * Convert a Tour to an Array for a Json response
+     *
+     * @param Tour $tour
+     * @return array
+     */
+    public function tourToArray(Tour $tour): array
+    {
+        return [
+            'id' => $tour->id,
+            'name' => $tour->title,
+            'type' =>[
+                'id' => $tour->type,
+                'name' => $tour->tourType-> name,
+            ],
+            'start' => Carbon::parse($tour->start)->format('d/m/Y H:i:s'),
+            'end' => Carbon::parse($tour->end)->format('d/m/Y H:i:s'),
+            'available_space' => $tour->availableSpace(),
+        ];
+    }
+
 }

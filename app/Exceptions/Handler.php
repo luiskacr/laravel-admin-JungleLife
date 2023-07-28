@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +49,21 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * @param $request
+     * @param AuthenticationException $exception
+     * @return JsonResponse | RedirectResponse
+     */
+    protected function unauthenticated($request, AuthenticationException $exception):JsonResponse | RedirectResponse
+    {
+
+        if( $request->is('api/*') )
+        {
+            return response()->json(['success' => false, 'message' => $exception->getMessage()], 401);
+        }
+
+        return redirect('/');
     }
 }

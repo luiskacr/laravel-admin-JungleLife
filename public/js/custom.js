@@ -1,5 +1,9 @@
 
-
+/**
+ * Set Default #table config from DataTable
+ *
+ * @returns void
+ */
 $(document).ready(function (){
     $('#table').dataTable({
         language: {
@@ -24,14 +28,16 @@ $(document).ready(function (){
         },
         "bSort": false,
         responsive: true,
-        
+
     })
 });
 
-
+/**
+ * Set Global DataTables values
+ *
+ * @returns void
+ */
 (function ($, DataTable) {
-
-    // Datatable global configuration
     $.extend(true, DataTable.defaults, {
         language: {
             "decimal": "",
@@ -60,16 +66,25 @@ $(document).ready(function (){
         responsive: true,
 
     });
-
 })(jQuery, jQuery.fn.dataTable);
 
+/**
+ * Set Default #date config from flatpickr
+ *
+ * @returns void
+ */
 $("#date").flatpickr({
     "dateFormat": "d-m-Y",
     "minDate": "today",
     "locale": "es"
 });
 
-
+/**
+ * Create a Success Toast Notification
+ *
+ * @param message
+ * @return void
+ */
 function successToast( message ){
     Toastify({
         text: message,
@@ -88,6 +103,12 @@ function successToast( message ){
 
 }
 
+/**
+ * Create a Danger Toast Notification
+ *
+ * @param message
+ * @return void
+ */
 function dangerToast( message ){
     Toastify({
         text: message,
@@ -105,6 +126,12 @@ function dangerToast( message ){
     }).showToast();
 }
 
+/**
+ * Create an Info Toast Notification
+ *
+ * @param message
+ * @return void
+ */
 function infoToast( message ){
     Toastify({
         text: message,
@@ -122,6 +149,12 @@ function infoToast( message ){
     }).showToast();
 }
 
+/**
+ * Delays the execution of code for the specified time.
+ *
+ * @param {number} time - The time in milliseconds to sleep.
+ * @returns {Promise} A promise that resolves after the specified time has elapsed.
+ */
 function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }

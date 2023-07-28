@@ -71,6 +71,8 @@ Route::group([
         //Configurations Routes
         Route::get('/configurations',[\App\Http\Controllers\Admin\ConfigurationController::class,'index'])->name('configurations.index');
         Route::Post('/configurations/update',[\App\Http\Controllers\Admin\ConfigurationController::class,'update'])->name('configurations.update');
+        Route::Post('/configurations/create-token',[\App\Http\Controllers\Admin\ConfigurationController::class,'createToken'])->name('configurations.create-token');
+        Route::delete('/configurations/{id}',[\App\Http\Controllers\Admin\ConfigurationController::class,'deleteToken'])->name('configurations.delete-token');
 
         //Calendar Routes
         Route::get('calendar',[\App\Http\Controllers\Admin\CalendarController::class,'show'])->name('calendar.show');

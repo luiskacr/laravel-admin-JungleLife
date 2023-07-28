@@ -33,7 +33,7 @@
 
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                         <label class="form-label" for="price">{{ __('app.price') }}</label>
-                        <input type="number" id="price" value="{{ $product->price }}" class="form-control " min="0" name="price">
+                        <input  id="price" value="{{ $product->price }}" class="form-control " min="0" name="price"  >
                         @error('price')
                         <div class="text-danger">
                             <div data-field="name">* {{$message}}</div>

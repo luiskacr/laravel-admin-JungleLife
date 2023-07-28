@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\v1\BookingController;
+use App\Http\Controllers\Api\v1\ProductController;
+use App\Http\Controllers\Api\v1\TourController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+//Admin Section
+Route::group([
+    'prefix' => '/v1',
+    'middleware'=>['auth:sanctum','throttle:api'],
+
+],
+    function(){
+
+        Route::get('/ping',function (Request $request){
+            return response()->json(['message'=> 'pong']);
+        });
+
+        Route::get('tours/all',[TourController::class, 'getAll']);
+        Route::get('tours/range',[TourController::class, 'getAllRangeTours']);
+        Route::get('tours/{id}',[TourController::class, 'show']);
+
+        Route::get('products/all',[ProductController::class, 'getAll']);
+        Route::get('products/{id}',[ProductController::class, 'show']);
+        Route::get('booking/',[BookingController::class, 'booking']);
+    }
+);

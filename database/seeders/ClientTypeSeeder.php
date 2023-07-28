@@ -28,6 +28,10 @@ class ClientTypeSeeder extends Seeder
         ]);
 
         ClientType::create([
+            'name' => 'Web'
+        ]);
+
+        ClientType::create([
             'name' => 'CPL'
         ]);
     }

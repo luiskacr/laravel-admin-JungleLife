@@ -76,7 +76,7 @@
 <script src="{{ asset('vendor/perfect-scrollbar/perfect-scrollbar.js' ) }}"></script>
 <script src="{{ asset('vendor/sweetAlert2/dist/sweetalert2.all.min.js' ) }}"></script>
 <script src="{{ asset('js/menu.js') }}"></script>
-<!-- endbuild -->
+<!-- end-build -->
 
 <!-- Vendors JS -->
 <script src="{{ asset('vendor/dataTables@1.13.5/datatables.min.js') }}"></script>

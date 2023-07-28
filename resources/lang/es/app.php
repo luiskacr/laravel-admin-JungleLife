@@ -308,6 +308,13 @@ return [
     'profits' => 'Ganancias',
     'guides_cost' => 'Costos de Guias',
 
+    //Api
+    'tokens' => 'Tokens',
+    'token' => 'Token',
+    'token_create' => 'Crear un Token',
+    'add_token' => 'Crear el Token',
+    'never_expired' => 'Nunca',
+    'token_create_message' => 'Por Favor copie este nuevo Token, Por su seguridad, no se volvera a mostrar  ',
 
 
     //Environment

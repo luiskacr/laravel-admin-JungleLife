@@ -53,7 +53,7 @@ class Invoice extends Model
     }
 
     /**
-     * Return a Invoice State Relation
+     * Return an Invoice State Relation
      *
      * @return BelongsTo
      */

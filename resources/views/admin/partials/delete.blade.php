@@ -1,6 +1,6 @@
 <script>
 
-    function deleteItem(id, name, token, route, entity) {
+    function deleteItem(id, name, token, route, entity, callback) {
         const f_route = route.slice(0, -1);
         Swal.fire({
             title: '{{ __('app.delete_title') }}',
@@ -29,7 +29,11 @@
                             text: '{{ __('app.delete_success') }}',
                             icon: 'success',
                         }).then((result) => {
-                            location.reload();
+                            if(callback=== undefined){
+                                location.reload();
+                            }else{
+
+                            }
                         })
                     },
                     error: function (request, status, error) {

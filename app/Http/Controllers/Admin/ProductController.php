@@ -122,7 +122,7 @@ class ProductController extends Controller
                 'description' => $request->request->get('description'),
                 'price' => $request->request->getInt('price') ,
                 'type' => $request->request->getInt('type'),
-                'money' => $request->request->getInt('money'),
+                'money' => $request->request->get('money'),
                 'tourType' => $request->request->getInt('type') != 1
                     ? null
                     : $request->request->getInt('tourType')

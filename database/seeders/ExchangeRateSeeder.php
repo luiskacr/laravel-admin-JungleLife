@@ -21,6 +21,12 @@ class ExchangeRateSeeder extends Seeder
     public function run():void
     {
         try{
+            ExchangeRate::create([
+                'date' => Carbon::now('America/Costa_Rica'),
+                'buy' => 0,
+                'sell' => 0,
+            ]);
+
             $this->createExchangeRate();
         }catch (\Exception $e){
 
