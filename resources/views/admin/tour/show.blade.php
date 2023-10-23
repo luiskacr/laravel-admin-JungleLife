@@ -485,8 +485,6 @@
             const route = '{{ route('tour.guide.create',$tour->id) }}'
             let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            console.log(value)
-
             if(value === '0'){
                 document.getElementById('guideError').style.visibility = 'visible'
             }else{
@@ -514,7 +512,6 @@
                             )
                         });
                     }else{
-                        console.log("Request complete! response:", res);
                         closeButton.onclick;
                         window.location.reload();
                     }

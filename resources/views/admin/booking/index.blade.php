@@ -173,8 +173,7 @@
                             <div class="col mb-3">
                                 <div class="col-md-12 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                                     <label class="form-label" for="searchCostumer">{{ __('app.customer_single') }} </label>
-                                    <select class="select2  form-select form-select-lg" onchange="isSelectedClient(this)" id='searchCostumer' style="width: 100%" name="costumer">
-                                    </select>
+                                    <select class="select2  form-select form-select-lg" onchange="isSelectedClient(this)" id='searchCostumer' style="width: 100%" name="costumer"></select>
                                     <div id="searchClientError" class="text-danger">
                                         <div id="typeError" data-field="type">
                                             <div id="searchClientError" data-field="type"></div>
@@ -365,13 +364,22 @@
         let payment_Option;
         let availableSpaceOnTour = 0;
         let currency = 2;
-        let exchangeRate={
+        let exchangeRate = {
             'id' : {{ $exchange_rates['id'] }} ,
             'buy' : {{ $exchange_rates['buy'] }} ,
             'sell' : {{ $exchange_rates['sell'] }} ,
         }
         let jsonProducts = {!! json_encode($products) !!};
         let user = {!! json_encode(auth()) !!};
+
+        document.getElementById('payment_type').addEventListener('change', ()=>{
+            let selection = document.getElementById('payment_type').value
+            if(Number(selection) === 4){
+                document.getElementById("requiredCredit").checked = true;
+                document.getElementById("requiredInvoice").checked = false;
+                document.getElementById("payment_type").disabled = true;
+            }
+        })
 
         document.getElementById('requiredCredit').addEventListener('change', ()=> {
             let selection = document.getElementById('requiredCredit').checked
@@ -415,7 +423,6 @@
             },
 
         });
-
 
         async function createNewClient(){
             if(newClientValidation()){
@@ -1014,10 +1021,8 @@
                     },
                     ...shoppingCar
                 }
-
                 let reservation = sendBooking(shoppingCar,loader);
             }
-
         }
 
 

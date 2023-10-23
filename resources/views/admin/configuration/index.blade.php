@@ -116,7 +116,42 @@
                             </div>
                         </div>
 
+                        <h4>{{ __('app.config_tittle_mail_invoice') }} </h4>
 
+                        <div class="col-12">
+                            <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="conf9">{{ $configurations[8]->name  }}</label>
+                                <input type="text" id="conf9" value="{{ $configurations[8]->data['value'] }}" class="form-control "  name="conf4" >
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="conf10">{{ $configurations[9]->name  }}</label>
+                                <input type="text" id="conf10" value="{{ $configurations[9]->data['value'] }}" class="form-control "  name="conf4" >
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="conf11">{{ $configurations[10]->name  }}</label>
+                                <input type="text" id="conf11" value="{{ $configurations[10]->data['value'] }}" class="form-control "  name="conf4" >
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="conf12">{{ $configurations[11]->name  }}</label>
+                                <input type="text" id="conf12" value="{{ $configurations[11]->data['value'] }}" class="form-control "  name="conf4" >
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                <label class="form-label" for="conf13">{{ $configurations[12]->name  }}</label>
+                                <input type="text" id="conf13" value="{{ $configurations[12]->data['value'] }}" class="form-control "  name="conf4" >
+                            </div>
+                        </div>
 
 
                         <div class="col-12">
@@ -276,6 +311,11 @@
             let conf5 = document.getElementById('conf5').value
             let conf6 = document.getElementById('conf6').checked
             let conf8 = document.getElementById('conf8').value
+            let conf9 = document.getElementById('conf9').value
+            let conf10 = document.getElementById('conf10').value
+            let conf11 = document.getElementById('conf11').value
+            let conf12 = document.getElementById('conf12').value
+            let conf13 = document.getElementById('conf13').value
 
             let body = {
                 configuration1 : Number(conf1),
@@ -286,6 +326,11 @@
                 configuration6 : conf6,
                 configuration7 : getCheckValues(),
                 configuration8 : conf8,
+                configuration9 : conf9,
+                configuration10 : conf10,
+                configuration11 : conf11,
+                configuration12 : conf12,
+                configuration13 : conf13,
             }
 
             fetch(route, {

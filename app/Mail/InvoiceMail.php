@@ -6,10 +6,9 @@ use App\Models\Configuration;
 use App\Models\Invoice;
 use App\Models\Tour;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class InvoiceMail extends Mailable
@@ -24,7 +23,7 @@ class InvoiceMail extends Mailable
 
     protected array $client;
 
-    protected string $prefix;
+    protected Collection $configurations;
 
 
     /**
@@ -37,8 +36,7 @@ class InvoiceMail extends Mailable
         $this->invoice = $invoice;
         $this->invoiceDetail = $invoiceDetail;
         $this->client = $client;
-        $configurations = Configuration::all();
-        $this->prefix = $configurations[3]->data['value'];
+        $this->configurations = Configuration::all();
         $this->tour = $tour;
     }
 
@@ -56,7 +54,7 @@ class InvoiceMail extends Mailable
                 'invoice'=> $this->invoice,
                 'details' => $this->invoiceDetail,
                 'client' => $this->client,
-                'prefix' => $this->prefix,
+                'configurations' => $this->configurations,
                 'tour' => $this->tour,
             ]);
     }

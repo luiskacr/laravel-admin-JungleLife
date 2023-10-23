@@ -132,7 +132,7 @@ trait TourTraits
                     foreach($clients as $client){
 
                         //$configurations[6]->data['value'][$payment] Verified if this payment has the automatic send thanks Mail
-                        if($configurations[6]->data['value'][ strval($client->getInvoice->type)] and $clients->present )
+                        if($configurations[6]->data['value'][ strval($client->getInvoice->type)] and $client->present )
                         {
                             Mail::to( $client->getClient->email )->queue( new ThanksTour($client->getClient->name, $configurations[7]->data['value'] ) );
                         }

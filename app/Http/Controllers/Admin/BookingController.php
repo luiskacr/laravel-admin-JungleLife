@@ -31,7 +31,10 @@ class BookingController extends Controller
     public function index():View
     {
         $dateValue = Carbon::now('America/Costa_Rica')->format('Y-m-d');
-        $exchange_rate = ExchangeRate::where('date', '=', $dateValue)->take(1)->get();
+        $exchange_rate = ExchangeRate::where('date', '=', $dateValue)
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
 
         if($exchange_rate->isEmpty()){
             return view('admin.booking.error');

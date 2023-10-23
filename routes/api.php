@@ -36,6 +36,6 @@ Route::group([
 
         Route::get('products/all',[ProductController::class, 'getAll']);
         Route::get('products/{id}',[ProductController::class, 'show']);
-        Route::get('booking/',[BookingController::class, 'booking']);
+        Route::post('booking/',[BookingController::class, 'booking']);
     }
 );

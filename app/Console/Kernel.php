@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule):void
     {
+        $schedule->command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->hourly();
+
         if(app()->environment('production')){
             $schedule->command('exchange-rate:get')->dailyAt('1:00');
             $schedule->command('tours:create')->dailyAt('1:00');

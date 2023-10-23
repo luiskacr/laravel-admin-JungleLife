@@ -4,14 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\ExchangeRateDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\ExchangeRate;
 use App\Traits\ExchangeRateTrait;
 use App\Traits\ResponseTrait;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ExchangeRateController extends Controller
 {
@@ -40,6 +36,8 @@ class ExchangeRateController extends Controller
             $this->createExchangeRate();
 
         }catch (\Exception $e){
+
+            Log::channel('emergency')->error($e->getMessage());
 
             return $this->errorJsonResponse($e->getMessage(), __('app.error_delete') );
         }

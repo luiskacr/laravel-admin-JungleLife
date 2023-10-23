@@ -75,6 +75,12 @@ return [
     'invoice_btn_show' => 'Ver Factura',
     'invoice_btn_send' => 'Enviar Factura',
     'invoice_message_send' => 'Se ha incluido la factura en la cola de Envio',
+    'invoice_tour' => 'Tour:',
+    'invoice_start' => 'Inicio:',
+    'invoice_end' => 'Fin:',
+    'invoice_phone' => 'Telefono:',
+    'invoice_email' => 'Correo:',
+    'invoice_web' => 'Sitio Web:',
 
     //Welcome to View
     'welcome_view_message' => 'Para iniciar crea una contraseña ',
@@ -149,6 +155,7 @@ return [
     'tours_active' => "Tours activos",
     'tours_history' => "Historial de tours",
     'tours_book' => "Reservar tour",
+    'tours_book_plural' => "Reservas",
     'tours_of' => " Tour de ",
     'invoice' => "Factura",
     'invoice_state' => "Estado de la factura",
@@ -296,6 +303,9 @@ return [
     'invoice_subject' => 'Gracias por su compra',
     'detail' => 'Detalle',
 
+    //
+    'automatic_tour_tittle' => 'Creacion automatica',
+
     //Config
     'config_basic' => 'Basica',
     'config_email' => 'Correos',
@@ -303,10 +313,59 @@ return [
     'config_error' => 'Al intentar actualizar las configuraciones',
     'config_5' => 'Activo envia',
     'config_tittle_mail_thanks' => 'Correos de Agradecimientos',
+    'config_tittle_mail_invoice' => 'Correos de Factura',
 
     //Reports
+    'report' => 'Reportes',
+    'report_tittle' => 'Reportes',
     'profits' => 'Ganancias',
+    'date_error_gt' => 'La Fecha de inicio tiene que ser menor que la fecha final',
+    'start_data' => 'Fecha de Inicio',
+    'end_data' => 'Fecha de Fin',
     'guides_cost' => 'Costos de Guias',
+    'reports_btn' => 'Mostrar',
+    'reports_file_error' => 'Ocurrio un error al descargar el archivo',
+    'reports_export_excel' => 'Exportar a Excel',
+    'reports_total' => 'Ganancia Total',
+    'reports_date_placeHolder' => 'Selecciona la Fecha del Reporte',
+    'report_daily_profit_tittle' => 'Ingresos Diarios',
+    'report_daily_file_tittle' => 'ingreso_diario_',
+    'report_daily_profit_message' => 'Muestra los ingresos de todos los Toures generados durante el dia',
+    'report_daily_col_total' => 'Total Colones',
+    'report_daily_dol_total' => 'Total Dolares',
+    'report_daily_table_message' => 'Favor seleccionar una fecha para ver el reporte',
+    'report_daily_empty_message' => 'La Fecha seleccionado no posee datos de reservas',
+    'report_guides_tittle' => 'Comisiones de Guias',
+    'report_guides_message' => 'Muestra el total de las comisiones para los Guias por los tours',
+    'report_guides_commission' => 'Comision',
+    'report_guides_file_tittle' => 'reporte_guias',
+    'report_credit_tittle' => 'Facturas a Credito',
+    'report_credit_message' => 'Muestra todas las facturas que se encuentran Abiertas actualmente',
+    'report_credit_empty_message' => 'Actualmente no posee Factura abiertas',
+    'report_credit_file' => 'reporte_creditos',
+    'report_monthly_tittle' => 'Reporte Mensual',
+    'report_monthly_message' => 'Muestra las Ganancias de por Mes',
+    'report_monthly_value' => 'Mes',
+    'report_monthly_select_value' => 'Favor seleccionar un mes',
+    'report_yearly_tittle' => 'Reporte Anual',
+    'report_yearly_message' => 'Muestra las Ganancias de todo el año',
+    'report_yearly_value' => 'Año',
+    'report_yearly_select_value' => 'Favor seleccionar un año',
+
+    //
+    'january' => 'Enero',
+    'february' => 'Febrero',
+    'march' => 'Marzo',
+    'april' => 'Abril',
+    'may' => 'Mayo',
+    'june' => 'Junio',
+    'july' => 'Julio',
+    'august' => 'Agosto',
+    'september' => 'Septiembre',
+    'october' => 'Octubre',
+    'november' => 'Noviembre',
+    'december' => 'Diciembre',
+
 
     //Api
     'tokens' => 'Tokens',
@@ -324,4 +383,5 @@ return [
     'develop' => 'Development',
     'stage' => 'Stage',
     'production' => 'Production',
+    'health' => 'Health',
 ];

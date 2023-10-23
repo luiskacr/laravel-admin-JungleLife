@@ -74,5 +74,41 @@ class ConfigSeeder extends Seeder
             ]
         ]);
 
+        Configuration::create([
+            'name'=> 'Telefono para las Facturas',
+            'data'=> [
+                'value' => '+506 87123340'
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Correo Electronico para las Facturas',
+            'data'=> [
+                'value' => 'admin@junglelife.com'
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Sitio Web para facturas',
+            'data'=> [
+                'value' => 'https://www.junglelifecr.com'
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Facebook para facturas',
+            'data'=> [
+                'value' => 'https://www.facebook.com/junglelifecroficial'
+            ]
+        ]);
+
+        Configuration::create([
+            'name'=> 'Instagram para facturas',
+            'data'=> [
+                'value' => 'https://www.instagram.com/junglelife_cr/'
+            ]
+        ]);
+
+
     }
 }

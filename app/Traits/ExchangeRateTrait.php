@@ -23,14 +23,14 @@ trait ExchangeRateTrait
         try{
             $urlRoot = env("API_TIPO_CAMBIO");
             $today= Carbon::now('America/Costa_Rica');
-            $api = $urlRoot. $today->day .'/'. $today->month .'/'. $today->year;
+            //$api = $urlRoot. $today->day .'/'. $today->month .'/'. $today->year;
 
-            $request = Http::get($api)->json();
+            $request = Http::get($urlRoot)->json();
 
             ExchangeRate::create([
                 'date' => $today,
-                'buy' => $request['compra'],
-                'sell' => $request['venta'],
+                'buy' => $request['compra']['valor'],
+                'sell' => $request['venta']['valor'],
             ]);
 
             DB::commit();

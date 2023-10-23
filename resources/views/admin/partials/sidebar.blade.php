@@ -24,7 +24,7 @@
             <span class="menu-header-text">{{ __('app.tour_tittle') }}</span>
         </li>
 
-        @php( $menuTour = array(__('app.tours_active'),__('app.tours_history'),__('app.tours_book'), __('app.products'), __('app.increase_request')))
+        @php( $menuTour = array(__('app.tours_active'),__('app.tours_history'),__('app.tours_book'), __('app.products'), __('app.increase_request'),__('app.automatic_tour_tittle')))
         <li class="menu-item {{ in_array($title,$menuTour) ? 'open' : '' }} {{ in_array($title,$menuTour) ? 'active' : ''}} ">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-landscape"></i>
@@ -66,6 +66,13 @@
                 <li class="menu-item {{ $title == __('app.increase_request') ? 'active' : '' }}">
                     <a href="{{ route('approvals.create')  }}" class="menu-link">
                         <div data-i18n="Basic">{{ __('app.increase_request') }}</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $title == __('app.automatic_tour_tittle') ? 'active' : '' }}">
+                    <a href="{{ route('automatic.index')  }}" class="menu-link">
+                        <div data-i18n="Basic">{{ __('app.automatic_tour_tittle') }}</div>
                     </a>
                 </li>
             </ul>
@@ -151,6 +158,14 @@
 
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">{{ __('app.reports') }}</span>
+
+            <li class="menu-item {{ $title == __('app.report') ? 'active' : '' }}">
+                <a href="{{ route('reports.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-line-chart"></i>
+                    <div data-i18n="Basic">{{ __('app.report') }}</div>
+                </a>
+            </li>
+
         </li>
 
         <!-- Config -->
@@ -203,6 +218,13 @@
             <a href="{{ route('log-viewer.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-message-error"></i>
                 <div data-i18n="Basic">{{ __('app.log_tittle') }}</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{ $title == __('app.health') ? 'active' : '' }}">
+            <a target="_blank" href="{{ route('health') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-heart"></i>
+                <div data-i18n="Basic">{{ __('app.health') }}</div>
             </a>
         </li>
 

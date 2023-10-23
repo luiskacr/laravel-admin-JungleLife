@@ -15,10 +15,10 @@
         }
 
         body h1 {
-            font-weight: 300;
+            font-weight: 500;
             margin-bottom: 0px;
             padding-bottom: 0px;
-            color: #000;
+            color: #3B574B;
         }
 
         body h3 {
@@ -129,7 +129,6 @@
 
 <body>
 <div class="invoice-boxx">
-    <br>
     <h1 align="center" class="title">{{ __('app.invoice_tittle') }}</h1>
     <br>
     <div class="invoice-box">
@@ -142,14 +141,13 @@
                                 <img src="{{ asset('assets/images/logo2.png') }}" alt="logo" style="width: 50%; max-width: 150px" />
                             </td>
                             <td>
-                                {{ __('app.invoice') }} : {{ $prefix . $invoice->id  }}<br />
+                                {{ __('app.invoice') }} : {{ $configurations[3]->data['value'] . $invoice->id  }}<br />
                                 {{ __('app.date') }} : {{ \Illuminate\Support\Carbon::now()->format('d-m-Y') }}
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
-
             <tr class="information">
                 <td colspan="2">
                     <table>
@@ -170,6 +168,17 @@
             </tr>
         </table>
         <table>
+            <tr>
+                <td style="padding: 0"><strong>{{ __('app.invoice_tour') }}</strong> {{ $tour->title }} </td>
+            </tr>
+            <tr>
+                <td style="padding: 0"><strong>{{ __('app.invoice_start') }}</strong>  {{ \Illuminate\Support\Carbon::parse($tour->start)->format('d/m/Y h:m:s') }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 0" ><strong>{{ __('app.invoice_end') }} </strong> {{ \Illuminate\Support\Carbon::parse($tour->end)->format('d/m/Y h:m:s')  }}</td>
+            </tr>
+        </table>
+        <table style="margin-top:2rem">
             <tr class="heading">
                 <td>{{ __('app.products') }}</td>
                 <td>{{ __('app.quantity2') }}</td>
@@ -183,7 +192,7 @@
                     @php($product_total = ($detail['quantity'] * $detail['price']) )
                     <td>{{ $detail['name'] }}</td>
                     <td>{{ $detail['quantity'] }}</td>
-                    <td>{{ $symbol . $detail['price'] }}</td>
+                    <td>{{ $symbol . ($detail['price'] == null ? 0 : $detail['price'] ) }}</td>
                     <td>{{ $symbol . $product_total }}</td>
                     @php($total = $total + $product_total)
                 </tr>
@@ -195,31 +204,29 @@
                 <td> <b>{{ __('app.total') }} : {{ $symbol . $total }}</b> </td>
             </tr>
         </table>
-        <p align="center"><strong>{{ __('app.invoice_thanks') }}</strong></p>
+        <p align="center"><h2><strong>{{ __('app.invoice_thanks') }}</strong></h2></p>
     </div>
     <br>
-</div>
-<div>
-    <br>
-    <br>
+    <div class="invoice-box">
+        <h1 align="center" class="title">{{ env('APP_NAME') }}</h1>
+        <p align="center">
+            {{ __('app.invoice_phone') }} {{ $configurations[8]->data['value'] }}
+            <br>{{ __('app.invoice_email') }} {{ $configurations[9]->data['value'] }}
+            <br> {{ __('app.invoice_web') }}<a target="_blank" href="{{ $configurations[10]->data['value'] }}">{{ $configurations[10]->data['value'] }}</a>
+            <br>
+        </p>
+        <div align="center">
+            <a target="_blank" href="{{ $configurations[11]->data['value']  }}"> <img src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/facebook_circle_color-512.png" align="middle" style="width:10%; max-width:50px;"></a>
+            <a target="_blank" href="{{ $configurations[12]->data['value']  }}"> <img src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_instagram-512.png" align="middle" style="width:10%; max-width:50px;"> </a>
+        </div>
+        <div align="center">
+            <p>©{{ now()->year }} {{ __('app.template_rights') }}</p>
+        </div>
+    </div>
 </div>
 
-<div class="invoice-box">
-    <h1 align="center" class="title">{{ env('APP_NAME') }}</h1>
-    <p align="center">
-        Phone: +62 21 6386 9506
-        <br> Email: contact@indosol.com
-        <br> Website:<a href="www.indosol.com">www.indosol.com</a>
-        <br>
-    </p>
-    <div align="center">
-        <a href="#"> <img src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/facebook_circle_color-512.png" align="middle" style="width:10%; max-width:50px;"> </a>
-        <a href="#"> <img src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/google_circle_color-128.png" align="middle" style="width:10%; max-width:50px;"> </a>
-    </div>
-    <div align="center">
-       <p>©{{ now()->year }} {{ __('app.template_rights') }}</p>
-    </div>
-</div>
+
+
 
 </body>
 </html>
