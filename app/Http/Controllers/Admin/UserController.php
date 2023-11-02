@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Models\Customer;
 use App\Models\NewUser;
 use App\Models\User;
 use App\Traits\ResponseTrait;
@@ -60,6 +61,15 @@ class UserController extends Controller
                 'active' => false,
                 'password' => $request->request->get('email'),
             ]);
+
+            if($request->request->getInt('role') == 3){
+                Customer::create([
+                    'name' => $request->request->get('name'),
+                    'email' => $request->request->get('email'),
+                    'telephone' => $request->request->get('telephone') ,
+                    'clientType' => 2 ,
+                ]);
+            }
 
             $role = Role::findById($request->request->getInt('role'));
             $user->assignRole($role);
@@ -121,6 +131,11 @@ class UserController extends Controller
 
             $user->updateRoleById($request->request->getInt('role'));
 
+            if($request->request->getInt('role') == 3){
+                Customer::where('email', '=', $user->email)
+                    ->update(['email' => $request->request->get('email')]);
+            }
+
             $user->update([
                 'name' => $request->request->get('name'),
                 'email' => $request->request->get('email'),
@@ -130,8 +145,9 @@ class UserController extends Controller
             DB::commit();
         }catch (\Exception $e){
             DB::rollBack();
+            dd($e->getMessage());
 
-            return $this->errorResponse('users.edit' , $e->getMessage(), __('app.error_update', ['object' => __('app.user_singular') ]) );
+            return $this->errorResponse(['users.edit', $id] , $e->getMessage(), __('app.error_update', ['object' => __('app.user_singular') ]) );
         }
         return $this->successUpdateResponse('users.index', __('app.user_singular') );
     }

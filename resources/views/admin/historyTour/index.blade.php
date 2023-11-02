@@ -5,12 +5,16 @@
     $breadcrumbs = [__('app.home')=> route('admin.home'),'Tours'=>false];
 @endphp
 
-@section('content')
+@push('page-css')
     <style>
         #tourshistory-table_wrapper {
             padding: 22px;
         }
     </style>
+@endpush
+
+@section('content')
+
     <div class="card">
         <div class="card-header">
             <div class="container-fluid">

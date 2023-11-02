@@ -24,11 +24,15 @@ class CustomerDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function (Customer $customer){
+                $showDelete = auth()->user()->hasRole('Administrador')
+                    ? '<a class="m-2" href="#" onclick="deleteItem('.$customer->id.', \''.$customer->name.'\', \''.csrf_token().'\', \''.route('clients.destroy', 0).'\',\''. __('app.customer_single') .'\')">
+                                    <i class="bx bx-trash me-1"></i>'.__('app.crud_delete').'</a>'
+                    : '';
+
                 return ' <div class="justify-content-between">
                                 <a class="m-2" href="'. route('clients.show',$customer->id) .'"><i class="bx bxs-show me-1"></i>'.__('app.crud_show').'</a>
                                 <a class="m-2" href="'.route('clients.edit',$customer->id).'"><i class="bx bx-edit-alt me-1"></i>'.__('app.crud_edit').'</a>
-                                <a class="m-2" href="#" onclick="deleteItem('.$customer->id.', \''.$customer->name.'\', \''.csrf_token().'\', \''.route('clients.destroy', 0).'\',\''. __('app.customer_single') .'\')">
-                                    <i class="bx bx-trash me-1"></i>'.__('app.crud_delete').'</a>
+                                '.$showDelete.'
                             </div>';
             })
             ->addColumn(__('app.name'), function (Customer $customer){

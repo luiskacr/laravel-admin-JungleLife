@@ -3,6 +3,8 @@
 return [
     //Color
     'delete_color' => 'rgb(59, 87, 75)',
+    'cancelButtonColor' => '#ff3e1d',
+
 
     //Controllers message
     'error_create'=>  'Hubo un error al crear el :object',

@@ -88,24 +88,30 @@ class TourOptionsController extends Controller
     public function searchCustomer(int $id, Request $request){
         $search = $request->search;
 
-        if($search==''){
-            $customers = Customer::orderby('id','desc')->select('id','name','email')
-                ->limit(5)
-                ->get();
+        if(!auth()->user()->hasRole('Tour Operador')){
+            if($search==''){
+                $customers = Customer::orderby('id','desc')->select('id','name','email')
+                    ->limit(5)
+                    ->get();
+            }else{
+                $customers = Customer::orderby('name','asc')->select('id','name','email')
+                    ->where('name', 'like', '%' .$search . '%')
+                    ->orWhere('email', 'like', '%' .$search . '%')
+                    ->limit(5)
+                    ->get();
+            }
+            $response = array();
+
         }else{
-            $customers = Customer::orderby('name','asc')->select('id','name','email')
-                ->where('name', 'like', '%' .$search . '%')
-                ->orWhere('email', 'like', '%' .$search . '%')
-                ->limit(5)
-                ->get();
+            $customers = Customer::where('email','=' ,auth()->user()->email)->get();
         }
-        $response = array();
         foreach($customers as $customer){
             $response[] = array(
                 "id"=>$customer->id,
                 "text"=>'Nombre: '.$customer->name.' | Correo: ' .$customer->email
             );
         }
+
         return response()->json($response);
     }
 

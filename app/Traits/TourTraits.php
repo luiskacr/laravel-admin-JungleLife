@@ -121,14 +121,11 @@ trait TourTraits
             $newValues = $tour->getAttributes();
 
             if($oldValues['state'] != 2 and $newValues['state']  == 2){
-
                 $configurations = Configuration::all();
 
-                //$configurations[5] is an Automatic send thanks Mail
-                if( $configurations[5]->data['value'] or $configurations[5]->data['value'] == 1 ){
-
+                //$configurations[5] is a config with an Automatic send thanks Mail is on or off
+                if($configurations[5]->data['value'] or $configurations[5]->data['value'] == 1 ){
                     $clients = TourClient::where('tour', '=' , $newValues['id'])->get();
-
                     foreach($clients as $client){
 
                         //$configurations[6]->data['value'][$payment] Verified if this payment has the automatic send thanks Mail
@@ -138,10 +135,8 @@ trait TourTraits
                         }
                     }
                 }
-
             }
         }catch (\Exception $e){
-
             Log::channel('cronJobs')->info('Date: ' .Carbon::now('America/Costa_Rica'));
             Log::channel('cronJobs')->info('Process Error:Auto Thanks Mail');
             Log::channel('cronJobs')->error($e);

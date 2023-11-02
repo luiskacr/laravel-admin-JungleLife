@@ -13,9 +13,11 @@ use App\Models\InvoiceState;
 use App\Models\PaymentType;
 use App\Models\Tour;
 use App\Traits\ResponseTrait;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
@@ -40,11 +42,14 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return View
+     * @throws AuthorizationException
      */
     public function show(int $id):View
     {
+        $this->validateShow($id);
+
         $config = Configuration::findOrFail(4);
 
         return view('admin.invoice.show')
@@ -74,7 +79,6 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-
      */
     public function update(Request $request,int $id):RedirectResponse
     {
@@ -185,5 +189,29 @@ class InvoiceController extends Controller
             return $this->errorDestroyResponse( $e , __('app.error_delete'), 500 );
         }
         return $this->successJsonResponse(['message' => __('app.invoice_message_send')]);
+    }
+
+    /**
+     * Validate the rol and if the invoice is for a specific user
+     *
+     * @param int $id
+     * @return void
+     */
+    public function validateShow(int $id): void
+    {
+        $user = Auth::user();
+        if($user->hasRole('Tour Operador')){
+            $exist = true;
+            $customer = Customer::where('email', '=', $user->email)->first();
+            $invoiceValidation = Invoice::where('client', '=',$customer->id)->get();
+            foreach ($invoiceValidation as $validation){
+                if($validation->id == $id){
+                    $exist = false;
+                }
+            }
+            if($exist){
+                abort(404);
+            }
+        }
     }
 }

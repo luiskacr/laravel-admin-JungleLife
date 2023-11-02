@@ -22,11 +22,15 @@ class ToursDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function(Tour $tour) {
+                $showDelete = auth()->user()->hasRole('Administrador')
+                    ? '<a class="m-2" href="#" onclick="deleteItem('.$tour->id.', \''.$tour->title.'\', \''.csrf_token().'\', \''.route('tours.destroy', 0).'\',\''. ' ' .'\')">
+                                    <i class="bx bx-trash me-1"></i>'.__('app.crud_delete').'</a>'
+                    : '';
+
                 return '<div class="justify-content-between">
                             <a class="m-2" href="'.route('tours.show',$tour->id).' "><i class="bx bxs-show me-1"></i> '.__('app.crud_show').' </a>
                             <a class="m-2" href="'.route('tours.edit',$tour->id).'"><i class="bx bx-edit-alt me-1"></i> '.__('app.crud_edit').'</a>
-                            <a class="m-2" href="#" onclick="deleteItem('.$tour->id.', \''.$tour->title.'\', \''.csrf_token().'\', \''.route('tours.destroy', 0).'\',\''. ' ' .'\')">
-                                    <i class="bx bx-trash me-1"></i>'.__('app.crud_delete').'</a>
+                            '.$showDelete.'
                         </div>';
             })
             ->addColumn(__('app.name'), function (Tour $tour){
@@ -87,17 +91,26 @@ class ToursDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
-            Column::make('id'),
-            Column::make( __('app.name'), 'title'),
-            Column::make(__('app.available_space'))
-                ->searchable(false),
-            Column::make(__('app.tour_type_singular')  ),
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-
-        ];
+        if(auth()->user()->hasRole('Tour Operador')){
+            return [
+                Column::make('id'),
+                Column::make( __('app.name'), 'title'),
+                Column::make(__('app.available_space'))
+                    ->searchable(false),
+                Column::make(__('app.tour_type_singular')  ),
+            ];
+        }else{
+            return [
+                Column::make('id'),
+                Column::make( __('app.name'), 'title'),
+                Column::make(__('app.available_space'))
+                    ->searchable(false),
+                Column::make(__('app.tour_type_singular')  ),
+                Column::computed('action')
+                    ->exportable(false)
+                    ->printable(false)
+            ];
+        }
     }
 
 

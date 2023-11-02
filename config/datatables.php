@@ -115,7 +115,9 @@ return [
      * JsonResponse header and options config.
      */
     'json'           => [
-        'header'  => [],
+        'header'  => [
+
+        ],
         'options' => 0,
     ],
 

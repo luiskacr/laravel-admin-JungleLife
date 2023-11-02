@@ -74,10 +74,10 @@ Route::group([
         Route::put('/update-avatars/{id}',[\App\Http\Controllers\Admin\ProfileController::class,'updateImage'])->name('myProfile.avatars');
 
         //Configurations Routes
-        Route::get('/configurations',[\App\Http\Controllers\Admin\ConfigurationController::class,'index'])->name('configurations.index');
-        Route::Post('/configurations/update',[\App\Http\Controllers\Admin\ConfigurationController::class,'update'])->name('configurations.update');
-        Route::Post('/configurations/create-token',[\App\Http\Controllers\Admin\ConfigurationController::class,'createToken'])->name('configurations.create-token');
-        Route::delete('/configurations/{id}',[\App\Http\Controllers\Admin\ConfigurationController::class,'deleteToken'])->name('configurations.delete-token');
+        Route::get('/configurations',[\App\Http\Controllers\Admin\ConfigurationController::class,'index'])->name('configurations.index')->middleware('role:Administrador');
+        Route::Post('/configurations/update',[\App\Http\Controllers\Admin\ConfigurationController::class,'update'])->name('configurations.update')->middleware('role:Administrador');
+        Route::Post('/configurations/create-token',[\App\Http\Controllers\Admin\ConfigurationController::class,'createToken'])->name('configurations.create-token')->middleware('role:Administrador');
+        Route::delete('/configurations/{id}',[\App\Http\Controllers\Admin\ConfigurationController::class,'deleteToken'])->name('configurations.delete-token')->middleware('role:Administrador');
 
         //Calendar Routes
         Route::get('calendar',[\App\Http\Controllers\Admin\CalendarController::class,'show'])->name('calendar.show');
@@ -101,7 +101,7 @@ Route::group([
         Route::post('/approvals', [\App\Http\Controllers\Admin\ApprovalController::class, 'store'])->name('approvals.store');
         Route::get('/approvals/create', [\App\Http\Controllers\Admin\ApprovalController::class, 'create'])->name('approvals.create');
         Route::post('/approvals/get-tour-values', [\App\Http\Controllers\Admin\ApprovalController::class, 'getTourSpacesValues'])->name('approvals.tour-values');
-        Route::get('/approvals/{id}/edit', [\App\Http\Controllers\Admin\ApprovalController::class, 'edit'])->name('approvals.edit');
+        Route::get('/approvals/{id}/edit', [\App\Http\Controllers\Admin\ApprovalController::class, 'edit'])->name('approvals.edit')->middleware('role:Administrador');
         Route::post('/approvals/{id}/update', [\App\Http\Controllers\Admin\ApprovalController::class, 'update'])->name('approvals.update');
 
         //Invoice
@@ -110,19 +110,19 @@ Route::group([
         Route::post('invoice/{id}/send',[InvoiceController::class,'sendInvoice'])->name('invoice.send-invoice');
 
         //Reports
-        Route::get('reports',[ReportsController::class,'index'])->name('reports.index');
-        Route::get('reports/daily',[ReportsController::class,'dailyReportView'])->name('reports.daily');
-        Route::get('reports/daily/report/{date}',[ReportsController::class,'getDailyReportValue'])->name('reports.daily.values');
-        Route::get('reports/daily/report/download/excel/{date}',[ReportsController::class,'downloadExcelDailyReport'])->name('reports.daily.download.excel');
-        Route::get('reports/guides',[ReportsController::class,'guidesReportView'])->name('reports.guides');
-        Route::post('reports/guides/report',[ReportsController::class,'getGuidesReport'])->name('reports.guides.report');
-        Route::post('reports/guides/report/excel',[ReportsController::class,'downloadExcelGuidesReport'])->name('reports.guides.report.excel');
-        Route::get('reports/credit',[ReportsController::class,'creditReportView'])->name('reports.credit');
-        Route::get('reports/credit/excel',[ReportsController::class,'downloadExcelPredictReport'])->name('reports.credit.excel');
-        Route::get('reports/monthly',[ReportsController::class,'monthlyReportView'])->name('reports.monthly');
-        Route::post('reports/monthly/report',[ReportsController::class,'getMonthlyReportValue'])->name('reports.monthly.report');
+        Route::get('reports',[ReportsController::class,'index'])->name('reports.index')->middleware('role:Administrador');
+        Route::get('reports/daily',[ReportsController::class,'dailyReportView'])->name('reports.daily')->middleware('role:Administrador');
+        Route::get('reports/daily/report/{date}',[ReportsController::class,'getDailyReportValue'])->name('reports.daily.values')->middleware('role:Administrador');
+        Route::get('reports/daily/report/download/excel/{date}',[ReportsController::class,'downloadExcelDailyReport'])->name('reports.daily.download.excel')->middleware('role:Administrador');
+        Route::get('reports/guides',[ReportsController::class,'guidesReportView'])->name('reports.guides')->middleware('role:Administrador');
+        Route::post('reports/guides/report',[ReportsController::class,'getGuidesReport'])->name('reports.guides.report')->middleware('role:Administrador');
+        Route::post('reports/guides/report/excel',[ReportsController::class,'downloadExcelGuidesReport'])->name('reports.guides.report.excel')->middleware('role:Administrador');
+        Route::get('reports/credit',[ReportsController::class,'creditReportView'])->name('reports.credit')->middleware('role:Administrador');
+        Route::get('reports/credit/excel',[ReportsController::class,'downloadExcelPredictReport'])->name('reports.credit.excel')->middleware('role:Administrador');
+        Route::get('reports/monthly',[ReportsController::class,'monthlyReportView'])->name('reports.monthly')->middleware('role:Administrador');
+        Route::post('reports/monthly/report',[ReportsController::class,'getMonthlyReportValue'])->name('reports.monthly.report')->middleware('role:Administrador');
         Route::get('reports/yearly',[ReportsController::class,'yearlyReportView'])->name('reports.yearly');
-        Route::post('reports/yearly/report',[ReportsController::class,'getYearlyReportValue'])->name('reports.yearly.report');
+        Route::post('reports/yearly/report',[ReportsController::class,'getYearlyReportValue'])->name('reports.yearly.report')->middleware('role:Administrador');
 
         //Tour Options
         Route::Post('/tours/{id}/guide', [\App\Http\Controllers\Admin\TourOptionsController::class,'setTourGuide'])->name('tour.guide.create');
@@ -137,27 +137,26 @@ Route::group([
         Route::Post('/tour-history/update/tour-client/{id}',[\App\Http\Controllers\Admin\HistoryController::class,'updateTourClient'])->name('tour-history.update.tour-client');
 
         //Health
-        Route::get('/health', HealthCheckResultsController::class)->name('health');
+        Route::get('/health', HealthCheckResultsController::class)->name('health')->middleware('role:Administrador');
 
         //Automatic
-        Route::get('/automatic-tour', [App\Http\Controllers\Admin\AutomaticToursController::class, 'index'])->name('automatic.index');
-        Route::post('/automatic-tour/time-table', [App\Http\Controllers\Admin\AutomaticToursController::class, 'getTimeTables'])->name('automatic.timetable');
-        Route::post('/automatic-tour/create', [App\Http\Controllers\Admin\AutomaticToursController::class, 'automaticTourCreation'])->name('automatic.create');
+        Route::get('/automatic-tour', [App\Http\Controllers\Admin\AutomaticToursController::class, 'index'])->name('automatic.index')->middleware('role:Administrador');
+        Route::post('/automatic-tour/time-table', [App\Http\Controllers\Admin\AutomaticToursController::class, 'getTimeTables'])->name('automatic.timetable')->middleware('role:Administrador');
+        Route::post('/automatic-tour/create', [App\Http\Controllers\Admin\AutomaticToursController::class, 'automaticTourCreation'])->name('automatic.create')->middleware('role:Administrador');
 
         //Crud's Routes
-        Route::resource('type-client',ClientTypeController::class);
-        Route::resource('type-guides',TypesGuidesController::class);
         Route::resource('guides',GuidesController::class);
-        Route::resource('clients',ClientController::class);
         Route::resource('tours',TourController::class);
-        Route::resource('tour-state',TourStateController::class);
-        Route::resource('tour-type',TourTypeController::class);
-        Route::resource('users',UserController::class);
-        Route::resource('timetable',TimetablesController::class);
-        Route::resource('product',ProductController::class);
-        Route::resource('product-type',ProductTypeController::class);
-        Route::resource('tour-history',HistoryController::class)->only(["index","show"]);
-        Route::resource('exchange-rate',ExchangeRateController::class)->only(["index"]);
-
+        Route::resource('tour-history',HistoryController::class)->only(["index","show"])->middleware('role:Administrador,Operador');;
+        Route::resource('clients',ClientController::class)->middleware('role:Administrador,Operador');
+        Route::resource('type-client',ClientTypeController::class)->middleware('role:Administrador');
+        Route::resource('type-guides',TypesGuidesController::class)->middleware('role:Administrador');
+        Route::resource('tour-state',TourStateController::class)->middleware('role:Administrador');
+        Route::resource('tour-type',TourTypeController::class)->middleware('role:Administrador');
+        Route::resource('users',UserController::class)->middleware('role:Administrador');
+        Route::resource('timetable',TimetablesController::class)->middleware('role:Administrador');
+        Route::resource('product',ProductController::class)->middleware('role:Administrador');
+        Route::resource('product-type',ProductTypeController::class)->middleware('role:Administrador');
+        Route::resource('exchange-rate',ExchangeRateController::class)->only(["index"])->middleware('role:Administrador');
     }
 );

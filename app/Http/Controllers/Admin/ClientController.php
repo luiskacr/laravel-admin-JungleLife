@@ -9,6 +9,7 @@ use App\Models\ClientType;
 use App\Models\Configuration;
 use App\Models\Customer;
 use App\Models\TourClient;
+use App\Models\User;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -18,6 +19,15 @@ use Illuminate\View\View;
 class ClientController extends Controller
 {
     use ResponseTrait;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->middleware('role:Administrador')->only('destroy');
+    }
 
     /**
      * Display a listing of the resource.
@@ -91,8 +101,17 @@ class ClientController extends Controller
      */
     public function edit($id):View
     {
+        $editEmail = false;
+        $costumer = Customer::findOrFail($id);
+        $user = User::where('email', '=', $costumer->email)->get();
+
+        if(!$user->isEmpty() and $costumer->clientType == 2){
+            $editEmail = true;
+        }
+
         return view('admin.client.edit')
-            ->with('client', Customer::findOrFail($id) )
+            ->with('client', $costumer )
+            ->with('editEmail',$editEmail)
             ->with('clientTypes',ClientType::all());
     }
 

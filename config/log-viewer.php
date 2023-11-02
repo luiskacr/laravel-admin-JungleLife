@@ -73,6 +73,7 @@ return [
         'web',
         'auth',
         \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+        'role:Administrador'
     ],
 
     /*

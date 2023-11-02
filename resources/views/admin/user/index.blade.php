@@ -104,6 +104,15 @@
 @push('page-scripts')
     @include('admin.partials.delete')
     <script>
+
+        /**
+         * Send a password reset signal to the backend
+         *
+         * @param id
+         * @param name
+         * @param token
+         * @param route
+         */
         function resetPassword(id, name, token, route){
             const f_route = route.slice(0, -1);
             Swal.fire({
@@ -111,8 +120,8 @@
                 text: '{{ __('app.admin_reset_text' ) }}  ' + name,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: primaryColor.backgroundColor,
-                cancelButtonColor: '#ff3e1d',
+                confirmButtonColor: '{{__('app.delete_color')}}',
+                cancelButtonColor: '{{__('app.cancelButtonColor')}}',
                 cancelButtonText: '{{ __('app.delete_cancelButtonText') }}',
                 confirmButtonText: '{{ __('app.delete_confirmButtonText') }}'
             }).then((result) => {

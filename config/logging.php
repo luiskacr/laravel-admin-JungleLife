@@ -59,7 +59,7 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/'.\Carbon\Carbon::today('America/Costa_Rica')->format('Y-m-d').'_laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
@@ -120,7 +120,7 @@ return [
 
         'cronJobs' => [
             'driver' => 'single',
-            'path' => storage_path('logs/cron_jobs.log'),
+            'path' => storage_path('logs/'.\Carbon\Carbon::today('America/Costa_Rica')->format('Y-m-d').'_cron_jobs.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
     ],

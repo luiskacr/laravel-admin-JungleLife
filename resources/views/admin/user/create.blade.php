@@ -39,6 +39,17 @@
                         @enderror
                     </div>
                 </div>
+                <div class="col-12" id="telephoneDiv" style="display: none;">
+                    <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                        <label class="form-label" for="telephone">{{ __('app.telephone') }}</label>
+                        <input type="text" id="telephone" value="{{ old('telephone') }}" class="form-control "  name="telephone">
+                        @error('telephone')
+                        <div class="text-danger">
+                            <div data-field="name">* {{$message}}</div>
+                        </div>
+                        @enderror
+                    </div>
+                </div>
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                         <label class="form-label" for="role">{{ __('app.type_guides_singular') }}</label>
@@ -66,3 +77,23 @@
         </div>
     </div>
 @endsection
+
+@push('page-scripts')
+    <script>
+
+        /**
+         *  Hidde or show a telephone field
+         *
+         */
+        document.getElementById('role').addEventListener('change' ,() =>{
+            let value = document.getElementById('role').value;
+            let telephoneField = document.getElementById('telephoneDiv');
+            if(Number(value) === 3){
+                telephoneField.style.display = '';
+            }else{
+                telephoneField.style.display = 'none';
+            }
+        })
+
+    </script>
+@endpush

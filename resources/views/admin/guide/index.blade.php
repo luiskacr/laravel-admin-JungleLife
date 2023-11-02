@@ -12,6 +12,7 @@
                 <div class="float-start">
                     <h4>{{ __('app.guide') }}</h4>
                 </div>
+                @if(!auth()->user()->hasRole('Tour Operador'))
                 <div class="float-end">
                     <a class="text-white" href="{{ route('guides.create') }}">
                         <button class="btn btn-primary" type="button">
@@ -19,6 +20,7 @@
                         </button>
                     </a>
                 </div>
+                @endif
             </div>
         </div>
         <div class="card-datatable table-responsive pt-0">
@@ -42,11 +44,15 @@
                         <th>
                             <div class="justify-content-between">
                                 <a class="m-2" href="{{ route('guides.show',$guide->id) }}"><i class="bx bxs-show me-1"></i> {{ __('app.crud_show') }}</a>
+                                @if(!auth()->user()->hasRole('Tour Operador'))
                                 <a class="m-2" href="{{ route('guides.edit',$guide->id) }}"><i class="bx bx-edit-alt me-1"></i> {{ __('app.crud_edit') }}</a>
+                                @endif
+                                @if(auth()->user()->hasRole('Administrador'))
                                 <a class="m-2" href="#" onclick="deleteItem({{ $guide->id}},{{ json_encode($guide->name) }},
                                 {{ json_encode(csrf_token())  }}, {{ json_encode(route('guides.destroy',0)) }}, '{{ __('app.guide_singular') }}'  )">
                                     <i class="bx bx-trash me-1"></i> {{ __('app.crud_delete') }}
                                 </a>
+                                @endif
                             </div>
                         </th>
                     </tr>
@@ -58,5 +64,7 @@
 @endsection
 
 @push('page-scripts')
+    @if(auth()->user()->hasRole('Administrador'))
     @include('admin.partials.delete')
+    @endif
 @endpush

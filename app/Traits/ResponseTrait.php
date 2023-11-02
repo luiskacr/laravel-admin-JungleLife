@@ -13,12 +13,12 @@ trait ResponseTrait
     /**
      * Redirect Response route with error message
      *
-     * @param String $route
+     * @param String|array $route
      * @param string $error
      * @param String $message
      * @return RedirectResponse
      */
-    public function errorResponse(String $route,string $error, String $message):RedirectResponse
+    public function errorResponse(String|array $route,string $error, String $message):RedirectResponse
     {
         return redirect()->route($route)
             ->with('message',$this->errorMessage($error, $message));

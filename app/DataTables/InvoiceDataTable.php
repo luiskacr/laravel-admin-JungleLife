@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Configuration;
+use App\Models\Customer;
 use App\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -25,18 +26,26 @@ class InvoiceDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function (Invoice $invoice){
                 $config = Configuration::findOrFail(4);
-                $edit = '';
-                if($invoice->state == 1){
-                    $edit = '<a class="m-2" href="'.route('invoice.edit',$invoice->id).'"><i class="bx bx-edit-alt me-1"></i>'.__('app.crud_edit').'</a>';
-                }
+
+                $edit = (($invoice->state == 1) and !auth()->user()->hasRole('Tour Operador'))
+                    ? '<a class="m-2" href="'.route('invoice.edit',$invoice->id).'"><i class="bx bx-edit-alt me-1"></i>'.__('app.crud_edit').'</a>'
+                    : '';
+
+                $viewOrSendEmail = (!auth()->user()->hasRole('Tour Operador'))
+                    ? '<a class="m-2" target="_blank" rel="noopener" href="'.route('invoice.show-invoice',$invoice->id).'"> <i class="bx bx-file-blank me-1"></i>'.__('app.invoice_btn_show').'</a>
+                                <a class="m-2" href="#" onclick="sendInvoice(\''.route('invoice.send-invoice',$invoice->id).'\')" ><i class="bx bx-mail-send me-1"></i>'.__('app.invoice_btn_send').'</a>'
+                    : '';
+
+                $showDelete = auth()->user()->hasRole('Administrador')
+                    ? '<a class="m-2" href="#" onclick="deleteItem('.$invoice->id.', \''.$config->data['value'] . $invoice->id.'\', \''.csrf_token().'\', \''.route('invoice.destroy', 0).'\',\''. __('app.invoice') .'\')">
+                                    <i class="bx bx-trash me-1"></i>'.__('app.crud_delete').'</a>'
+                    : '';
 
                 return '<div class="justify-content-between">
                                 <a class="m-2" href="'.route('invoice.show',$invoice->id).'"><i class="bx bxs-show me-1"></i>'.__('app.crud_show').'</a>
                                 '.$edit .'
-                                <a class="m-2" target="_blank" rel="noopener" href="'.route('invoice.show-invoice',$invoice->id).'"> <i class="bx bx-file-blank me-1"></i>'.__('app.invoice_btn_show').'</a>
-                                <a class="m-2" href="#" onclick="sendInvoice(\''.route('invoice.send-invoice',$invoice->id).'\')" ><i class="bx bx-mail-send me-1"></i>'.__('app.invoice_btn_send').'</a>
-                                <a class="m-2" href="#" onclick="deleteItem('.$invoice->id.', \''.$config->data['value'] . $invoice->id.'\', \''.csrf_token().'\', \''.route('invoice.destroy', 0).'\',\''. __('app.invoice') .'\')">
-                                    <i class="bx bx-trash me-1"></i>'.__('app.crud_delete').'</a>
+                                '.$viewOrSendEmail.'
+                                '.$showDelete.'
                             </div>';
             })
             ->addColumn(__('app.invoice'), function (Invoice $invoice){
@@ -88,7 +97,12 @@ class InvoiceDataTable extends DataTable
      */
     public function query(Invoice $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('id','desc');
+        if(auth()->user()->hasRole('Tour Operador')){
+            $costumer = Customer::where('email','=' ,auth()->user()->email)->first();
+            return $model->newQuery()->where('client', '=', $costumer->id)->orderBy('id','desc');
+        }else{
+            return $model->newQuery()->orderBy('id','desc');
+        }
     }
 
     /**

@@ -1,5 +1,14 @@
 <script>
-
+    /**
+     * Function to delete any model
+     *
+     * @param id
+     * @param name
+     * @param token
+     * @param route
+     * @param entity
+     * @param callback
+     */
     function deleteItem(id, name, token, route, entity, callback) {
         const f_route = route.slice(0, -1);
         Swal.fire({
@@ -8,7 +17,7 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '{{ __('app.delete_color') }}',
-            cancelButtonColor: '#ff3e1d',
+            cancelButtonColor: '{{__('app.cancelButtonColor')}}',
             cancelButtonText: '{{ __('app.delete_cancelButtonText') }}',
             confirmButtonText: '{{ __('app.delete_confirmButtonText') }}'
         }).then((result) => {

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Tour;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Checks\Checks\CacheCheck;
@@ -41,6 +42,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Validator::extend('unique_email_except_self', function ($attribute, $value, $parameters, $validator) {
+            $count = DB::table('users')
+                ->where('email', $value)
+                ->where('id', '!=', auth()->user()->id)
+                ->count();
 
+            return $count === 0;
+        });
     }
 }

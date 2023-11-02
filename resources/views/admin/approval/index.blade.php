@@ -60,7 +60,6 @@
                         </th>
                         <th>
                             <div class="justify-content-between">
-                                <a class="m-2" href=""><i class="bx bxs-show me-1"></i>{{ __('app.crud_show') }}</a>
                                 @if($approval->state == 1)
                                     <a class="m-2" href="{{ route('approvals.edit', $approval->id) }}"><i class="bx bx-edit-alt me-1"></i>{{ __('app.approval_edit') }}</a>
                                 @endif

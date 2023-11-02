@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserInfoRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -40,7 +41,14 @@ class ProfileController extends Controller
     {
         DB::beginTransaction();
         try{
-            User::whereId($id)->update([
+            $user = User::findOrFail($id);
+
+            if( auth()->user()->hasRole('Tour Operador') ){
+                Customer::where('email', '=', $user->email)
+                    ->update(['email' => $request->request->get('email')]);
+            }
+
+            $user->update([
                 'name'=> $request->request->get('name'),
                 'email'=> $request->request->get('email'),
             ]);

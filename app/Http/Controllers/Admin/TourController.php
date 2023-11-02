@@ -31,6 +31,14 @@ class TourController extends Controller
     use TourTraits, ResponseTrait;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->middleware('role:Administrador')->only('destroy');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param ToursDataTable $dataTable
@@ -170,7 +178,7 @@ class TourController extends Controller
      * @param  int  $id
      * @return Response | JsonResponse
      */
-    public function destroy($id):Response | JsonResponse
+    public function destroy(int $id):Response | JsonResponse
     {
         DB::beginTransaction();
         try{

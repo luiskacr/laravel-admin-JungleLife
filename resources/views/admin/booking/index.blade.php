@@ -5,6 +5,9 @@
     $breadcrumbs = [__('app.home') => route('admin.home'),__('app.tours_book') =>false];
 @endphp
 
+@push('page-scripts')
+@endpush
+
 @section('content')
     <style>
         #table-empty {
@@ -329,19 +332,19 @@
                             </div>
                             <div class="col-md-3 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                                 <div class="form-check mt-3">
-                                    <input class="form-check-input" type="checkbox" value="" id="requiredElectronicInvoice">
-                                    <label class="form-check-label" for="invoice">
-                                        {{ __('app.send_electronic_invoice') }}
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
-                                <div class="form-check mt-3">
                                     <input class="form-check-input"  type="checkbox" value="" id="requiredCredit">
                                     <label class="form-check-label" for="invoice">
                                         {{ __('app.required_credit') }}
                                     </label>
                                 </div>
+                            </div>
+                            <div class="col-md-3 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                    <div class="form-check mt-3" >
+                                        <input class="form-check-input" type="checkbox" value="" id="requiredElectronicInvoice" disabled>
+                                        <label class="form-check-label" for="invoice">
+                                            {{ __('app.send_electronic_invoice') }}
+                                        </label>
+                                    </div>
                             </div>
                             <div class="col-md-3 mt-3  fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                                 <div>
@@ -359,6 +362,7 @@
 @push('page-scripts')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script>
+        const userRole = '{{auth()->user()->hasRole('Tour Operador')}}'
         let shoppingCar;
         let selectTour;
         let payment_Option;
@@ -371,6 +375,7 @@
         }
         let jsonProducts = {!! json_encode($products) !!};
         let user = {!! json_encode(auth()) !!};
+
 
         document.getElementById('payment_type').addEventListener('change', ()=>{
             let selection = document.getElementById('payment_type').value
@@ -421,7 +426,6 @@
                 },
                 cache: true
             },
-
         });
 
         async function createNewClient(){
@@ -1106,7 +1110,6 @@
             hasDate()
             fillInvoice()
         }
-
 
         run()
     </script>

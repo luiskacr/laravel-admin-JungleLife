@@ -34,5 +34,7 @@
 
 @push('page-scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+    @if(auth()->user()->hasRole('Administrador'))
     @include('admin.partials.delete')
+    @endif
 @endpush

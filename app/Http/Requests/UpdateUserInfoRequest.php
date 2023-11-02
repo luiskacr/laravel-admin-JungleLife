@@ -25,7 +25,7 @@ class UpdateUserInfoRequest extends FormRequest
     {
         return [
             'name'=> 'required|min:2|max:75',
-            'email'=> 'Email|required|min:2|max:75|unique:users',
+            'email'=> 'Email|required|min:2|max:75|unique_email_except_self:' . $this->user()->id,
         ];
     }
 

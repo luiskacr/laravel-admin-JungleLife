@@ -11,7 +11,7 @@
 ***
 general info
 
-### About Jungle Life Admin
+### About Jungle Life Admin App
 ***
 This application solves administrative tasks for the management of a tourism company called Jungle Life, where they will be able to keep track of their customers, and the tours they have done.
 

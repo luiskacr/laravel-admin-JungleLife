@@ -17,6 +17,16 @@ use PhpParser\Builder;
 class GuidesController extends Controller
 {
     use ResponseTrait;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->middleware('role:Administrador')->only('destroy');
+        $this->middleware('role:Administrador,Operador')->only(['create','store','edit','update']);
+    }
+
     /**
      * Display a listing of the resource.
      *

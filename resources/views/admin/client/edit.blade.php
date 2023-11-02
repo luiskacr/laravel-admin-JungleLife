@@ -33,7 +33,7 @@
                 <div class="col-12">
                     <div class="col-md-6 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
                         <label class="form-label" for="email">{{__('app.email')}}</label>
-                        <input type="text" id="email" value="{{ $client->email }}" class="form-control "  name="email" >
+                        <input type="text" id="email" value="{{ $client->email }}" class="form-control "  name="email" {{ $editEmail ? 'disabled': '' }} >
                         @error('email')
                             <div class="text-danger">
                                 <div data-field="email">* {{$message}}</div>
@@ -81,3 +81,19 @@
         </div>
     </div>
 @endsection
+@push('page-scripts')
+    <script>
+
+        document.getElementById('clientType').addEventListener('change' ,() =>{
+            let clientType = Number(document.getElementById('clientType').value);
+            let email = document.getElementById('email')
+
+            if(email.disabled && clientType !== 2){
+                email.disabled = false
+            }else if( clientType === 2){
+                email.disabled = true
+            }
+        })
+
+    </script>
+@endpush

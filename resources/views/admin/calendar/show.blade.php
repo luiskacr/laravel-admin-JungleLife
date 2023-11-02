@@ -93,7 +93,9 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ __('app.close') }}</button>
-                                <a id="goTour"><button type="button" class="btn btn-primary">{{ __('app.goTour') }}</button></a>
+                                @if(!auth()->user()->hasRole('Tour Operador'))
+                                    <a id="goTour"><button type="button" class="btn btn-primary">{{ __('app.goTour') }}</button></a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -108,7 +110,7 @@
     <script>
 
         function getTourInfo(url){
-
+            const userRole = '{{auth()->user()->hasRole('Tour Operador')}}'
             const result = fetch(url);
 
             result
@@ -126,9 +128,12 @@
                     document.getElementById("user").value = data.user;
                     document.getElementById("info").innerHTML = data.info;
 
-                    document.getElementById("goTour").onclick = function() {
-                        this.href = data.route;
-                    };
+                    if(Number(userRole)!== 1){
+                        document.getElementById("goTour").onclick = function() {
+                            this.href = data.route;
+                        };
+                    }
+
 
                     document.getElementById("info").click();
                 });

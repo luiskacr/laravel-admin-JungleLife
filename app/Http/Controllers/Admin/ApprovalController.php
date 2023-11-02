@@ -7,7 +7,6 @@ use App\Models\Approval;
 use App\Models\Tour;
 use App\Traits\ResponseTrait;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,17 +84,6 @@ class ApprovalController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Approval  $approval
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Approval $approval)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param int $id
@@ -127,26 +115,13 @@ class ApprovalController extends Controller
                 'reviewer' => Auth::user()->id
             ]);
 
-            $message = __('app.approve_msg3');
-
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
 
             return response()->json(['message'=> $this->errorMessage($e->getMessage(), __('app.error_delete') )  ], 500);
         }
-        return response()->json(['message'=> $message ], 200);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Approval  $approval
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Approval $approval)
-    {
-        //
+        return response()->json(['message'=> __('app.approve_msg3') ], 200);
     }
 
     /**

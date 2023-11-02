@@ -46,15 +46,16 @@
                     </a>
                 </li>
             </ul>
-
-            <ul class="menu-sub">
-                <li class="menu-item {{ $title == __('app.products') ? 'active' : '' }}">
-                    <a href="{{ route('product.index') }}" class="menu-link">
-                        <div data-i18n="Basic">{{ __('app.products') }}</div>
-                    </a>
-                </li>
-            </ul>
-
+            @if(auth()->user()->hasRole('Administrador'))
+                <ul class="menu-sub">
+                    <li class="menu-item {{ $title == __('app.products') ? 'active' : '' }}">
+                        <a href="{{ route('product.index') }}" class="menu-link">
+                            <div data-i18n="Basic">{{ __('app.products') }}</div>
+                        </a>
+                    </li>
+                </ul>
+            @endif
+            @if(!auth()->user()->hasRole('Tour Operador'))
             <ul class="menu-sub">
                 <li class="menu-item {{ $title == __('app.tours_history') ? 'active' : '' }}">
                     <a href="{{ route('tour-history.index') }}" class="menu-link">
@@ -62,6 +63,7 @@
                     </a>
                 </li>
             </ul>
+            @endif
             <ul class="menu-sub">
                 <li class="menu-item {{ $title == __('app.increase_request') ? 'active' : '' }}">
                     <a href="{{ route('approvals.create')  }}" class="menu-link">
@@ -69,24 +71,25 @@
                     </a>
                 </li>
             </ul>
-            <ul class="menu-sub">
-                <li class="menu-item {{ $title == __('app.automatic_tour_tittle') ? 'active' : '' }}">
-                    <a href="{{ route('automatic.index')  }}" class="menu-link">
-                        <div data-i18n="Basic">{{ __('app.automatic_tour_tittle') }}</div>
-                    </a>
-                </li>
-            </ul>
-
+            @if(auth()->user()->hasRole('Administrador'))
+                <ul class="menu-sub">
+                    <li class="menu-item {{ $title == __('app.automatic_tour_tittle') ? 'active' : '' }}">
+                        <a href="{{ route('automatic.index')  }}" class="menu-link">
+                            <div data-i18n="Basic">{{ __('app.automatic_tour_tittle') }}</div>
+                        </a>
+                    </li>
+                </ul>
+            @endif
         </li>
 
-
+        @if(!auth()->user()->hasRole('Tour Operador'))
         <li class="menu-item {{ $title == __('app.customer') ? 'active' : '' }}">
             <a href="{{ route('clients.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Basic">{{ __('app.customer') }}</div>
             </a>
         </li>
-
+        @endif
         <li class="menu-item {{ $title == __('app.guide') ? 'active' : '' }} ">
             <a href="{{ route('guides.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-body"></i>
@@ -108,66 +111,69 @@
             </a>
         </li>
 
-
-        @php( $menuConfig = array(__('app.type_client'),__('app.type_guides'),__('app.tour_type'), __('app.tour_states'),__('app.timetables'), __('app.product_type'), __('app.exchange')) )
-        <li class="menu-item {{ in_array($title,$menuConfig)  ? 'open' : '' }}  {{ in_array($title,$menuConfig)  ? 'active' : '' }} ">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-slider"></i>
-                <div data-i18n="Account Settings">{{ __('app.config_tour') }}</div>
-            </a>
-
-            <ul class="menu-sub">
-                <li class="menu-item {{ $title == __('app.type_client') ? 'active' : '' }}">
-                    <a href="{{  route('type-client.index')  }}" class="menu-link">
-                        <div data-i18n="Account">{{ __('app.type_client') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $title == __('app.type_guides') ? 'active' : '' }}">
-                    <a href="{{ route('type-guides.index') }}" class="menu-link">
-                        <div data-i18n="Account">{{ __('app.type_guides') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $title == __('app.tour_type') ? 'active' : '' }}">
-                    <a href="{{ route('tour-type.index') }}" class="menu-link">
-                        <div data-i18n="Account">{{ __('app.tour_type') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $title == __('app.tour_states') ? 'active' : '' }}">
-                    <a href="{{  route('tour-state.index')}}" class="menu-link">
-                        <div data-i18n="Account">{{ __('app.tour_states') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $title == __('app.product_type') ? 'active' : '' }}">
-                    <a href="{{  route('product-type.index')}}" class="menu-link">
-                        <div data-i18n="Account">{{ __('app.product_type') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $title == __('app.timetables') ? 'active' : '' }}">
-                    <a href="{{  route('timetable.index') }}" class="menu-link">
-                        <div data-i18n="Account">{{ __('app.timetables') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $title == __('app.exchange') ? 'active' : '' }}">
-                    <a href="{{  route('exchange-rate.index') }}" class="menu-link">
-                        <div data-i18n="Account">{{ __('app.exchange') }}</div>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">{{ __('app.reports') }}</span>
-
-            <li class="menu-item {{ $title == __('app.report') ? 'active' : '' }}">
-                <a href="{{ route('reports.index') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-line-chart"></i>
-                    <div data-i18n="Basic">{{ __('app.report') }}</div>
+        @if(auth()->user()->hasRole('Administrador'))
+            <!-- Tour opcions -->
+            @php( $menuConfig = array(__('app.type_client'),__('app.type_guides'),__('app.tour_type'), __('app.tour_states'),__('app.timetables'), __('app.product_type'), __('app.exchange')) )
+            <li class="menu-item {{ in_array($title,$menuConfig)  ? 'open' : '' }}  {{ in_array($title,$menuConfig)  ? 'active' : '' }} ">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-slider"></i>
+                    <div data-i18n="Account Settings">{{ __('app.config_tour') }}</div>
                 </a>
+
+                <ul class="menu-sub">
+                    <li class="menu-item {{ $title == __('app.type_client') ? 'active' : '' }}">
+                        <a href="{{  route('type-client.index')  }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('app.type_client') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ $title == __('app.type_guides') ? 'active' : '' }}">
+                        <a href="{{ route('type-guides.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('app.type_guides') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ $title == __('app.tour_type') ? 'active' : '' }}">
+                        <a href="{{ route('tour-type.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('app.tour_type') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ $title == __('app.tour_states') ? 'active' : '' }}">
+                        <a href="{{  route('tour-state.index')}}" class="menu-link">
+                            <div data-i18n="Account">{{ __('app.tour_states') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ $title == __('app.product_type') ? 'active' : '' }}">
+                        <a href="{{  route('product-type.index')}}" class="menu-link">
+                            <div data-i18n="Account">{{ __('app.product_type') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ $title == __('app.timetables') ? 'active' : '' }}">
+                        <a href="{{  route('timetable.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('app.timetables') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ $title == __('app.exchange') ? 'active' : '' }}">
+                        <a href="{{  route('exchange-rate.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('app.exchange') }}</div>
+                        </a>
+                    </li>
+                </ul>
             </li>
+        @endif
 
-        </li>
+        @if(auth()->user()->hasRole('Administrador'))
+            <!-- Report -->
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">{{ __('app.reports') }}</span>
+                <li class="menu-item {{ $title == __('app.report') ? 'active' : '' }}">
+                    <a href="{{ route('reports.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-line-chart"></i>
+                        <div data-i18n="Basic">{{ __('app.report') }}</div>
+                    </a>
+                </li>
+            </li>
+        @endif
 
+        @if(auth()->user()->hasRole('Administrador'))
         <!-- Config -->
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">{{ __('app.config') }}</span>
@@ -176,18 +182,6 @@
             <a href="{{ route('users.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Basic">{{ __('app.user') }}</div>
-            </a>
-        </li>
-        <li class="menu-item ">
-            <a href="#" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Basic">Roles</div>
-            </a>
-        </li>
-        <li class="menu-item ">
-            <a href="#" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Basic">Permisos</div>
             </a>
         </li>
         <li class="menu-item {{ $title == __('app.config') ? 'active' : '' }}">
@@ -203,31 +197,33 @@
                 <div data-i18n="Basic">{{ __('app.requests_for_increases') }}</div>
             </a>
         </li>
+        @endif
         <!-- Config -->
+        @if(auth()->user()->hasRole('Administrador'))
+            <!-- Environment -->
+            @php($env_colors = ['local' => 'success', 'develop' => 'success', 'stage' => 'warning','production' => 'danger'] )
+            @php($env_current = App::environment())
+            <li class="menu-header small text-uppercase">{{ __('app.environment') }}</li>
+            <li class="menu-item">
+                <a class="menu-link" href="javascript:;" >
+                    <i class='menu-icon tf-icons bx bxs-circle environment-{{ $env_colors[$env_current] }}' ></i>
+                    <div data-i18n="Basic">{{ __('app.'.$env_current) }}</div>
+                </a>
+            </li>
+            <li class="menu-item {{ $title == __('app.log_tittle') ? 'active' : '' }}">
+                <a href="{{ route('log-viewer.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-message-error"></i>
+                    <div data-i18n="Basic">{{ __('app.log_tittle') }}</div>
+                </a>
+            </li>
 
-        @php($env_colors = ['local' => 'success', 'develop' => 'success', 'stage' => 'warning','production' => 'danger'] )
-        @php($env_current = App::environment())
-        <li class="menu-header small text-uppercase">{{ __('app.environment') }}</li>
-        <li class="menu-item">
-            <a class="menu-link" href="javascript:;" >
-                <i class='menu-icon tf-icons bx bxs-circle environment-{{ $env_colors[$env_current] }}' ></i>
-                <div data-i18n="Basic">{{ __('app.'.$env_current) }}</div>
-            </a>
-        </li>
-        <li class="menu-item {{ $title == __('app.log_tittle') ? 'active' : '' }}">
-            <a href="{{ route('log-viewer.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-message-error"></i>
-                <div data-i18n="Basic">{{ __('app.log_tittle') }}</div>
-            </a>
-        </li>
-
-        <li class="menu-item {{ $title == __('app.health') ? 'active' : '' }}">
-            <a target="_blank" href="{{ route('health') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-heart"></i>
-                <div data-i18n="Basic">{{ __('app.health') }}</div>
-            </a>
-        </li>
-
+            <li class="menu-item {{ $title == __('app.health') ? 'active' : '' }}">
+                <a target="_blank" href="{{ route('health') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-heart"></i>
+                    <div data-i18n="Basic">{{ __('app.health') }}</div>
+                </a>
+            </li>
+        @endif
     </ul>
 </aside>
 <!-- / Menu -->
